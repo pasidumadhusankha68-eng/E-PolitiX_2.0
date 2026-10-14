@@ -19,6 +19,7 @@ export default function NavbarLanding() {
 
   const navItems = [
     { href: '#classes', label: 'Classes' },
+    { href: '#about', label: 'About'},
     { href: '#programme', label: 'Our Programme' },
     { href: '#results', label: 'Result' },
     { href: '#reviews', label: 'Reviews' },
@@ -50,7 +51,7 @@ export default function NavbarLanding() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-white hover:text-orange-400 font-medium transition-colors whitespace-nowrap"
+                  className="text-white hover:text-orange-400 font-medium transition-colors whitespace-nowrap text-sm"
                   aria-label={item.label}
                 >
                   {letters}
