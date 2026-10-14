@@ -98,6 +98,10 @@
     animation: navLetterReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) calc(0.15s + var(--i, 0) * 0.02s) both;
     opacity: 0;
   }
+  .about-letter {
+    animation: navLetterReveal 0.40s cubic-bezier(0.22, 1, 0.36, 1) calc(0.15s + var(--i, 0) * 0.2s) both;
+    opacity: 0;
+  }
   .nav-pop {
     animation: navPop 0.7s ease-out var(--delay, 0s) both;
   }
@@ -105,14 +109,44 @@
     animation: cardReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s) both;
     opacity: 0;
   }
+  .reveal-card {
+    opacity: 0;
+    transform: translateY(48px) scale(0.96);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--delay, 0ms);
+    will-change: opacity, transform;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .reveal-card.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-text {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal-text.is-visible {
+    opacity: 1;
+    transform: none;
+  }
   @media (prefers-reduced-motion: reduce) {
     .banner-reveal,
     .nav-letter,
+    .about-letter,
     .nav-pop,
     .bg-reveal,
-    .card-reveal {
+    .card-reveal,
+    .reveal-card,
+    .reveal-text {
       animation: none;
       opacity: 1;
+      transform: none;
+      transition: none;
     }
     html {
       scroll-behavior: auto;
@@ -243,7 +277,26 @@
     margin: 0 0 clamp(1rem, 2vw, 1.5rem);
   }
 
+  .about-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+  }
+
   .classes-subtitle {
+    font-family: var(--font-body);
+    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+    .about-subtitle {
     font-family: var(--font-body);
     font-size: clamp(1.1rem, 1.8vw, 1.25rem);
     line-height: 1.6;
@@ -426,7 +479,7 @@
   .branch-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 24px;
+    border-radius: 12px;
     padding: 24px 20px;
     display: flex;
     flex-direction: column;
@@ -519,5 +572,60 @@
 
   .schedule-value {
     color: var(--text-muted);
+  }
+
+  .branch-card--loading {
+    pointer-events: none;
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--card-border) 25%,
+      rgba(255, 255, 255, 0.1) 50%,
+      var(--card-border) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeletonPulse 1.5s ease-in-out infinite;
+    border-radius: 8px;
+  }
+
+  @keyframes skeletonPulse {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  .skeleton-name {
+    height: clamp(1.6rem, 15cqw, 3rem);
+    width: 70%;
+    margin: 0 0 16px;
+    min-height: 3em;
+  }
+
+  .skeleton-schedule {
+    width: 100%;
+  }
+
+  .skeleton-heading {
+    height: 1.25rem;
+    width: 40%;
+    margin: 0 0 8px;
+  }
+
+  .skeleton-line {
+    height: 1rem;
+    width: 60%;
+    margin: 0 0 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton {
+      animation: none;
+      background: var(--card-border);
+    }
   }
 }

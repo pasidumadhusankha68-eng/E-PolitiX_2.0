@@ -164,7 +164,7 @@ export default function Register() {
 
 return (
     <div className="min-h-screen flex">
-      <div className="w-1/2 min-h-screen flex items-center justify-center  hidden lg:flex">
+      <div className="w-1/2 min-h-screen items-center justify-center  hidden lg:flex">
         <img src={regBg} alt="E-PolitiX" className="w-full h-auto max-w-full" />
       </div>
 
@@ -174,7 +174,7 @@ return (
             <Logo size="2xl" />
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sm:p-8">
+          <div className="bg-white rounded-sm shadow-lg border border-slate-200 p-6 sm:p-8">
           <h2 className="text-2xl font-bold text-slate-800 text-center mb-6">Registration</h2>
 
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>

@@ -1,10 +1,28 @@
 const formatValue = (val) => val || 'TBA'
 
-export default function BranchCard({ name, al2027, al2028, href = '#' }) {
+export default function BranchCard({ name, al2027, al2028, href = '#', loading = false }) {
   const nameParts = name.split(' - ')
   const nameWithBreak = nameParts.length === 2
     ? `${nameParts[0]} -<br />${nameParts[1]}`
     : name
+
+  if (loading) {
+    return (
+      <div className="branch-card branch-card--loading" aria-hidden="true">
+        <div className="skeleton skeleton-name" />
+        <div className="skeleton skeleton-schedule">
+          <div className="skeleton skeleton-heading" />
+          <div className="skeleton skeleton-line" />
+          <div className="skeleton skeleton-line" />
+        </div>
+        <div className="skeleton skeleton-schedule">
+          <div className="skeleton skeleton-heading" />
+          <div className="skeleton skeleton-line" />
+          <div className="skeleton skeleton-line" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <a
