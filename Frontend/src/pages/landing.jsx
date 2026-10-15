@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useLayoutEffect } from 'react'
 import landingBg from '../img/landing_page_bg.png'
 import NavbarLanding from '../components/NavbarLanding'
 import { Link } from 'react-router-dom'
@@ -15,6 +15,9 @@ import ScrollToTop from '../components/ScrollToTop'
 import TypingText from '../components/TypingText'
 
 import '@fontsource/bodoni-moda/700.css'
+
+const galleryModules = import.meta.glob('../img/Gallery/*.jpg', { eager: true })
+const galleryImages = Object.values(galleryModules).map(m => m.default)
 
 const WHATSAPP_NUMBER = '94778808610'
 const gradientBg = 'linear-gradient(180deg, #0B0A0A 0%, #0E0D0D 50%, #0B0A0A 100%)'
@@ -292,8 +295,91 @@ export default function Landing() {
       <section id="reviews" className="min-h-screen px-6 flex items-center justify-center">
         <div className="text-center text-white">Reviews Section</div>
       </section>
-      <section id="gallery" className="min-h-screen px-6 flex items-center justify-center">
-        <div className="text-center text-white">Gallery Section</div>
+      <section id="gallery" className="min-h-screen px-6 py-20" style={{ background: 'linear-gradient(180deg, #0B0A0A 0%, #141211 50%, #0B0A0A 100%)' }}>
+        <header className="text-center mb-12">
+          <h2 className="classes-title animate-slide-in-right">Our <span className="text-yellow-500">Gallery</span></h2>
+          <p className="classes-subtitle mt-4 animate-slide-in-right-delay">Memorable moments from our educational journey</p>
+        </header>
+
+        {(() => {
+          const rows = [
+            galleryImages.slice(0, 5),
+            galleryImages.slice(5, 10),
+            galleryImages.slice(10, 15),
+            galleryImages.slice(15, 20)
+          ]
+          const speeds = [150, 110, 100, 150]
+
+          const CollageRow = ({ images, duration, rowIndex }) => {
+            const rowRef = useRef(null)
+            const [trackWidth, setTrackWidth] = useState(0)
+
+            useLayoutEffect(() => {
+              const measure = () => {
+                if (!rowRef.current) return
+                const items = rowRef.current.querySelectorAll('.collage-item:not(.duplicate)')
+                const width = Array.from(items).reduce((sum, el) => sum + el.offsetWidth + 12, 0)
+                setTrackWidth(width)
+              }
+              measure()
+              const ro = new ResizeObserver(measure)
+              ro.observe(rowRef.current)
+              return () => ro.disconnect()
+            }, [])
+
+            return (
+              
+              <div
+                ref={rowRef}
+                className="collage-row absolute left-0"
+                style={{
+                  top: `${rowIndex * 165}px`,
+                  '--duration': `${duration}s`,
+                  '--track-width': `${trackWidth}px`,
+                  zIndex: 4 - rowIndex
+                }}
+                aria-hidden="true"
+              >
+                
+                {[...images, ...images].map((img, i) => (
+                  <div key={i} className={`collage-item ${i >= images.length ? 'duplicate' : ''}`}>
+                    
+                    <img
+                      src={img}
+                      alt={`Gallery row ${rowIndex + 1} image ${(i % images.length) + 1}`}
+                      className="collage-image"
+                      loading="lazy"
+                    />
+                    
+                    
+                  </div>
+                ))}
+              </div>
+            )
+          }
+
+          return (
+            <>
+              <div className="collage-container relative overflow-hidden" style={{ height: '680px' }}>
+                {rows.map((rowImages, rowIndex) => (
+                  <CollageRow
+                    key={rowIndex}
+                    images={rowImages}
+                    duration={speeds[rowIndex]}
+                    rowIndex={rowIndex}
+                  />
+                ))}
+              </div>
+
+              <div className="text-center mt-10">
+                <Link to="/gallery" className="inline-flex items-center gap-2 px-8 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold/90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-bg" style={{ backgroundColor: 'var(--gold)' }}>
+                  View All Images
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </Link>
+              </div>
+            </>
+          )
+        })()}
       </section>
 
       <section
