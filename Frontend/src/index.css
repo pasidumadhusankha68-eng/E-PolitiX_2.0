@@ -715,3 +715,178 @@
     }
   }
 }
+
+@layer utilities {
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+    width: max-content;
+  }
+
+  .carousel-container:hover .animate-marquee {
+    animation-play-state: paused;
+  }
+
+  .carousel-image {
+    height: 280px;
+  }
+
+  @media (max-width: 768px) {
+    .animate-marquee { animation-duration: 60s; }
+    .carousel-image { height: 200px; }
+  }
+
+  @media (max-width: 480px) {
+    .animate-marquee { animation-duration: 80s; }
+    .carousel-image { height: 160px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+    }
+  }
+
+  @keyframes collageScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-1 * var(--track-width))); }
+  }
+
+  @keyframes pageEnter {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes headerEnter {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes gridEnter {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .collage-row {
+    display: flex;
+    gap: 12px;
+    will-change: transform;
+    animation: collageScroll var(--duration) linear infinite;
+  }
+
+  .collage-item {
+    flex-shrink: 0;
+  }
+
+  .collage-image {
+    height: auto;
+    max-height: 150px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 12px;
+  }
+
+  .collage-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    pointer-events: none;
+  }
+
+  .collage-container:hover .collage-row {
+    animation-play-state: paused;
+  }
+
+  .gallery-page-enter { opacity: 0; animation: pageEnter 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .header-enter { opacity: 0; animation: headerEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
+  .grid-enter { opacity: 0; animation: gridEnter 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both; }
+
+  @media (max-width: 1024px) {
+    .collage-container { height: 520px !important; }
+    .collage-image { max-height: 120px; }
+    .collage-row { gap: 10px; }
+  }
+
+  @media (max-width: 768px) {
+    .collage-container { height: 420px !important; }
+    .collage-image { max-height: 100px; }
+    .collage-row { gap: 8px; }
+    .animate-marquee { animation-duration: 60s; }
+    .carousel-image { height: 200px; }
+  }
+
+  @media (max-width: 480px) {
+    .collage-container { height: 360px !important; }
+    .collage-image { max-height: 85px; }
+    .collage-row { gap: 6px; }
+    .animate-marquee { animation-duration: 80s; }
+    .carousel-image { height: 160px; }
+  }
+
+  /* Gallery masonry scroll reveal */
+  .gallery-masonry-item {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  .gallery-masonry-item.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .collage-row,
+    .gallery-page-enter,
+    .header-enter,
+    .grid-enter,
+    .gallery-masonry-item {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+@layer components {
+  .masonry-grid {
+    columns: 1 280px;
+    gap: 16px;
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: masonryReveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: calc(var(--i, 0) * 0.05s);
+  }
+
+  @keyframes masonryReveal {
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (min-width: 640px) { .masonry-grid { columns: 2 300px; } }
+  @media (min-width: 1024px) { .masonry-grid { columns: 3 320px; } }
+  @media (min-width: 1440px) { .masonry-grid { columns: 4 340px; } }
+
+  @media (max-width: 768px) { 
+    .masonry-grid { columns: 1 100%; gap: 12px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .masonry-item {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
