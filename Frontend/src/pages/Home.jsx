@@ -42,7 +42,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-clip">
       {/* Navigation bar with logo, tabs, notifications, profile/logout */}
       {/* Why: Provides consistent app navigation and user session controls */}
       <Navbar />

@@ -23,7 +23,7 @@ export default function NavbarLanding() {
     { href: '#programme', label: 'Our Programme' },
     { href: '#results', label: 'Result' },
     { href: '#reviews', label: 'Reviews' },
-    { href: '/gallery', label: 'Gallery' },
+    { href: '#gallery', label: 'Gallery' },
     { href: '#contact', label: 'Contact' }
   ]
 
@@ -47,8 +47,17 @@ export default function NavbarLanding() {
             {navItems.map((item) => {
               const letters = splitText(item.label, letterIndex)
               letterIndex += item.label.length
-              const isExternalLink = item.href.startsWith('/')
-              return (
+              const isAnchor = item.href.startsWith('#')
+              return isAnchor ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="text-white hover:text-orange-400 font-medium transition-colors whitespace-nowrap text-sm"
+                  aria-label={item.label}
+                >
+                  {letters}
+                </a>
+              ) : (
                 <Link
                   key={item.href}
                   to={item.href}

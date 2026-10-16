@@ -6,7 +6,7 @@ export default function useScrollReveal(containerRef) {
     if (!container) return
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const elements = container.querySelectorAll('.reveal-card, .reveal-text')
+    const elements = container.querySelectorAll('.reveal-card, .reveal-text, .gallery-photo-item')
 
     if (prefersReduced || !window.IntersectionObserver) {
       elements.forEach((el) => el.classList.add('is-visible'))

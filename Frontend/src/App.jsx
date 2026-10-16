@@ -8,7 +8,7 @@ import Gallery from './pages/Gallery.jsx'
 
 function App() {
   return (
-    <div className="max-w-screen overflow-x-hidden">
+    <div className="w-full overflow-x-clip">
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
