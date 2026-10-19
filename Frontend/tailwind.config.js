@@ -8,6 +8,9 @@ export default {
     extend: {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
+        abhaya: ['"Abhaya Libre"', 'serif'],
+        gemunu: ['"Gemunu Libre"', 'sans-serif'],
+        yotive: ['"Yotive"', 'sans-serif'],
       },
       filter: {
         'brightness-75': '.75',

@@ -22,6 +22,41 @@ import '@fontsource/bodoni-moda/700.css'
 const WHATSAPP_NUMBER = '94778808610'
 const gradientBg = 'linear-gradient(180deg, #0B0A0A 0%, #0E0D0D 50%, #0B0A0A 100%)'
 
+const resultFiles = import.meta.glob('../img/results/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true, import: 'default' })
+
+const resultImage = (id) => {
+  const key = Object.keys(resultFiles).find(
+    (k) => k.split('/').pop()?.replace(/\.[^/.]+$/, '').toLowerCase() === id.toLowerCase()
+  )
+  return key ? resultFiles[key] : null
+}
+
+const MAIN_BANNERS = [{ id: 'main-1', alt: 'Result banner 1' }, { id: 'main-2', alt: 'Result banner 2' }]
+const SUB_BANNERS = [{ id: 'sub-1', alt: 'Result banner 3' }, { id: 'sub-2', alt: 'Result banner 4' }, { id: 'sub-3', alt: 'Result banner 5' }]
+
+const PROGRAMME_INTRO = ''
+const SINHALA_FONT = '"Noto Sans Sinhala", "Iskoola Pota", sans-serif'
+const LABEL_GRADIENT = 'linear-gradient(90deg, #c2410c, #ff6000)'
+const PROGRAMME_STEPS = [
+  { id: 'theory', label: 'Theory', description: '' },
+  { id: 'skill-up', label: 'Skill Up', description: 'උසස්පෙළ විභාගයේ බහුවරණ ප්‍රශ්න පත්‍රය ඉලක්ක කරගත් මූලික අවධියේ සිට යන වැඩසටහනකි.' },
+  { id: 'confidence', label: 'Confidence', description: 'උසස්පෙළ විභාගයේ ලියන ප්‍රශ්න පත්‍රය ඉලක්ක කරගත් මූලික අවධියේ සිට යන වැඩසටහනකි.' },
+  { id: 'lessonmax', label: 'LessonMax', description: 'අප විභාගය සඳහා තෝරාගත් අනිවාර්ය පාඩම්වල උපරිමයට ගෙන ඒමේ වැඩසටහනකි.' },
+  { id: 'revision', label: 'Revision', description: '' },
+  { id: 'ranking-papers', label: 'Ranking Papers', description: 'දිස්ත්‍රික් කුසලතා ඉලක්ක කර ගනිමින් සකස් වූ විධිමත් වැඩසටහනකි.' },
+  { id: 'weddilla', label: 'වෙඩිල්ල', sinhalaLabel: true, description: 'අපගේ ප්‍රශ්න පත්‍ර මාලාව තුල සම්පූර්ණ උසස්පෙළ ප්‍රශ්න පත්‍ර අනුමාන කරමින් මාස 6ක් තිස්සේ ක්‍රියාත්මක වන වැඩසටහනකි.' },
+]
+
+// PASTE YOUR 6 STUDENT MESSAGES HERE (replace text, name, batch)
+const REVIEWS = [
+  { text: "ඇත්ත සර් .වෙඩිල්ල මුල ඉදන් ලියපු අපිට නම් ගෙමක් නෑ ඉතින් ඒ වගේම සර්ගේ short note system එක නිසා සුපිරියට ලියාගත්තා. පොලිටිකල් නම් ඉතින් සර් තමා", name: "Student Name", batch: "2025 A/L Theory" },
+  { text: "අනෙ ඔවු සර් පාඩන් කරන්න ,වැඩ කරන්න ඕනෙ කියන එක හොදටම දැනුනෙ සර්ගෙ මෝර්ටිවේශන් වලින් සර් උගන්න හැම දෙයක්ම සුපිරියටම කියලා දුන්නා ... හොද රිසාඩ් එකක් දාන්න ගොඩක් ආසයි මහන්සි වෙනවා උපරිම අවුලක් 2ක් පුරාවටම අපි වෙනුවෙන් කරපු හැම කැපකිරීමකටම ගොඩක් thanks සර්", name: "Student Name", batch: "2025 A/L Theory" },
+  { text: "සර් අනෙ මට අන්තිම දවසේ එන්න බැරි වුනා.. ඒත් සර් අවුරුදු 2ක් පුරාවට සර් අපි වෙනුවෙන් කරපු කියපු හැමදේටම ගොඩක් Thankyou sir...මම මේක අනිවාරෙන් කියන්න ඕනි...සර්ගෙ මෝටිවේශන් නම් ඇත්තටම මරු සර්... සර් හැමලමයෙක් ගැනම හොදට හොයලා බලලා බැරි පාඩම් කියලා දීලා හොද රිසාල්ට් එකක් දාන්න උපරිම මට්ටමට සර්ට පුලුවන් දේ සර් කරනවා...මම ඒක හොදට බලපු දෙයක් සර්ගෙ.. ඇත්තටම හරිම දුකයි සර් ආයෙ පන්ති එන්න වෙන්නෙ නෑ කියලා හිතට දැනෙද්දී... සර් කියන කරන හැමවැඩක්ම සාර්ථක වෙන්න කියලා මම මගේ මුලු හවවතින්ම ප්‍රාර්ථනා කරනවා... ඇත්තටම සර් හරිම දුකයි ආයෙ එන්න වෙන්නෙ නෑ කියලා හිතෙද්දී...සර් ආයෙ හම්බෙන්න එන්නම් හොද රිසාල්ට් එකක් එක්කම සර්...එතකම් සර්ට ජය වේවා...", name: "Student Name", batch: "2025 A/L Theory" },
+  { text: "Ah sir thank you අපි වෙනුවෙන් අවුරුදු 2කටත් වඩා කාලයක් කැපකරාට හදවතට වැදුනු ගුරුවරු අතරේ සරැත් ඉන්නවා විටෙක සහෝදරයෙක් වගේ තවත් වෙලාවකට යාලුවෙක් වගේ සර්ට ගොඩක්ම පිං පාඩමේ නොතේරෙන තැන් සියපාරක් හරි උගන්නලා ගොඩ දන්න try karapu ekata සමහර දවසට සර්ට මොන වැඩේ තිබුනත් ඒක කල් දලා අපේ පන්තිය කරා අපි වෙනුවෙන් සර් මහන්සි වෙච්ච තරමට හොද ප්‍රතිපල එන්නම ඕනී අනිත් ගුරුවරු වගේ කිසිම ගුරුමුෂ්ටියක් නැතිව දන්න සියලුම දේ අපිට කියලා දුන්නා සර්ට වරදින්න එපා කවදාවත්ම තව තව හරියන්න ඕනී උාරුබොක්කෙන් අපි ඉන්නෝ ඕන දේකට", name: "Student Name", batch: "2025 A/L Theory" },
+  { text: "මෙච්චර කාලයක් හරිම ආසාවෙන් ආපු පන්තිය අදින් ඉවර වෙනවා කියද්දි මාරම දුකක් දැනෙනවා . මෙච්චර කාලයක් තිස්සෙ අපිට පොලිටිකල් විෂය ලස්සනට ,තේරෙන විදිහට ඉගැන්නුවා . ඒ වගේම ජීවිතයට වැදගත් පාඩම් ගොඩකුත් කියලා දුන්නට සර්ට ගොඩක් ස්තූතියි.සර්ගෙ කැපවීම සහ මගපෙන්වීම අපිට ලොකු ශක්තියක් වුනා . සර් කරපු හැමදේටම ගොඩක් පින් , සර්ගෙ ඉදිරි සියලු වැඩ කටයුතු සාර්ථක වේවා! කියලා ප්‍රාර්ථනා කරනවා", name: "Student Name", batch: "2025 A/L Theory" },
+  { text: "සර්ගෙ වෙඩිල්ල එක්ක බලුවා ම නම් පේපර් එක මොකක් ද කියලා හිතුනා Mcq එක නම් සර් ගෙ වෙඩිල්ල පේපර් ළගින් තියන්නවත් බෑ සර් එච්චර වෙඩිල්ල කොලිටියි ..", name: "Student Name", batch: "2025 A/L Theory" },
+]
+
 export default function Landing() {
   const heroRef = useRef(null)
   const branchesGridRef = useRef(null)
@@ -29,13 +64,19 @@ export default function Landing() {
   const aboutSectionRef = useRef(null)
   const classesSectionRef = useRef(null)
   const contactSectionRef = useRef(null)
+  const reviewsSectionRef = useRef(null)
+  const resultSectionRef = useRef(null)
+  const programmeSectionRef = useRef(null)
   const [classesLoading, setClassesLoading] = useState(true)
   const [isAboutVisible, setIsAboutVisible] = useState(false)
   const [isClassesVisible, setIsClassesVisible] = useState(false)
   const [isContactVisible, setIsContactVisible] = useState(false)
+  const [isReviewsVisible, setIsReviewsVisible] = useState(false)
 
   useScrollReveal(branchesGridRef)
   useScrollReveal(aboutTextRef)
+  useScrollReveal(resultSectionRef)
+  useScrollReveal(programmeSectionRef)
 
   const [form, setForm] = useState({ name: '', phone: '', message: '' })
 
@@ -153,8 +194,35 @@ export default function Landing() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    const section = reviewsSectionRef.current
+    if (!section) return
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) {
+      setIsReviewsVisible(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsReviewsVisible(true)
+            observer.unobserve(section)
+          }
+        })
+      },
+      { threshold: 0.3, rootMargin: '0px' }
+    )
+
+    observer.observe(section)
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <div className="w-full relative min-h-screen" style={{ background: gradientBg }}>
+    <div className="w-full relative min-h-screen cursor-default" style={{ background: gradientBg }}>
       <NavbarLanding />
       
       {/* Hero Section - landing_page_bg.png */}
@@ -281,16 +349,179 @@ export default function Landing() {
             </p>
           </div>
         </div>
+        {/* <div className='flex'>
+          <div className="w-1/2 h-40 m-10 mt-24"><h1 className="text-4xl font-gemunu">අපේ වැඩපිළිවෙල</h1>
+
+<p className="text-md mt-4">වසර දෙකක අධ්යන කාලයක් තුළ අධයනය කිරීමට ඇති විෂය නිර්දේශය අප විභාගයට මාස 3කට පෙර අවසන් කර උසස් පෙළ විභාගය ඉලක්ක කොට ළමයකුගේ තාර්කිකත්වය සහ ප්‍රශ්නවලට සාර්ථකව මුහුණදීමට ඇති හැකියාව ඔප්නම් වන විධිමත් වැඩ පිළිවෙලක් සහිතව අප පාඨමාලව සකස්කොට ඇත.</p>
+
+ </div>
+          <div className="w-1/2 bg-white h-40 m-10"></div>
+        </div> */}
       </section>
 
-      <section id="programme" className="min-h-screen px-6 flex items-center justify-center">
-        <div className="text-center text-white">Our Programme Section</div>
+      <section
+        id="programme"
+        ref={programmeSectionRef}
+        className="programme-bg relative px-6 py-20 scroll-mt-20 cursor-default"
+      >
+        <div className="relative mx-auto max-w-5xl">
+          <div className="text-center mb-14">
+            <h2 className="classes-title reveal-text">
+              Our <span className="text-yellow-500">Blueprint</span>
+            </h2>
+            <p className="classes-subtitle reveal-text" data-delay="150">
+        From the first lesson to the final paper, one clear path
+      </p>
+          </div>
+
+          <div className="relative">
+            <div
+              className="absolute bottom-0 top-0 left-5 w-px -translate-x-1/2 md:left-1/2"
+              style={{
+                background:
+                  'linear-gradient(to bottom, transparent, rgba(255,201,1,0.6) 6%, rgba(255,96,0,0.6) 94%, transparent)',
+                boxShadow: '0 0 12px rgba(255,96,0,0.45)',
+              }}
+            />
+            {PROGRAMME_STEPS.map((step, index) => {
+              const isLast = index === PROGRAMME_STEPS.length - 1
+              return (
+                <div
+                  key={step.id}
+                  className={`relative ${isLast ? '' : 'mb-10'} md:grid md:grid-cols-2 cursor-pointer`}
+                >
+                  <div
+                    className="absolute left-5 top-6 z-10 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-[#ffc901] bg-[#0c0b0b] text-sm font-bold text-[#ffc901] md:left-1/2"
+                    style={{ boxShadow: '0 0 18px rgba(255,96,0,0.45)' }}
+                  >
+                    {(index + 1).toString().padStart(2, '0')}
+                  </div>
+                  <div
+                    className={`absolute left-5 top-[43px] h-px w-9 bg-[rgba(255,201,1,0.5)] md:w-14 ${
+                      index % 2 === 0 ? 'md:left-auto md:right-1/2' : 'md:left-1/2'
+                    }`}
+                  />
+                  <div
+                    className={`reveal-card pl-14 ${
+                      index % 2 === 0 ? 'md:col-start-1 md:pl-0 md:pr-14' : 'md:col-start-2 md:pl-14'
+                    }`}
+                  >
+                    <div
+                      className="rounded-2xl border border-white/10 bg-[#141211] p-6 transition duration-300 hover:-translate-y-1 hover:border-[#ffc901]/70 hover:shadow-[0_0_40px_-12px_rgba(255,201,1,0.45)]"
+                    >
+                      <span
+                        className="inline-block rounded-md px-4 py-1.5 text-lg font-bold text-white"
+                        style={{
+                          background: LABEL_GRADIENT,
+                          ...(step.sinhalaLabel ? { fontFamily: SINHALA_FONT } : {}),
+                        }}
+                      >
+                        {step.label}
+                      </span>
+                      {step.description ? (
+                        <p
+                          className="mt-4 text-[0.95rem] leading-relaxed text-white/75"
+                          style={{ fontFamily: SINHALA_FONT }}
+                        >
+                          {step.description}
+                        </p>
+                      ) : (
+                        <p className="mt-4 text-sm italic text-white/40">
+                          Description coming soon
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
       </section>
-      <section id="results" className="min-h-screen px-6 flex items-center justify-center">
-        <div className="text-center text-white">Result Section</div>
-      </section>
-      <section id="reviews" className="min-h-screen px-6 flex items-center justify-center">
-        <div className="text-center text-white">Reviews Section</div>
+
+<section
+  id="results"
+  ref={resultSectionRef}
+  className="result-bg relative px-6 py-20 scroll-mt-20"
+>
+  <div className="mx-auto max-w-7xl">
+    <div className="text-center mb-12">
+      <h2 className="classes-title reveal-text"><span className="text-yellow-500">Proof</span>, not Promises</h2>
+      <p className="classes-subtitle reveal-text" data-delay="150">
+        Real students, real A/L results
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      {MAIN_BANNERS.map((banner) => {
+        const src = resultImage(banner.id)
+        return (
+          <div key={banner.id} className="reveal-card">
+            <div
+              className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141211] aspect-[16/9] transition duration-300 hover:-translate-y-1 hover:border-[#ffc901]/70 hover:shadow-[0_0_40px_-12px_rgba(255,201,1,0.45)]"
+            >
+              {src ? (
+                <img src={src} alt={banner.alt} className="block h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center border border-dashed border-[#ffc901]/35">
+                  <p className="text-sm text-white/60 text-center">
+                    Add {banner.id} to src/img/results
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )
+      })}
+    </div>
+
+    <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+      {SUB_BANNERS.map((banner) => {
+        const src = resultImage(banner.id)
+        return (
+          <div key={banner.id} className="reveal-card">
+            <div
+              className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141211] aspect-[3/2] transition duration-300 hover:-translate-y-1 hover:border-[#ffc901]/70 hover:shadow-[0_0_40px_-12px_rgba(255,201,1,0.45)]"
+            >
+              {src ? (
+                <img src={src} alt={banner.alt} className="block h-full w-full object-cover" />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center border border-dashed border-[#ffc901]/35">
+                  <p className="text-sm text-white/60 text-center">
+                    Add {banner.id} to src/img/results
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  </div>
+</section>
+
+      <section id="reviews" ref={reviewsSectionRef} className="reviews-bg relative overflow-hidden px-6 py-24">
+        <header className="text-center mb-16 relative z-10">
+          <h2 className={`classes-title ${isReviewsVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
+            Student <span className="text-yellow-500">Reviews</span></h2>
+          <p className={`classes-subtitle mt-4 ${isReviewsVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}>
+            Hear what our students say about learning with us</p>
+        </header>
+        <div className="reviews-marquee relative z-10">
+          <div className="reviews-track">
+            {[0, 1].map((setIndex) => (
+              <div key={setIndex} className="reviews-set" aria-hidden={setIndex === 1 ? 'true' : undefined}>
+                {REVIEWS.map((r, i) => (
+                  <article key={i} className="review-card" tabIndex={setIndex === 1 ? -1 : undefined}>
+                    <span className="review-quote" aria-hidden="true">“</span>
+                    <p className="review-text">{r.text}</p>
+                    
+                  </article>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       
