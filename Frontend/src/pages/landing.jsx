@@ -14,7 +14,9 @@ import mainElement from '../img/about/main_element.png'
 import description from '../img/about/description.png'
 import ScrollToTop from '../components/ScrollToTop'
 import TypingText from '../components/TypingText'
-import GalleryStrip from '../components/GalleryStrip'
+import GalleryMobile from '../components/GalleryMobile'
+import ReviewsMobile from '../components/ReviewsMobile'
+import Footer from '../components/Footer'
 
 
 import '@fontsource/bodoni-moda/700.css'
@@ -497,8 +499,8 @@ export default function Landing() {
         )
       })}
     </div>
-  </div>
-</section>
+        </div>
+      </section>
 
       <section id="reviews" ref={reviewsSectionRef} className="reviews-bg relative overflow-hidden px-6 py-24">
         <header className="text-center mb-16 relative z-10">
@@ -507,7 +509,7 @@ export default function Landing() {
           <p className={`classes-subtitle mt-4 ${isReviewsVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}>
             Hear what our students say about learning with us</p>
         </header>
-        <div className="reviews-marquee relative z-10">
+        <div className="reviews-marquee reviews-desktop-only relative z-10">
           <div className="reviews-track">
             {[0, 1].map((setIndex) => (
               <div key={setIndex} className="reviews-set" aria-hidden={setIndex === 1 ? 'true' : undefined}>
@@ -522,6 +524,7 @@ export default function Landing() {
             ))}
           </div>
         </div>
+        <ReviewsMobile reviews={REVIEWS} />
       </section>
 
       
@@ -533,17 +536,17 @@ export default function Landing() {
           </div>
          
         </header>
-        <div className="flex justify-end max-w-6xl mx-auto mb-6">
+        <div className="flex justify-center    max-w-6xl mx-auto mb-6">
           <Link
             to="/gallery"
-            className="absolute top-24 right-20 inline-flex r gap-3 border-b-2 border-white pb-1 text-xs font-bold uppercase tracking-[0.2em] text-white transition-colors hover:text-[#e65600] hover:border-[#e65600] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6000]"
+            className=" inline-flex r gap-3 border-b-2 border-white pb-1 text-xs font-bold uppercase tracking-[0.2em] text-white transition-colors hover:text-[#e65600] hover:border-[#e65600] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6000]"
             aria-label="View all gallery photos"
           >
-            All Photos
+            View All Albums
             <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
           </Link>
         </div>
-        <GalleryStrip />
+        <GalleryMobile />
         
       </section>
 
@@ -560,7 +563,7 @@ export default function Landing() {
             <h2 className={`classes-title ${isContactVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
               Get in <span className='text-yellow-500'>Touch</span>
             </h2>
-            <p className={`classes-subtitle mt-4 ${isContactVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}>
+            <p className={`classes-subtitle text-md mt-4 ${isContactVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}>
               Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
             </p>
           </header>
@@ -568,7 +571,7 @@ export default function Landing() {
           <div className="grid lg:grid-cols-2 gap-12">
             <div className="space-y-8">
               <div className={`card-reveal ${isContactVisible ? 'is-visible' : ''}`} style={{ '--delay': '0ms' }}>
-                <h3 className="level-title mb-6">Contact Information</h3>
+                <h3 className="level-title mb-6 text-2xl">Contact Information</h3>
                 <div className="space-y-6">
 
 
@@ -579,7 +582,7 @@ export default function Landing() {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="level-title text-xl mb-1">Call Us</h4>
+                      <h4 className="level-title text-lg mb-1">Call Us</h4>
                       <p className="text-text-muted leading-relaxed">
                         +94 41 222 3344<br />
                         +94 77 123 4567
@@ -594,7 +597,7 @@ export default function Landing() {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="level-title text-xl mb-1">Email Us</h4>
+                      <h4 className="level-title text-lg mb-1">Email Us</h4>
                       <p className="text-text-muted leading-relaxed">
                         info@epolitix.lk<br />
                         admissions@epolitix.lk
@@ -607,7 +610,7 @@ export default function Landing() {
               </div>
 
               <div className={`card-reveal ${isContactVisible ? 'is-visible' : ''}`} style={{ '--delay': '200ms' }}>
-                <h3 className="level-title mb-6">Follow Us</h3>
+                <h3 className="level-title mb-6 text-lg">Follow Us</h3>
                 <div className="flex flex-wrap gap-4">
                   <a href="https://www.facebook.com/share/18apYRAecC/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-card-bg border border-card-border flex items-center justify-center hover:border-gold hover:bg-gold/10 transition-all duration-300 hover:text-yellow-500 hover:border-yellow-500" aria-label="Facebook">
                     <svg className="w-6 h-6 text-gold" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -723,42 +726,11 @@ export default function Landing() {
               </div>
             </div>
           </div>
-
-          <div className="mt-16 pt-8 border-t border-card-border">
-            <div className="grid md:grid-cols-3 gap-8 text-center">
-              <div className={`reveal-text ${isContactVisible ? 'is-visible' : ''}`} style={{ '--delay': '0ms' }}>
-                <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gold/10 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h4 className="level-title mb-2">Quick Response</h4>
-                <p className="text-text-muted">We typically respond within 24 hours</p>
-              </div>
-              <div className={`reveal-text ${isContactVisible ? 'is-visible' : ''}`} style={{ '--delay': '100ms' }}>
-                <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gold/10 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>
-                </div>
-                <h4 className="level-title mb-2">Free Consultation</h4>
-                <p className="text-text-muted">Schedule a free advisory session</p>
-              </div>
-              <div className={`reveal-text ${isContactVisible ? 'is-visible' : ''}`} style={{ '--delay': '200ms' }}>
-                <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gold/10 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h4 className="level-title mb-2">Secure & Private</h4>
-                <p className="text-text-muted">Your data is protected and confidential</p>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
       <ScrollToTop triggerSectionId="hero" />
+      <Footer />
     </div>
   )
 }

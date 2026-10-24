@@ -113,7 +113,7 @@ export default function Gallery() {
   const ratioFor = (i) => ratios[i] || 1.5
 
   return (
-    <div className="min-h-screen scroll-m-0">
+    <div className="min-h-screen scroll-m-0 gallery-page-bg">
       <header ref={headerRef} className="text-center mt-20 mb-12">
         <Link
           to="/"
