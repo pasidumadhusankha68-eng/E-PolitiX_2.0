@@ -30,9 +30,10 @@ export default function Login() {
     const user = {
       email,
       fullName: 'John Doe',
+      // role: 'admin', // commented out for now
     }
     localStorage.setItem('user', JSON.stringify(user))
-    navigate('/home')
+    navigate('/home') // always go to home for now
   }
 
   return (
