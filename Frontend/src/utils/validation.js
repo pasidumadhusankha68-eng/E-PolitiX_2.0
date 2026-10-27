@@ -17,8 +17,13 @@ export const validateNIC = (nic) => {
   return /^(\d{12}|\d{9}[VX])$/i.test(nic)
 }
 
-export const validatePassword = (password) => {
-  // 8-12 chars, at least 1 uppercase, 1 lowercase, 1 number, 1 special char
-  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/
-  return regex.test(password)
+export function validatePassword(password) {
+  if (typeof password !== 'string') return false
+  if (password.length < 8 || password.length > 20) return false
+  return (
+    /[A-Z]/.test(password) &&          // uppercase
+    /[a-z]/.test(password) &&          // lowercase
+    /\d/.test(password) &&             // number
+    /[^A-Za-z0-9]/.test(password)      // any special character, including _
+  )
 }
