@@ -1,24 +1,19 @@
-import { useEffect } from 'react'
-import { useNavigate, Outlet } from 'react-router-dom'
-import { DISABLE_ADMIN_AUTH } from '../../config/devFlags'
+import { Navigate, Outlet } from 'react-router-dom'
 
-// TEMP: admin auth disabled (set to false to re-enable)
 export default function AdminGuard() {
-  const navigate = useNavigate()
+  const token = localStorage.getItem('token')
+  let user = null
+  try {
+    user = JSON.parse(localStorage.getItem('user'))
+  } catch {
+    user = null
+  }
 
-  if (DISABLE_ADMIN_AUTH) return <Outlet />
+  if (!token || !user) return <Navigate to="/login" replace />
 
-  useEffect(() => {
-    let user = {}
-    try {
-      user = JSON.parse(localStorage.getItem('user') || '{}')
-    } catch {
-      user = {}
-    }
-    if (!user.email || user.role !== 'admin') {
-      navigate('/login', { replace: true })
-    }
-  }, [navigate])
+  if (user.role !== 'admin' && user.role !== 'superadmin') {
+    return <Navigate to="/home" replace />
+  }
 
   return <Outlet />
 }

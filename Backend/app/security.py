@@ -61,3 +61,11 @@ def require_admin(user: dict = Depends(get_current_user)) -> dict:
     if user["role"] not in ("admin", "superadmin"):
         raise HTTPException(status_code=403, detail="Admins only")
     return user
+
+
+def require_role(*roles: str):
+    def checker(current: dict = Depends(get_current_user)):
+        if current["role"] not in roles:
+            raise HTTPException(status_code=403, detail="Not allowed")
+        return current
+    return checker

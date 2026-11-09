@@ -155,7 +155,7 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex scroll-sky">
       <div className="w-1/2 min-h-screen items-center justify-center hidden lg:flex">
         <img src={regBg} alt="E-PolitiX" className="w-full h-auto max-w-full" />
       </div>

@@ -22,7 +22,7 @@ export default function LevelCard({ mark, title, description, href, featured = f
 
   return (
     <article
-      className={`level-card card-reveal ${isFeatured ? 'featured' : ''}`}
+      className={`level-card card-reveal scroll-sky ${isFeatured ? 'featured' : ''}`}
       style={{ '--delay': isFeatured ? '0.3s' : '0.1s' }}
     >
       <div

@@ -43,7 +43,7 @@ export default function GalleryMobile() {
   }, [photos])
 
   return (
-    <div className="gallery-mobile-only">
+    <div className="gallery-mobile-only scroll-sky">
       <div className={`gm-viewport${lightboxIndex !== null ? ' gm-paused' : ''}`}>
         <div className="gm-track">
           {[0, 1].map((setIndex) => (

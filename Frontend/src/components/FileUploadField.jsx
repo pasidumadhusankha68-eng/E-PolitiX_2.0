@@ -17,7 +17,7 @@ export default function FileUploadField({ label, name, value, onChange, error, r
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full scroll-sky">
       <label className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-1">
         {label}
         {required && <span className="text-red-500">*</span>}

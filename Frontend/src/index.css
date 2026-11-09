@@ -1601,3 +1601,69 @@
   background-repeat: repeat-y, repeat-y, repeat-y, repeat, repeat;
   background-color: transparent;
 }
+
+.scroll-sky::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-sky::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.scroll-sky::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+.scroll-sky::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.scroll-gold::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-gold::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.scroll-gold::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 4px;
+}
+.scroll-gold::-webkit-scrollbar-thumb:hover {
+  background: #b8860b;
+}
+
+.bg-gold {
+  background-color: var(--gold);
+}
+.text-gold {
+  color: var(--gold);
+}
+.border-gold {
+  border-color: var(--gold);
+}
+.hover-bg-gold:hover {
+  background-color: var(--gold);
+}
+
+.btn-gold-sm {
+  padding: 3px 12px;
+  border-radius: 0.5rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-weight: 500;
+  font-size: 0.875rem;
+  background-color: transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.btn-gold-sm:hover {
+  background-color: var(--gold);
+  color: #ffffff;
+}

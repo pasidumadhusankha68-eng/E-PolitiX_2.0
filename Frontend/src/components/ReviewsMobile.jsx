@@ -1,6 +1,6 @@
 export default function ReviewsMobile({ reviews }) {
   return (
-    <div className="reviews-mobile-only">
+    <div className="reviews-mobile-only scroll-sky">
       <div className="rm-viewport">
         <div className="rm-track">
           {[0, 1].map((setIndex) => (

@@ -84,10 +84,10 @@ export default function Lightbox({ images, index, onClose, onIndexChange }) {
   return (
     <div
       ref={containerRef}
+      className="scroll-sky lightbox"
       role="dialog"
       aria-modal="true"
       aria-label={`Image ${index + 1} of ${images.length}`}
-      className="lightbox"
       onClick={handleBackdropClick}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}

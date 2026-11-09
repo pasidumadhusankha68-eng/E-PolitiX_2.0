@@ -38,7 +38,7 @@ export default function Navbar() {
   }, [showMobileMenu, menuAnimation])
 
   return (
-    <header className=" bg-white border-b border-slate-200 sticky top-0 z-50">
+    <header className=" bg-white border-b border-slate-200 sticky top-0 z-50 scroll-sky">
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="relative flex items-center h-16">
           <div className="flex-shrink-0 hidden md:block">

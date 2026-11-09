@@ -9,6 +9,7 @@ from app.security import (
     get_current_user,
     hash_password,
     verify_password,
+    require_role,
 )
 
 router = APIRouter(prefix="/auth", tags=["auth"])

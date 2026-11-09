@@ -42,7 +42,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen overflow-x-clip bg-white">
+    <div className="min-h-screen overflow-x-clip bg-white scroll-sky">
       {/* Navigation bar with logo, tabs, notifications, profile/logout */}
       {/* Why: Provides consistent app navigation and user session controls */}
       <Navbar />

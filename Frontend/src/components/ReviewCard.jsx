@@ -2,7 +2,7 @@ export default function ReviewCard({ text, name, batch }) {
   const initial = (name || '').charAt(0).toUpperCase()
 
   return (
-    <article className="review-card">
+    <article className="review-card scroll-sky">
       <span className="quote-mark">“</span>
       <p className="review-text">{text}</p>
       <hr className="review-divider" />

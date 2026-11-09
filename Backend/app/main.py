@@ -1,11 +1,16 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
+from app.exam_progress import router as exam_progress_router
 
 from app.database import engine
-from app.routers import auth
+from app.routers import admin_dashboard, admin_exams, admin_users, auth
+
+
 
 app = FastAPI(title="E-PolitiX API")
+
+
 
 # Lets your React app (a different port) call this API
 app.add_middleware(
@@ -16,6 +21,10 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(exam_progress_router)
+app.include_router(admin_dashboard.router)
+app.include_router(admin_exams.router)
+app.include_router(admin_users.router)
 
 
 @app.get("/institutes")

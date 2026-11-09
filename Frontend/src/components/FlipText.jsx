@@ -43,7 +43,7 @@ export default function FlipText({ items, interval = 8000, duration = 600 }) {
   if (maxHeight) wrapperStyle.height = maxHeight
 
   return (
-    <div className="flip-text-wrapper w-full mx-auto text-center -my-8" style={wrapperStyle}>
+    <div className="flip-text-wrapper w-full mx-auto text-center -my-8 scroll-sky" style={wrapperStyle}>
       <span className="flip-text-sizer" aria-hidden="true" style={{ ...flipStyle, whiteSpace: 'nowrap', position: 'absolute',textAlign: 'center', visibility: 'hidden', pointerEvents: 'none' }}>
         {items.map((item) => <span key={item} style={{ display: 'inline-block' }}>{item}</span>)}
       </span>

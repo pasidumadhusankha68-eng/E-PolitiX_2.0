@@ -28,7 +28,7 @@ export default function ScrollToTop({ triggerSectionId = 'hero' }) {
   return (
     <motion.button
       onClick={scrollToTop}
-      className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-orange-500 hover:bg-orange-600 text-white flex items-center justify-center shadow-lg transition-colors"
+      className="fixed bottom-8 right-8 z-50 w-12 h-12 rounded-full bg-orange-500 hover:bg-orange-600 text-white flex items-center justify-center shadow-lg transition-colors scroll-sky"
       aria-label="Scroll to top"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}

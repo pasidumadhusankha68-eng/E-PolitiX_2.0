@@ -8,7 +8,7 @@ export default function BranchCard({ name, al2027, al2028, href = '#', loading =
 
   if (loading) {
     return (
-      <div className="branch-card branch-card--loading" aria-hidden="true">
+      <div className="branch-card branch-card--loading scroll-sky" aria-hidden="true">
         <div className="skeleton skeleton-name" />
         <div className="skeleton skeleton-schedule">
           <div className="skeleton skeleton-heading" />
@@ -27,7 +27,7 @@ export default function BranchCard({ name, al2027, al2028, href = '#', loading =
   return (
     <a
       href={href}
-      className="branch-card card-reveal"
+      className="branch-card card-reveal scroll-sky"
       style={{ '--delay': '0.1s' }}
       aria-label={`View ${name} branch details`}
     >

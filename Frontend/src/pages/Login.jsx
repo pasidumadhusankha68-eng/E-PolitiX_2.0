@@ -47,7 +47,7 @@ export default function Login() {
       )
 
       const isAdmin = data.role === 'admin' || data.role === 'superadmin'
-      navigate(isAdmin ? '/admin' : '/home') // change '/admin' to your real admin route
+      navigate(isAdmin ? '/admin/dashboard' : '/home')
     } catch (err) {
       setServerError(err.status === 401 ? 'Invalid email or password' : err.message)
     } finally {
@@ -57,11 +57,11 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex">
-      <div className="w-1/2 min-h-screen flex items-center justify-center p-[1%] hidden lg:flex">
+      <div className="w-1/2 min-h-screen flex items-center justify-center p-[1%] hidden lg:flex scroll-sky">
         <img src={loginBg} alt="E-PolitiX" className="w-full h-auto max-w-full" />
       </div>
 
-      <div className="w-full lg:w-1/2 bg-slate-50 min-h-screen flex items-center justify-center px-8 py-8">
+      <div className="w-full lg:w-1/2 bg-slate-50 min-h-screen flex items-center justify-center px-8 py-8 scroll-sky">
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-8" style={{ marginTop: '5vh' }}>
             <Logo size="3xl" />

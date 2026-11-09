@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import AdminSidebar from './AdminSidebar'
+import { useUser } from '../../context/UserContext'
 
 const AdminLogo = () => (
   <div className="flex items-center gap-2">
@@ -17,9 +17,10 @@ const AdminLogo = () => (
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const navigate = useNavigate()
+  const { user } = useUser()
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-sky-200">
+    <div className="min-h-screen bg-white text-slate-900 selection:bg-sky-200 scroll-sky">
       {/* Mobile topbar */}
       <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center justify-between h-14 px-4">
@@ -65,6 +66,31 @@ export default function AdminLayout() {
               <AdminSidebarItem to="/admin/results" label="Results" icon="bar-chart-3" />
               <AdminSidebarItem to="/admin/classes" label="Classes" icon="school" />
             </nav>
+            {user && (
+              <div className="p-6 border-t border-slate-100">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-sm font-bold text-slate-700">
+                    {(user.full_name || 'A')
+                      .split(' ')
+                      .map((p) => p[0])
+                      .join('')
+                      .toUpperCase()
+                      .slice(0, 2)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-900">
+                      {user.full_name || 'Admin'}
+                    </p>
+                    <p className="text-xs text-slate-500 capitalize">
+                      {user.role}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-3 px-3 py-1 rounded-lg bg-slate-100 text-[10px] font-semibold text-slate-600 uppercase tracking-wider">
+                  Admin Panel
+                </div>
+              </div>
+            )}
             <div className="p-6 border-t border-slate-100">
               <button
                 onClick={() => {
@@ -83,7 +109,7 @@ export default function AdminLayout() {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 overflow-y-auto bg-white">
+        <main className="flex-1 overflow-y-auto bg-slate-50">
           <div className="p-6 sm:p-8 lg:p-10">
             <Outlet />
           </div>

@@ -70,7 +70,7 @@ export default function AnimatedText({
   return (
     <MotionTag
       ref={ref}
-      className={className}
+      className={`${className} scroll-sky`}
       aria-label={text}
       initial={shouldAnimate ? false : "hidden"}
       animate={shouldAnimate ? "visible" : "hidden"}
