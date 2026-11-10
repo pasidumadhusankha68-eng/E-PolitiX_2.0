@@ -81,7 +81,7 @@ export default function Progress() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white scroll-sky">
+      <div className="min-h-screen bg-white">
         <Navbar />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="flex items-center justify-center h-64">
@@ -98,7 +98,7 @@ export default function Progress() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-white scroll-sky">
+      <div className="min-h-screen bg-white">
         <Navbar />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="rounded-2xl border border-red-100 bg-red-50 p-6 text-red-700">
@@ -145,7 +145,7 @@ export default function Progress() {
   })
 
   return (
-    <div className="min-h-screen bg-white scroll-sky">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

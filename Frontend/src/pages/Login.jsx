@@ -57,11 +57,11 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex">
-      <div className="w-1/2 min-h-screen flex items-center justify-center p-[1%] hidden lg:flex scroll-sky">
+      <div className="w-1/2 min-h-screen flex items-center justify-center p-[1%] hidden lg:flex">
         <img src={loginBg} alt="E-PolitiX" className="w-full h-auto max-w-full" />
       </div>
 
-      <div className="w-full lg:w-1/2 bg-slate-50 min-h-screen flex items-center justify-center px-8 py-8 scroll-sky">
+      <div className="w-full lg:w-1/2 bg-slate-50 min-h-screen flex items-center justify-center px-8 py-8">
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-8" style={{ marginTop: '5vh' }}>
             <Logo size="3xl" />

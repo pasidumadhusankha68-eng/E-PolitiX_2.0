@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
+import TodayClasses from '../components/TodayClasses'
 import boyImg from '../img/boy.svg'
 import girlImg from '../img/Girl.svg'
 import welcomeBanner from '../img/welcome_banner.png'
@@ -42,7 +43,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="min-h-screen overflow-x-clip bg-white scroll-sky">
+    <div className="min-h-screen bg-white">
       {/* Navigation bar with logo, tabs, notifications, profile/logout */}
       {/* Why: Provides consistent app navigation and user session controls */}
       <Navbar />
@@ -103,6 +104,10 @@ export default function Home() {
             
           </div>
         </div>
+
+        {/* Today’s classes */}
+        <TodayClasses />
+
       </main>
     </div>
   )

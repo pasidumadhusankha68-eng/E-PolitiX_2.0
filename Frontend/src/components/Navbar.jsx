@@ -38,7 +38,7 @@ export default function Navbar() {
   }, [showMobileMenu, menuAnimation])
 
   return (
-    <header className=" bg-white border-b border-slate-200 sticky top-0 z-50 scroll-sky">
+    <header className=" bg-white border-b border-slate-200 sticky top-0 z-50">
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
         <div className="relative flex items-center h-16">
           <div className="flex-shrink-0 hidden md:block">
@@ -48,9 +48,10 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex items-center gap-4 ml-auto flex-shrink-0 min-w-[200px]">
-            <nav className="flex items-center gap-6 relative -left-[10%]">
+            <nav className="flex items-center gap-4 relative -left-[10%]">
               <Link to="/home" className="text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg px-3 py-2 transition-colors">Dashboard</Link>
               <Link to="/progress" className="text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg px-3 py-2 transition-colors">Progress</Link>
+              <Link to="/classes" className="text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg px-3 py-2 transition-colors">Classes</Link>
               <Link to="/resources" className="text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg px-3 py-2 transition-colors">Resources</Link>
               <Link to="/gallery" className="text-sm font-thin text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg px-3 py-2 transition-colors">Gallery</Link>
             </nav>
@@ -137,6 +138,13 @@ export default function Navbar() {
                 onClick={closeMobileMenu}
               >
                 Progress
+              </Link>
+              <Link
+                to="/classes"
+                className="block px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+                onClick={closeMobileMenu}
+              >
+                Classes
               </Link>
               <Link
                 to="/resources"

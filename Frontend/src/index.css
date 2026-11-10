@@ -1667,3 +1667,31 @@
   background-color: var(--gold);
   color: #ffffff;
 }
+
+/* Hide scrollbars globally on every page while keeping scroll functionality */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+/* Opt-in: show default scrollbar on specific pages/elements */
+.show-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  -ms-overflow-style: auto; /* Internet Explorer 10+ */
+}
+.show-scrollbar::-webkit-scrollbar {
+  display: auto; /* Chrome, Safari, Edge */
+}
+.show-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.show-scrollbar::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+.show-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}

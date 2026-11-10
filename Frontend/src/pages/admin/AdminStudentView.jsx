@@ -67,7 +67,7 @@ export default function AdminStudentView() {
   return (
     <>
       <section className="w-full bg-white/95 h-screen flex">
-        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 scrollbar-hide p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 p-6 lg:p-8">
           <div className="max-w-4xl mx-auto">
             <Link
               to="/admin/users"

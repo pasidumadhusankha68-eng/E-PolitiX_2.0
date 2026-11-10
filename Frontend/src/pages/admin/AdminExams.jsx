@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../../utils/api'
+import AdminSideBar from '../../components/admin/AdminSideBar'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const MAX_MARKS = 100
@@ -307,7 +308,10 @@ export default function AdminExams() {
   }
 
   return (
-    <div className="space-y-6 scroll-sky bg-white min-h-screen">
+    <section className="w-full bg-white/95 h-screen flex">
+      <AdminSideBar />
+      <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50">
+        <div className="space-y-6 p-6 lg:p-8">
       {error && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
           {error}
@@ -755,6 +759,8 @@ export default function AdminExams() {
           </div>
         </div>
       )}
-    </div>
+        </div>
+      </main>
+    </section>
   )
 }

@@ -12,7 +12,6 @@ import useScrollReveal from '../hooks/useScrollReveal'
 import about_bg from '../img/about_bg.png'
 import mainElement from '../img/about/main_element.png'
 import description from '../img/about/description.png'
-import ScrollToTop from '../components/ScrollToTop'
 import TypingText from '../components/TypingText'
 import GalleryMobile from '../components/GalleryMobile'
 import ReviewsMobile from '../components/ReviewsMobile'
@@ -729,7 +728,6 @@ export default function Landing() {
         </div>
       </section>
 
-      <ScrollToTop triggerSectionId="hero" />
       <Footer />
     </div>
   )

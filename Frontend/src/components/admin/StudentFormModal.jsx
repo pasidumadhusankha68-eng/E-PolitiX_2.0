@@ -146,7 +146,7 @@ export default function StudentFormModal({ open, onClose, mode = 'add', studentI
         className="relative w-full max-w-7xl p-4 sm:p-6 max-h-[100vh] flex flex-col"
       >
         <div
-          className="bg-white rounded-xl border border-slate-200 shadow-lg p-6 sm:p-8 max-h-full overflow-y-auto scrollbar-hide flex flex-col gap-4"
+          className="bg-white rounded-xl border border-slate-200 shadow-lg p-6 sm:p-8 max-h-full overflow-hidden flex flex-col gap-4"
         >
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-slate-900">

@@ -53,6 +53,26 @@
 
 
 -- DELETE FROM exams WHERE id IN (3,4,9,10,11);
-SELECT * FROM exam_marks;
 
 
+
+-- CREATE TABLE IF NOT EXISTS online_classes (
+--     id            SERIAL PRIMARY KEY,
+--     class_id      INT          NOT NULL REFERENCES classes(id),
+--     title         VARCHAR(150) NOT NULL,
+--     starts_at     TIMESTAMPTZ  NOT NULL,
+--     duration_min  INT          NOT NULL DEFAULT 90,
+--     zoom_url      TEXT         NOT NULL,
+--     passcode      VARCHAR(50),
+--     notes         TEXT,
+--     is_cancelled  BOOLEAN      NOT NULL DEFAULT FALSE,
+--     created_by    INT REFERENCES users(id),
+--     created_at    TIMESTAMPTZ  NOT NULL DEFAULT now(),
+--     CONSTRAINT chk_duration CHECK (duration_min BETWEEN 15 AND 480),
+--     CONSTRAINT chk_zoom_url CHECK (zoom_url ~* '^https://([a-z0-9-]+\.)*zoom\.us(/|$)')
+-- );
+
+-- CREATE INDEX IF NOT EXISTS idx_online_classes_class_start
+--     ON online_classes (class_id, starts_at);
+
+SELECT * FROM online_classes;

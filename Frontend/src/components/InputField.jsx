@@ -14,7 +14,7 @@ export default function InputField({
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <div className="w-full scroll-sky">
+    <div className="w-full">
       <label htmlFor={name} className="block text-sm font-medium text-slate-700 mb-1">
         {label} {required && <span className="text-red-800">*</span>}
       </label>

@@ -145,7 +145,7 @@ export default function AdminUsers() {
     <>
       <section className="w-full bg-white/95 h-screen flex">
         <AdminSideBar />
-        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 scroll-sky">
+        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50">
           <div className="space-y-6 p-6 lg:p-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>

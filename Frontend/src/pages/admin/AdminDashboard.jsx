@@ -146,7 +146,7 @@ export default function AdminDashboard() {
   return (
     <section className="w-full bg-white/95 h-screen flex">
       <AdminSideBar />
-      <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 scroll-sky">
+      <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50">
         <div className="space-y-6 p-6 lg:p-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2">

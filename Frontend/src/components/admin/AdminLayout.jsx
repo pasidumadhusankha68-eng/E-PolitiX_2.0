@@ -20,7 +20,7 @@ export default function AdminLayout() {
   const { user } = useUser()
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-sky-200 scroll-sky">
+    <div className="min-h-screen bg-white text-slate-900 selection:bg-sky-200">
       {/* Mobile topbar */}
       <header className="lg:hidden bg-white border-b border-slate-200 sticky top-0 z-40">
         <div className="flex items-center justify-between h-14 px-4">

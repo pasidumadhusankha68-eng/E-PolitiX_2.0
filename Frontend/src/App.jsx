@@ -6,6 +6,7 @@ import Login from './pages/Login.jsx'
 import Resources from './pages/Resources.jsx'
 import Gallery from './pages/Gallery.jsx'
 import Progress from './pages/Progress.jsx'
+import Classes from './pages/Classes'
 import AdminGuard from './components/admin/AdminGuard'
 import AdminLayout from './components/AdminLayout'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -19,7 +20,7 @@ import StudentGuard from './components/StudentGuard'
 
 function App() {
   return (
-    <div className="w-full overflow-x-clip scroll-sky">
+    <div className="w-full">
       <Routes>
         {/* public pages */}
         <Route path="/" element={<Landing />} />
@@ -32,6 +33,7 @@ function App() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/progress" element={<Progress />} />
+          <Route path="/classes" element={<Classes />} />
         </Route>
 
         {/* admin pages (students are redirected to /home) */}

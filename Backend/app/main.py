@@ -4,7 +4,7 @@ from sqlalchemy import text
 from app.exam_progress import router as exam_progress_router
 
 from app.database import engine
-from app.routers import admin_dashboard, admin_exams, admin_users, auth
+from app.routers import admin_dashboard, admin_exams, admin_online_classes, admin_results, admin_users, auth, online_classes
 
 
 
@@ -15,7 +15,7 @@ app = FastAPI(title="E-PolitiX API")
 # Lets your React app (a different port) call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|0\.0\.0\.0):\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -25,6 +25,9 @@ app.include_router(auth.router)
 app.include_router(exam_progress_router)
 app.include_router(admin_dashboard.router)
 app.include_router(admin_exams.router)
+app.include_router(admin_results.router)
+app.include_router(admin_online_classes.router)
+app.include_router(online_classes.router)
 app.include_router(admin_users.router)
 
 

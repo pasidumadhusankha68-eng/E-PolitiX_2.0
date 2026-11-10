@@ -1,125 +1,148 @@
-import { motion } from 'framer-motion'
-
-const results = [
-  { id: 1, student: 'Kamal Perera', exam: 'Midterm Mathematics', score: '85 / 100', grade: 'A', status: 'Published' },
-  { id: 2, student: 'Nimali Silva', exam: 'Final Science', score: '78 / 100', grade: 'B+', status: 'Published' },
-  { id: 3, student: 'Sunil Rao', exam: 'English Unit Test', score: '92 / 100', grade: 'A+', status: 'Published' },
-  { id: 4, student: 'Ayesha Devi', exam: 'History Final', score: '64 / 100', grade: 'C', status: 'Draft' },
-  { id: 5, student: 'Rohan Fernando', exam: 'Physics Midterm', score: '71 / 100', grade: 'B', status: 'Pending' },
-]
-
-const statusColors = {
-  Published: 'bg-emerald-50 text-emerald-700 border-emerald-100',
-  Draft: 'bg-amber-50 text-amber-700 border-amber-100',
-  Pending: 'bg-sky-50 text-sky-700 border-sky-100',
-}
-
-const gradeColors = {
-  'A+': 'bg-emerald-500/10 text-emerald-600 border-emerald-200',
-  A: 'bg-emerald-100 text-emerald-700 border-emerald-100',
-  'B+': 'bg-amber-100 text-amber-700 border-amber-100',
-  B: 'bg-amber-100 text-amber-700 border-amber-100',
-  C: 'bg-slate-100 text-slate-600 border-slate-200',
-}
+import { useCallback, useEffect, useState } from 'react'
+import { api, downloadFile } from '../../utils/api'
+import AdminSideBar from '../../components/admin/AdminSideBar'
+import ResultsFilters from '../../components/admin/results/ResultsFilters'
+import SummaryCards from '../../components/admin/results/SummaryCards'
+import RankListTable from '../../components/admin/results/RankListTable'
+import MarksDistribution from '../../components/admin/results/MarksDistribution'
 
 export default function AdminResults() {
-  const [search, setSearch] = useState('')
+  const [filters, setFilters] = useState({
+    instituteId: '',
+    examYear: '',
+    examNumber: '',
+    view: 'single',
+    search: '',
+  })
+  const [tests, setTests] = useState([])
+  const [testLabel, setTestLabel] = useState('')
+  const [downloadState, setDownloadState] = useState({})
+  const [downloadError, setDownloadError] = useState(null)
 
-  const filtered = results.filter((r) =>
-    r.student.toLowerCase().includes(search.toLowerCase()) || r.exam.toLowerCase().includes(search.toLowerCase())
+  const fetchTests = useCallback(async (year) => {
+    if (!year) {
+      setTests([])
+      setTestLabel('')
+      return
+    }
+    try {
+      const res = await api(`/admin/results/tests?exam_year=${year}`)
+      setTests(res || [])
+    } catch {
+      setTests([])
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchTests(filters.examYear)
+  }, [filters.examYear, fetchTests])
+
+  useEffect(() => {
+    if (filters.view === 'average') {
+      setTestLabel('Average of all tests')
+      return
+    }
+    if (!filters.examYear || !filters.examNumber) {
+      setTestLabel('')
+      return
+    }
+    const t = tests.find((x) => String(x.exam_number) === String(filters.examNumber))
+    setTestLabel(t ? `Test ${t.exam_number}` : `Test ${filters.examNumber}`)
+  }, [filters.view, filters.examYear, filters.examNumber, tests])
+
+  const buildQuery = useCallback(() => {
+    const params = new URLSearchParams({
+      exam_year: String(filters.examYear),
+      view: filters.view,
+    })
+    if (filters.view === 'single' && filters.examNumber) {
+      params.set('exam_number', String(filters.examNumber))
+    }
+    if (filters.instituteId) {
+      params.set('institute_id', String(filters.instituteId))
+    }
+    return params.toString()
+  }, [filters.examYear, filters.view, filters.examNumber, filters.instituteId])
+
+  const handleDownload = useCallback(
+    async (kind) => {
+      if (!filters.examYear) return
+      setDownloadState((prev) => ({ ...prev, [kind]: 'preparing' }))
+      setDownloadError(null)
+      const ext = kind === 'csv' ? 'csv' : 'pdf'
+      const base =
+        filters.view === 'average'
+          ? `rank-list-${filters.examYear}-average`
+          : `rank-list-${filters.examYear}-test-${filters.examNumber || 'all'}`
+      const filename = `${base}.${ext}`
+      try {
+        await downloadFile(`/admin/results/export.${ext}?${buildQuery()}`, filename)
+      } catch (err) {
+        setDownloadError(err.message || 'Download failed')
+      } finally {
+        setDownloadState((prev) => ({ ...prev, [kind]: 'idle' }))
+      }
+    },
+    [filters.examYear, filters.view, filters.examNumber, filters.instituteId, buildQuery]
   )
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="space-y-6 scroll-sky"
-    >
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Results</h1>
-          <p className="text-slate-600 mt-1">Publish and manage student examination results.</p>
+    <section className="w-full bg-white/95 h-screen flex">
+      <AdminSideBar />
+      <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50">
+        <div className="space-y-6 p-6 lg:p-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Results</h1>
+              <p className="text-slate-600 mt-1">
+                Rank lists and marks for every test, by institute and overall
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleDownload('csv')}
+                disabled={downloadState.csv === 'preparing'}
+                className="border border-slate-200 bg-white text-slate-700 px-5 py-2.5 rounded-xl font-medium hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Export CSV"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                {downloadState.csv === 'preparing' ? 'Preparing…' : 'Export CSV'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDownload('pdf')}
+                disabled={downloadState.pdf === 'preparing'}
+                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-slate-900/10 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Download rank list PDF"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                {downloadState.pdf === 'preparing' ? 'Preparing…' : 'Download rank list (PDF)'}
+              </button>
+            </div>
+          </div>
+          {downloadError && (
+            <p className="text-sm text-red-600 mt-1">{downloadError}</p>
+          )}
+
+          {/* Filters */}
+          <ResultsFilters filters={filters} setFilters={setFilters} />
+
+          {/* Summary cards */}
+          <SummaryCards filters={filters} />
+
+          {/* Rank list */}
+          <RankListTable filters={filters} testLabel={testLabel} />
+
+          {/* Marks distribution (below rank list) */}
+          <MarksDistribution filters={filters} testLabel={testLabel} />
         </div>
-        <button className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-slate-900/10 flex items-center gap-2">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          Upload results
-        </button>
-      </div>
-
-      {/* Search */}
-      <div className="relative w-full max-w-md">
-        <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input
-          type="text"
-          placeholder="Search results by student or exam..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all"
-        />
-      </div>
-
-      {/* Results table */}
-      <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-white border-b border-slate-200">
-              <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Student</th>
-              <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Exam</th>
-              <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Score</th>
-              <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Grade</th>
-              <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {filtered.map((result) => (
-              <motion.tr key={result.id} className="transition-colors hover:bg-slate-50/50">
-                <td className="px-6 py-4">
-                  <p className="text-sm font-medium text-slate-900">{result.student}</p>
-                </td>
-                <td className="px-6 py-4 text-sm text-slate-600">{result.exam}</td>
-                <td className="px-6 py-4 text-sm text-slate-600 font-mono">{result.score}</td>
-                <td className="px-6 py-4">
-                  <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${gradeColors[result.grade]}`}>
-                    {result.grade}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <span className={`px-2.5 py-1 rounded-md text-xs font-medium border ${statusColors[result.status]}`}>
-                    {result.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    <button className="text-sky-600 hover:text-sky-700 hover:bg-sky-50 px-2.5 py-1.5 rounded-lg transition-colors text-sm">
-                      Edit
-                    </button>
-                    <button className="text-slate-400 hover:text-red-600 hover:bg-red-50 px-2.5 py-1.5 rounded-lg transition-colors text-sm">
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </motion.tr>
-            ))}
-            {filtered.length === 0 && (
-              <tr>
-                <td colSpan={6} className="px-6 py-12 text-center">
-                  <svg className="w-12 h-12 text-slate-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <p className="text-sm text-slate-500">No results found matching your search.</p>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-    </motion.div>
+      </main>
+    </section>
   )
 }
