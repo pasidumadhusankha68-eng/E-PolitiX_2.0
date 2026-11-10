@@ -307,7 +307,7 @@ export default function AdminExams() {
   }
 
   return (
-    <div className="space-y-6 scroll-sky">
+    <div className="space-y-6 scroll-sky bg-white min-h-screen">
       {error && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
           {error}

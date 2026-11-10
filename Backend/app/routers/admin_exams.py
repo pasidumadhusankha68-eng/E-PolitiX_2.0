@@ -60,10 +60,12 @@ def list_tests(
         rows = conn.execute(
             text("""
                 SELECT e.id, e.exam_number, e.exam_name, e.test_date,
-                       (SELECT COUNT(*) FROM enrollments en
-                          WHERE en.class_id = :class_id) AS students_total,
-                       (SELECT COUNT(*) FROM exam_marks em
-                          WHERE em.exam_id = e.id AND em.marks IS NOT NULL) AS marks_entered
+                        (SELECT COUNT(*) FROM enrollments en
+                            WHERE en.class_id = :class_id) AS students_total,
+                        (SELECT COUNT(*) FROM exam_marks em
+                            WHERE em.exam_id = e.id
+                                AND em.mcq_marks IS NOT NULL
+                                AND em.essay_marks IS NOT NULL) AS marks_entered
                 FROM exams e
                 WHERE e.class_id = :class_id
                 ORDER BY e.exam_number DESC

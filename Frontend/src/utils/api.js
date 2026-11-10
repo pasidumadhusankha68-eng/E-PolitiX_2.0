@@ -14,6 +14,7 @@ export async function api(path, options = {}) {
 
   const res = await fetch(API_URL + path, {
     method: options.method || 'GET',
+    credentials: 'include',
     headers: {
       ...headers,
       ...(options.headers || {}),
