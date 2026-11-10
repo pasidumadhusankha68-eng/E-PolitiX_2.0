@@ -75,4 +75,4 @@
 -- CREATE INDEX IF NOT EXISTS idx_online_classes_class_start
 --     ON online_classes (class_id, starts_at);
 
-SELECT * FROM online_classes;
+SELECT * FROM students;

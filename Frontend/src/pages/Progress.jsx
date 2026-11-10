@@ -3,15 +3,13 @@ import { motion } from 'framer-motion'
 import {
   LineChart,
   Line,
-  BarChart,
-  Bar,
-  ResponsiveContainer,
+  CartesianGrid,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   Legend,
   ReferenceLine,
+  ResponsiveContainer,
 } from 'recharts'
 import {
   Activity,
@@ -134,15 +132,6 @@ export default function Progress() {
     essay: r.essay_marks ?? 0,
     total: r.final_marks ?? 0,
   }))
-
-  const latestPerStudent = students.map((s) => {
-    const exams = s.exams || []
-    const latest = exams[exams.length - 1]
-    return {
-      name: s.name || s.code || 'Student',
-      final: latest?.final_marks ?? 0,
-    }
-  })
 
   return (
     <div className="min-h-screen bg-white">
@@ -279,7 +268,7 @@ export default function Progress() {
               </span>
             </div>
           </div>
-          <div className="w-full overflow-x-auto rounded-xl border border-slate-100 bg-slate-50/50">
+          <div className="w-full overflow-hidden rounded-xl border border-slate-100 bg-slate-50/50">
             <div className="min-w-[700px] h-[340px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
@@ -306,38 +295,37 @@ export default function Progress() {
           </div>
         </section>
 
-        {/* Per-student marks graph */}
+        {/* Each Test Mark */}
         <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm min-w-0">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-lg font-semibold text-slate-900">Each Student Marks</h2>
-              <p className="text-sm text-slate-500">Latest final mark per student from exam_marks</p>
+              <h2 className="text-lg font-semibold text-slate-900">Each Test Mark</h2>
+              <p className="text-sm text-slate-500">MCQ, Essay and Final marks per test</p>
             </div>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-xs">
-              {students.length} students
-            </span>
           </div>
-          <div className="w-full overflow-x-auto rounded-xl border border-slate-100 bg-slate-50/50">
-            <div className="min-w-[600px] h-[320px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={latestPerStudent}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
-                  <XAxis
-                    dataKey="name"
-                    tick={{ fill: '#64748b', fontSize: 11 }}
-                    axisLine={false}
-                    tickMargin={8}
-                  />
-                  <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} />
-                  <Tooltip
-                    contentStyle={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '8px' }}
-                    formatter={(v) => v.toFixed(1)}
-                  />
-                  <Bar dataKey="final" fill={TOTAL_COLOR} radius={[4, 4, 0, 0]} />
-                  <ReferenceLine y={data.current_average_mark ?? 0} stroke="#94a3b8" strokeDasharray="2 2" label={{ value: 'Class Avg', position: 'insideLeft', fill: '#64748b', fontSize: 11 }} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
+          <div className="w-full overflow-hidden rounded-xl border border-slate-100 bg-slate-50/50">
+            <table className="w-full text-left border-collapse divide-y divide-slate-100">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-200">
+                  <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Test Name</th>
+                  <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Test #</th>
+                  <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">MCQ</th>
+                  <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Essay</th>
+                  <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Final</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {results.map((r) => (
+                  <tr key={r.exam_number} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 text-sm text-slate-900">{r.exam_name || `Exam ${r.exam_number}`}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 text-right font-mono">{r.exam_number}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 text-right">{fmt(r.mcq_marks)}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 text-right">{fmt(r.essay_marks)}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-slate-900 text-right">{fmt(r.final_marks)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </section>
       </main>

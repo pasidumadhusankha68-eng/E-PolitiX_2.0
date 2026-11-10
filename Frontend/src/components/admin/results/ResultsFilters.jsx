@@ -89,12 +89,12 @@ export default function ResultsFilters({ filters, setFilters }) {
   }, [])
 
   const selectClasses =
-    'w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+    'w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-gold focus:border-transparent outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
 
   const pillClasses = (active) =>
     `px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${
       active
-        ? 'bg-[#c2410c] border-[#c2410c] text-white'
+        ? 'bg-gold border-gold text-white hover:bg-gold/90 transition-colors'
         : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
     }`
 
@@ -198,7 +198,7 @@ export default function ResultsFilters({ filters, setFilters }) {
             placeholder="Name or student ID"
             value={localSearch}
             onChange={handleSearchChange}
-            className="w-full pl-4 pr-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
+            className="w-full pl-4 pr-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-gold focus:border-transparent outline-none transition-colors"
           />
         </div>
       </div>

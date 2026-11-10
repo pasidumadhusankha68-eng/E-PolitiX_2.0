@@ -90,7 +90,7 @@ export default function Home() {
 
         {/* Welcome Box - Platform branding and WhatsApp CTA */}
         {/* Why: Reinforces brand identity and drives community engagement */}
-        <div className="shadow-lg rounded-2xl">
+        <div className="shadow-lg rounded-2xl mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-lg rounded-2xl">
             <div className="text-center sm:text-left ">
               <img

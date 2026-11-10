@@ -44,6 +44,12 @@ export default function AdminClasses() {
   const formRef = useRef(null)
 
   const fetchClasses = useCallback(async () => {
+    // Save scroll position before data changes to preserve it across tab switches
+    const mainElement = document.querySelector('main')
+    if (mainElement) {
+      scrollRef.current = mainElement.scrollTop
+    }
+
     setLoading(true)
     setError(null)
     try {
@@ -62,10 +68,21 @@ export default function AdminClasses() {
     fetchClasses()
   }, [fetchClasses])
 
+  // Restore scroll position after items change (tab switch) so page doesn't jump to top
+  useEffect(() => {
+    if (scrollRef.current > 0) {
+      const mainElement = document.querySelector('main')
+      if (mainElement) {
+        mainElement.scrollTop = scrollRef.current
+        scrollRef.current = 0
+      }
+    }
+  }, [items])
+
   const pillClasses = (active) =>
     `px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${
       active
-        ? `bg-[#c2410c] border-[#c2410c] text-white`
+        ? 'bg-gold border-gold text-white hover:bg-gold/90 transition-colors'
         : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
     }`
 
@@ -107,6 +124,7 @@ export default function AdminClasses() {
 
   const [dupForm, setDupForm] = useState(null)
   const [successMsg, setSuccessMsg] = useState(null)
+  const scrollRef = useRef(0)
 
   const handleEdit = (r) => {
     if (r.status === 'Cancelled' || r.status === 'Done') return
@@ -154,7 +172,7 @@ export default function AdminClasses() {
     return (
       <section className="w-full bg-white/95 h-screen flex">
         <AdminSideBar />
-        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 scroll-sky">
+        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 overflow-anchor">
           <div className="p-6 sm:p-8 lg:p-10">
             <div className="rounded-2xl border border-slate-200 bg-white p-12 shadow-sm text-center">
               <div className="w-3 h-3 rounded-full bg-slate-200 animate-pulse mx-auto mb-2" />
@@ -170,7 +188,7 @@ export default function AdminClasses() {
     return (
       <section className="w-full bg-white/95 h-screen flex">
         <AdminSideBar />
-        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 scroll-sky">
+        <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 overflow-anchor">
           <div className="p-6 sm:p-8 lg:p-10">
             <div className="rounded-xl border border-red-200 bg-red-50 p-6 shadow-sm">
               <h2 className="text-lg font-bold text-slate-900 mb-2">Classes</h2>
@@ -188,7 +206,7 @@ export default function AdminClasses() {
   return (
     <section className="w-full bg-white/95 h-screen flex">
       <AdminSideBar />
-      <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 scroll-sky">
+      <main className="flex-1 overflow-y-auto min-h-0 bg-slate-50 overflow-anchor">
         <div className="space-y-6 p-6 sm:p-8 lg:p-10">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -200,22 +218,12 @@ export default function AdminClasses() {
                 Schedule online classes and share the Zoom link with students
               </p>
             </div>
-            <button
-              type="button"
-              className={`bg-[#c2410c] hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors flex items-center gap-2`}
-              aria-label="Schedule class"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              + Schedule class
-            </button>
           </div>
 
           {/* Two columns */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {/* Left: Form card */}
-            <div className="lg:col-span-3 lg:max-w-[380px]">
+            <div className="col-span-12">
               <OnlineClassForm
                 ref={formRef}
                 editing={editing ? editing : null}
@@ -225,8 +233,8 @@ export default function AdminClasses() {
             </div>
 
             {/* Right: List card */}
-            <div className="lg:col-span-9">
-              <div className="rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden">
+            <div className="col-span-12">
+              <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-slate-200 flex gap-3 items-center">
                   <button
                     type="button"

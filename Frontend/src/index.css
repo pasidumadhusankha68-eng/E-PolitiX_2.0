@@ -1602,41 +1602,13 @@
   background-color: transparent;
 }
 
-.scroll-sky::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Hide scrollbars globally on every page */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
-.scroll-sky::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-.scroll-sky::-webkit-scrollbar-thumb {
-  background: #3b82f6;
-  border-radius: 4px;
-}
-.scroll-sky::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  scrollbar-width: none;
-}
-
-.scroll-gold::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-.scroll-gold::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-.scroll-gold::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  border-radius: 4px;
-}
-.scroll-gold::-webkit-scrollbar-thumb:hover {
-  background: #b8860b;
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 .bg-gold {
@@ -1666,32 +1638,4 @@
 .btn-gold-sm:hover {
   background-color: var(--gold);
   color: #ffffff;
-}
-
-/* Hide scrollbars globally on every page while keeping scroll functionality */
-* {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-}
-*::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Edge */
-}
-
-/* Opt-in: show default scrollbar on specific pages/elements */
-.show-scrollbar {
-  scrollbar-width: thin; /* Firefox */
-  -ms-overflow-style: auto; /* Internet Explorer 10+ */
-}
-.show-scrollbar::-webkit-scrollbar {
-  display: auto; /* Chrome, Safari, Edge */
-}
-.show-scrollbar::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-.show-scrollbar::-webkit-scrollbar-thumb {
-  background: #3b82f6;
-  border-radius: 4px;
-}
-.show-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #2563eb;
 }

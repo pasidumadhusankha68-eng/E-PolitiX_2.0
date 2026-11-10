@@ -16,6 +16,7 @@ import AdminResources from './pages/admin/AdminResources'
 import AdminExams from './pages/admin/AdminExams'
 import AdminResults from './pages/admin/AdminResults'
 import AdminClasses from './pages/admin/AdminClasses'
+import AdminPayments from './pages/admin/AdminPayments'
 import StudentGuard from './components/StudentGuard'
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
           <Route path="exams" element={<AdminExams />} />
           <Route path="results" element={<AdminResults />} />
           <Route path="classes" element={<AdminClasses />} />
+          <Route path="payments" element={<AdminPayments />} />
         </Route>
       </Routes>
     </div>

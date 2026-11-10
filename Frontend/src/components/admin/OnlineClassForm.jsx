@@ -278,43 +278,46 @@ export default forwardRef(function OnlineClassForm({ editing, dupForm, onSaveCom
       )}
 
       <form onSubmit={handleSubmit} className="space-y-3">
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-            Class
-          </label>
-          <select
-            value={form.class_id}
-            onChange={(e) => handleChange('class_id', e.target.value)}
-            disabled={classesLoading || isEdit}
-            className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors disabled:opacity-50"
-          >
-            <option value="">Select a class</option>
-            {classes.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-          {classesLoading && (
-            <p className="text-xs text-slate-400">Loading classes…</p>
-          )}
-          {classesError && <p className="text-xs text-red-600">{classesError}</p>}
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-            Title
-          </label>
-          <input
-            type="text"
-            placeholder="e.g. Grade 10 Mathematics"
-            value={form.title}
-            onChange={(e) => handleChange('title', e.target.value)}
-            className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
-          />
-        </div>
-
+        {/* Row 1: Class + Title */}
         <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              Class
+            </label>
+            <select
+              value={form.class_id}
+              onChange={(e) => handleChange('class_id', e.target.value)}
+              disabled={classesLoading || isEdit}
+              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors disabled:opacity-50"
+            >
+              <option value="">Select a class</option>
+              {classes.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            {classesLoading && (
+              <p className="text-xs text-slate-400">Loading classes…</p>
+            )}
+            {classesError && <p className="text-xs text-red-600">{classesError}</p>}
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              Title
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. Grade 10 Mathematics"
+              value={form.title}
+              onChange={(e) => handleChange('title', e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
+            />
+          </div>
+        </div>
+
+        {/* Row 2: Date + Time + Duration */}
+        <div className="grid grid-cols-3 gap-3">
           <div className="space-y-2">
             <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Date
@@ -338,48 +341,50 @@ export default forwardRef(function OnlineClassForm({ editing, dupForm, onSaveCom
               className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
             />
           </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              Duration in minutes
+            </label>
+            <input
+              type="number"
+              min={15}
+              max={480}
+              value={form.duration_min}
+              onChange={(e) => handleChange('duration_min', e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
+            />
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-            Duration in minutes
-          </label>
-          <input
-            type="number"
-            min={15}
-            max={480}
-            value={form.duration_min}
-            onChange={(e) => handleChange('duration_min', e.target.value)}
-            className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
-          />
+        {/* Row 3: Zoom Link + Passcode */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              Zoom link
+            </label>
+            <input
+              type="text"
+              placeholder="https://us02web.zoom.us/j/..."
+              value={form.zoom_url}
+              onChange={(e) => handleChange('zoom_url', e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              Passcode (optional)
+            </label>
+            <input
+              type="text"
+              placeholder="Meeting passcode"
+              value={form.passcode}
+              onChange={(e) => handleChange('passcode', e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
+            />
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-            Zoom link
-          </label>
-          <input
-            type="text"
-            placeholder="https://us02web.zoom.us/j/..."
-            value={form.zoom_url}
-            onChange={(e) => handleChange('zoom_url', e.target.value)}
-            className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-            Passcode (optional)
-          </label>
-          <input
-            type="text"
-            placeholder="Meeting passcode"
-            value={form.passcode}
-            onChange={(e) => handleChange('passcode', e.target.value)}
-            className="w-full px-3 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
-          />
-        </div>
-
+        {/* Row 4: Notes (full width) */}
         <div className="space-y-2">
           <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
             Notes (optional)
@@ -405,7 +410,7 @@ export default forwardRef(function OnlineClassForm({ editing, dupForm, onSaveCom
           <button
             type="submit"
             disabled={saving}
-            className={`flex-1 px-4 py-2 rounded-lg ${ORANGE} text-white text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-700 transition-colors`}
+            className="flex-1 px-4 py-2 rounded-lg bg-gold text-white text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gold/90 transition-colors"
           >
             {saving ? 'Saving…' : 'Save class'}
           </button>

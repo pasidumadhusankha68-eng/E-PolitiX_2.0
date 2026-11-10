@@ -100,27 +100,27 @@ export default function AdminResults() {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <button
+              {/* <button
                 type="button"
                 onClick={() => handleDownload('csv')}
                 disabled={downloadState.csv === 'preparing'}
-                className="border border-slate-200 bg-white text-slate-700 px-5 py-2.5 rounded-xl font-medium hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="border border-slate-200 bg-white text-slate-700 px-5 py-2.5 rounded-xl font-medium  flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Export CSV"
               >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
                 {downloadState.csv === 'preparing' ? 'Preparing…' : 'Export CSV'}
-              </button>
+              </button> */}
               <button
                 type="button"
                 onClick={() => handleDownload('pdf')}
                 disabled={downloadState.pdf === 'preparing'}
-                className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-slate-900/10 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-gold hover:bg-gold/90 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-slate-900/10 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Download rank list PDF"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
                 {downloadState.pdf === 'preparing' ? 'Preparing…' : 'Download rank list (PDF)'}
               </button>
