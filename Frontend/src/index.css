@@ -1639,3 +1639,47 @@
   background-color: var(--gold);
   color: #ffffff;
 }
+
+.btn-gold-slide {
+  background-color: var(--gold);
+  color: #ffffff;
+  border-radius: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn-gold-slide:disabled {
+  background-color: var(--gold);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-gold-slide:disabled:hover {
+  background-color: var(--gold);
+}
+.btn-gold-slide:active,
+.btn-gold-slide:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+.btn-gold-fill {
+  background-color: var(--gold);
+  color: #ffffff;
+}
+.btn-gold-fill:disabled {
+  background-color: var(--gold);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-gold-fill:disabled:hover {
+  background-color: var(--gold);
+}

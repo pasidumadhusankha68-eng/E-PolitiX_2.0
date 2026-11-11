@@ -18,6 +18,7 @@ if not SECRET_KEY:
 
 ALGORITHM = "HS256"
 TOKEN_HOURS = 8
+ADMIN_ROLES = ("admin", "superadmin")
 bearer = HTTPBearer()
 
 
@@ -58,8 +59,14 @@ def get_current_user(creds: HTTPAuthorizationCredentials = Depends(bearer)) -> d
 
 
 def require_admin(user: dict = Depends(get_current_user)) -> dict:
-    if user["role"] not in ("admin", "superadmin"):
+    if user["role"] not in ADMIN_ROLES:
         raise HTTPException(status_code=403, detail="Admins only")
+    return user
+
+
+def require_superadmin(user: dict = Depends(get_current_user)) -> dict:
+    if user["role"] != "superadmin":
+        raise HTTPException(status_code=403, detail="Super admin only")
     return user
 
 

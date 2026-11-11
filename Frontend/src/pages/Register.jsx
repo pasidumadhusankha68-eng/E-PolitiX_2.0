@@ -323,7 +323,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-2 py-3 px-4 bg-sky-600 text-white font-medium rounded-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full mt-2 py-3 px-4 bg-gold text-white font-medium rounded-md hover:bg-gold focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? 'Registering...' : 'Register'}
               </button>
@@ -331,7 +331,7 @@ export default function Register() {
 
             <p className="mt-6 text-center text-sm text-slate-600">
               Already Registered?{' '}
-              <Link to="/login" className="text-sky-600 hover:text-sky-700 font-medium underline">
+              <Link to="/login" className="text-gold  font-medium underline">
                 Login
               </Link>
             </p>

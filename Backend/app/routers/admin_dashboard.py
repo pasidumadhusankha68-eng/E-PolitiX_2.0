@@ -4,13 +4,13 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import text
 
 from app.database import engine
-from app.security import require_role
+from app.security import require_admin, require_role
 
 router = APIRouter(prefix="/admin/dashboard", tags=["admin-dashboard"])
 
 
 @router.get("/stats")
-def get_stats(current_user: dict = Depends(require_role("admin"))):
+def get_stats(current_user: dict = Depends(require_admin)):
     with engine.connect() as conn:
         students_total = conn.execute(
             text("SELECT COUNT(*) FROM students WHERE is_active = TRUE")
@@ -116,7 +116,7 @@ def get_average_by_institute(user=Depends(require_role("admin", "superadmin"))):
 
 
 @router.get("/registrations")
-def get_registrations(current_user: dict = Depends(require_role("admin"))):
+def get_registrations(current_user: dict = Depends(require_admin)):
     with engine.connect() as conn:
         rows = conn.execute(
             text("""
@@ -144,7 +144,7 @@ def get_registrations(current_user: dict = Depends(require_role("admin"))):
 
 
 @router.get("/attention")
-def get_attention(current_user: dict = Depends(require_role("admin"))):
+def get_attention(current_user: dict = Depends(require_admin)):
     items = []
 
     with engine.connect() as conn:

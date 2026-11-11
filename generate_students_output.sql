@@ -1,0 +1,158 @@
+-- ============================================
+-- Generated student data for exam_year=2030, institute_id=3
+-- Generated at: 2026-11-11T00:42:07.989655
+-- ============================================
+
+-- ============================================
+-- STEP 1: Ensure institute id=3 exists
+-- ============================================
+-- INSERT INTO institutes (code, name) VALUES ('03', 'Institute 03') ON CONFLICT (id) DO NOTHING;
+
+-- ============================================
+-- -- STEP 2: Insert 50 users
+-- -- ============================================
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Kamal Perera', 'student001@example.com', '$2b$12$yrzYnE4mpHUHpv4PGdUirOCdlxPK4xgCLbxA9IIbPgX5frXs5X0Hu', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Nimali Silva', 'nimali002@example.com', '$2b$12$2GGWuFQmYfYLlYSjfILaWe3uXU/SrK5F5d1Oakx7Fk0Zo3SKiqBV.', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Sunil Rao', 'sunil003@example.com', '$2b$12$24kK07YztX04pj5OfwTmrOmYYzikOw/ZlPIGYaC8TdIFQYir6hKYS', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Ayesha Devi', 'ayesha004@example.com', '$2b$12$e/MupgmSlG/YKupZPBhRzehC2RlrCVFVJCJXRqOSG89da4drqiqv6', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Rohan Fernando', 'rohan005@example.com', '$2b$12$XlYpF.sx9/uxIyNUQYyxFe7CeBzmsEo6RV7EvSxO7NnNyfxTxRIZW', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Geetha Jayawardena', 'geetha006@example.com', '$2b$12$a7DCv48BtkoAkYJH4e.Weewtibolm1Oe0/5AzWYRF/yrmuT6nCGuO', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Priyantha Gamage', 'priyantha007@example.com', '$2b$12$N7EhfVugrJJHfmMmCcOcNObRIX8AaJWg8HTO2izEdwN.FOJjMD7t6', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Chandrika Wickramasinghe', 'chandrika008@example.com', '$2b$12$1lJ6vtikRk1MWUQ10Ylup.mRgFRyQRmxRQ1Sj3APsIKmduZprFugy', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Anura Abeygunawardena', 'anura009@example.com', '$2b$12$VZsHRUNpSW/eO2ZOlnR0uOk8X4fSeCx8F1tpEUC/x1InShIl6ibZW', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Samantha Jayasinghe', 'samantha010@example.com', '$2b$12$2h/frRV8sC.wuUA8EJ3kh.vh6OcoJ8NRc4ehNKZYFqIKVwQeueCJ.', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Deepthi Premadasa', 'deepthi011@example.com', '$2b$12$GeqOJLAbN.IJvv55F9cBqON931ANDc3Ml5mr1/CeEW5Ob7.MmWdUy', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Ranjith Bandara', 'ranjith012@example.com', '$2b$12$.Caiq3WBUBO44g8wWiMLHu8BSHLOcgUZtjdaJIQNQCha9b8EYlN4C', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Sunethra Senanayake', 'sunethra013@example.com', '$2b$12$qDv11hmGXUK7rNJ/Imyvi.HH1AVs1dBMVguDooCJpFxp./884PqoK', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Lalith Dissanayake', 'lalith014@example.com', '$2b$12$tx2SE9iD.7NfW5rChVDqzehxzwAd9a025vnkGGG2GtcYg6WcXXv.G', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Manjula Wijesinghe', 'manjula015@example.com', '$2b$12$RD5jwny/gRAXFYtLmt5NweFMt5wX/3P39hpwlM4YNEnl2GN6SYsp6', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Indira Rathnayake', 'indira016@example.com', '$2b$12$eR5oUKk.c76yXVzlSXDlBuOXJCBqliYOyZ1oLq6EnBbnFi3THx2Au', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Sanjana Gunaratne', 'sanjana017@example.com', '$2b$12$Uy1EuzjCEv5MloC3CQBpEepEyTHQC0cTjhBK6IeXyFDmw3jU6x4YG', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Dinesh Chandrasekera', 'dinesh018@example.com', '$2b$12$yObyJBV.Zy.K2HQs.Q.GUeMWFJCtLRN3W7NQQcWFsaYh3VMcEnOiq', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Chamila Balasuriya', 'chamila019@example.com', '$2b$12$EkoMo0C6YVO2lQbAASh3TOQ9GhfW4UPpuhx0.baPHi6XDDVP4/Emm', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Hemantha Ekanayake', 'hemantha020@example.com', '$2b$12$v0zlRZYWZjK7kMp84lMnvOJzJ5OMHqCUWpl1qz0WJe8Vb6jodtyJG', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Nimal Herath', 'nimal021@example.com', '$2b$12$EQuvBg5OmlqRXeu2tkduaerjroJ8NVW3vknsY6k2imeP/k9Rqa.9K', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Chandra Ratnayake', 'chandra022@example.com', '$2b$12$T1DBypv7..TZNjS0XF8IK.l45.ocbULbP2KbJDK.VnM4TEsogXrAG', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Priyanka Weerasinghe', 'priyanka023@example.com', '$2b$12$c/5cHOu3ACT4.2SUy4NmJe3vA5/A9x9IDEEh4lecdd/HvaSWI8nca', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Vijaya Jayawardena', 'vijaya024@example.com', '$2b$12$h2CPhy/Nl.QMCF9eLy6ileelaa.oO0un86FBt.opiaUvqtlygz1P2', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Sunil Fernando', 'sunil025@example.com', '$2b$12$E.2oqQG48.ZmsR4gsPbvHOQzUcPGWeUBxOxMG4sJJg2pBqEeTosG2', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Lakshmi Peiris', 'lakshmi026@example.com', '$2b$12$g/3ghfU23fInECZosMi9i.s2ReezcBUVepShrhpMkUZ7Ikow5JsjS', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Dilshan Mendis', 'dilshan027@example.com', '$2b$12$E92QIZLYOaTqFK14cMUCsu.2yRm.9gwXKH5DBIxQ4fc//t7d0C3yy', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Kumar Perera', 'kumar028@example.com', '$2b$12$/TDMH0qAcepGEHnGkvDY4.VvXexQHwHuP.PlKVI/IW6E3Q.KjI3ui', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Lakmini Silva', 'lakmini029@example.com', '$2b$12$YIY6YnEy56gvuw3BIX8Y4ucivh0qTLgbphlVX03JLLBuATNRQSXvS', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Ravi Rao', 'ravi030@example.com', '$2b$12$42plH8dG.DNUytKmw5Z0juZL2tz0r1XkNrVHVUJuE4hcVjXMXlo4G', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Shanti Devi', 'shanti031@example.com', '$2b$12$e2Y7KtnY5a/Zaawtd96E/.xBCXfOzO05GNUXllxRabyXwXzlNN2B.', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Ajith Fernando', 'ajith032@example.com', '$2b$12$WMRp6SZ5uH2FNk8phb2LJeAtPKLpgY7gk3yMFLZTE8LNsr8z3y7Ci', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Rohana Jayawardena', 'rohana033@example.com', '$2b$12$0gekmib0w53CnJRgqJFFPufmap2irDCwtvaLsHQ/090ZRTV5WlvJy', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Sanduni Gamage', 'sanduni034@example.com', '$2b$12$4jUKAProwIzguIWLxRoW4uL.AEuqn3pd4RXIFI9jr/vLxj.WhMuIS', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Nimal Wickramasinghe', 'nimal035@example.com', '$2b$12$NeWZOGixcjK440Z4mCegJeI6gcrYwWNTD7ZMggW4xKkF3DM4F2fKi', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Suranga Abeygunawardena', 'suranga036@example.com', '$2b$12$i3q65UF4ptfCbddtKZTye.Kbr41YLEnWlU/Feep4SrtSSJ0AmQCQu', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Deepika Jayasinghe', 'deepika037@example.com', '$2b$12$cKN0UR9TKV1C4CvOHQiDOetbn/XZYmS38Z4Njsss9U3g7JuaHlUYi', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Ranjith Perera', 'ranjith038@example.com', '$2b$12$bWBb8U90Ln4OrDUcx84pGO9e0v2s1LaTAgpwkA3wWW5cmQn8CfHn.', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Chandrika Silva', 'chandrika039@example.com', '$2b$12$lMiRovS/Iz17UDREtR1zu.5v0GdnAdpJ4FmB6FD/Mg1q7QyrP.X2e', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Sunil K. Rao', 'sunil040@example.com', '$2b$12$miWhdpOTsXKZ4Xghv41jkOSzz3qoVea.yHguRYEy1rHdFCMPix/AK', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Ayesha M. Devi', 'ayesha041@example.com', '$2b$12$D4mOBYeZf/t8AHsuvadLq.f8oHDnHYBkoxyMNVs7FchTvtZ8SPEqC', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Rohan N. Fernando', 'rohan042@example.com', '$2b$12$DvS5Y53vFSqgrp0fbqtyTeaweV.KCUgfesAnxFeCOmNaor6bjltOW', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Geetha P. Jayawardena', 'geetha043@example.com', '$2b$12$o1BbqM62H41BHwGcoxtMsuGcYMJPRwCLMdSv8jFadYwE4yJ7moSj.', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Priyantha S. Gamage', 'priyantha044@example.com', '$2b$12$zklb3vkp2hoDee7uIgtoGuBv3t9i/bYQoPJ7DVQl5fN.ExeDfpq0W', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Chandrika N. Wickramasinghe', 'chandrika045@example.com', '$2b$12$2W7HcEMrH1PWZc/PTqA8..UpWAZbPJFCf7C69IeKlB5d3zvQGfiDW', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Anura S. Abeygunawardena', 'anura046@example.com', '$2b$12$S7e6BRYxeAM1NMUTP9vqMukaGzcJHhLqPG7DoWO2waVfudFDJqxVy', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Samantha P. Jayasinghe', 'samantha047@example.com', '$2b$12$PslWNt0oBO2NtcfGdf5G.ekgNwhI4ievCE9fll7OGKI/jdE.jBJyC', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Deepthi R. Premadasa', 'deepthi048@example.com', '$2b$12$VWtIh4XGnCMDIheoBHL8i.lehtgTc/1jnxAkFiw0HiCu54T0blVYG', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Ranjith S. Bandara', 'ranjith049@example.com', '$2b$12$HzMO4nfX6VXIjTMPO5pMh.Sq5ZCXv2j4eLEWxT1Wy/Cf5EVJJIU3.', 'student');
+-- INSERT INTO users (full_name, email, password_hash, role) VALUES ('Sunethra P. Senanayake', 'sunethra050@example.com', '$2b$12$va8LF0PSoh9JfNtoBfn0Qe2g1.5e72rYt0ivNqoU2JAWy08lFPfI.', 'student');
+
+-- -- ============================================
+-- -- STEP 3: Insert 50 students
+-- -- ============================================
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (5, 3, 2030, 1, '2030030001', 'Kamal Perera', '1 Galle Road, Colombo', 'Ananda College', 'F', '123456000001', '0770000001', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (6, 3, 2030, 2, '2030030002', 'Nimali Silva', '2 Galle Road, Colombo', 'Nalanda College', 'M', '123456000002', '0770000002', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (7, 3, 2030, 3, '2030030003', 'Sunil Rao', '3 Galle Road, Colombo', 'St. Thomas College', 'F', '123456000003', '0770000003', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (8, 3, 2030, 4, '2030030004', 'Ayesha Devi', '4 Galle Road, Colombo', 'Mahamaya College', 'M', '123456000004', '0770000004', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (9, 3, 2030, 5, '2030030005', 'Rohan Fernando', '5 Galle Road, Colombo', 'Royal College', 'F', '123456000005', '0770000005', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (10, 3, 2030, 6, '2030030006', 'Geetha Jayawardena', '6 Galle Road, Colombo', 'Ananda College', 'M', '123456000006', '0770000006', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (11, 3, 2030, 7, '2030030007', 'Priyantha Gamage', '7 Galle Road, Colombo', 'Nalanda College', 'F', '123456000007', '0770000007', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (12, 3, 2030, 8, '2030030008', 'Chandrika Wickramasinghe', '8 Galle Road, Colombo', 'St. Thomas College', 'M', '123456000008', '0770000008', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (13, 3, 2030, 9, '2030030009', 'Anura Abeygunawardena', '9 Galle Road, Colombo', 'Mahamaya College', 'F', '123456000009', '0770000009', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (14, 3, 2030, 10, '2030030010', 'Samantha Jayasinghe', '10 Galle Road, Colombo', 'Royal College', 'M', '123456000010', '0770000010', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (15, 3, 2030, 11, '2030030011', 'Deepthi Premadasa', '11 Galle Road, Colombo', 'Ananda College', 'F', '123456000011', '0770000011', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (16, 3, 2030, 12, '2030030012', 'Ranjith Bandara', '12 Galle Road, Colombo', 'Nalanda College', 'M', '123456000012', '0770000012', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (17, 3, 2030, 13, '2030030013', 'Sunethra Senanayake', '13 Galle Road, Colombo', 'St. Thomas College', 'F', '123456000013', '0770000013', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (18, 3, 2030, 14, '2030030014', 'Lalith Dissanayake', '14 Galle Road, Colombo', 'Mahamaya College', 'M', '123456000014', '0770000014', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (19, 3, 2030, 15, '2030030015', 'Manjula Wijesinghe', '15 Galle Road, Colombo', 'Royal College', 'F', '123456000015', '0770000015', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (20, 3, 2030, 16, '2030030016', 'Indira Rathnayake', '16 Galle Road, Colombo', 'Ananda College', 'M', '123456000016', '0770000016', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (21, 3, 2030, 17, '2030030017', 'Sanjana Gunaratne', '17 Galle Road, Colombo', 'Nalanda College', 'F', '123456000017', '0770000017', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (22, 3, 2030, 18, '2030030018', 'Dinesh Chandrasekera', '18 Galle Road, Colombo', 'St. Thomas College', 'M', '123456000018', '0770000018', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (23, 3, 2030, 19, '2030030019', 'Chamila Balasuriya', '19 Galle Road, Colombo', 'Mahamaya College', 'F', '123456000019', '0770000019', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (24, 3, 2030, 20, '2030030020', 'Hemantha Ekanayake', '20 Galle Road, Colombo', 'Royal College', 'M', '123456000020', '0770000020', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (25, 3, 2030, 21, '2030030021', 'Nimal Herath', '21 Galle Road, Colombo', 'Ananda College', 'F', '123456000021', '0770000021', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (26, 3, 2030, 22, '2030030022', 'Chandra Ratnayake', '22 Galle Road, Colombo', 'Nalanda College', 'M', '123456000022', '0770000022', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (27, 3, 2030, 23, '2030030023', 'Priyanka Weerasinghe', '23 Galle Road, Colombo', 'St. Thomas College', 'F', '123456000023', '0770000023', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (28, 3, 2030, 24, '2030030024', 'Vijaya Jayawardena', '24 Galle Road, Colombo', 'Mahamaya College', 'M', '123456000024', '0770000024', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (29, 3, 2030, 25, '2030030025', 'Sunil Fernando', '25 Galle Road, Colombo', 'Royal College', 'F', '123456000025', '0770000025', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (30, 3, 2030, 26, '2030030026', 'Lakshmi Peiris', '26 Galle Road, Colombo', 'Ananda College', 'M', '123456000026', '0770000026', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (31, 3, 2030, 27, '2030030027', 'Dilshan Mendis', '27 Galle Road, Colombo', 'Nalanda College', 'F', '123456000027', '0770000027', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (32, 3, 2030, 28, '2030030028', 'Kumar Perera', '28 Galle Road, Colombo', 'St. Thomas College', 'M', '123456000028', '0770000028', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (33, 3, 2030, 29, '2030030029', 'Lakmini Silva', '29 Galle Road, Colombo', 'Mahamaya College', 'F', '123456000029', '0770000029', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (34, 3, 2030, 30, '2030030030', 'Ravi Rao', '30 Galle Road, Colombo', 'Royal College', 'M', '123456000030', '0770000030', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (35, 3, 2030, 31, '2030030031', 'Shanti Devi', '31 Galle Road, Colombo', 'Ananda College', 'F', '123456000031', '0770000031', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (36, 3, 2030, 32, '2030030032', 'Ajith Fernando', '32 Galle Road, Colombo', 'Nalanda College', 'M', '123456000032', '0770000032', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (37, 3, 2030, 33, '2030030033', 'Rohana Jayawardena', '33 Galle Road, Colombo', 'St. Thomas College', 'F', '123456000033', '0770000033', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (38, 3, 2030, 34, '2030030034', 'Sanduni Gamage', '34 Galle Road, Colombo', 'Mahamaya College', 'M', '123456000034', '0770000034', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (39, 3, 2030, 35, '2030030035', 'Nimal Wickramasinghe', '35 Galle Road, Colombo', 'Royal College', 'F', '123456000035', '0770000035', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (40, 3, 2030, 36, '2030030036', 'Suranga Abeygunawardena', '36 Galle Road, Colombo', 'Ananda College', 'M', '123456000036', '0770000036', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (41, 3, 2030, 37, '2030030037', 'Deepika Jayasinghe', '37 Galle Road, Colombo', 'Nalanda College', 'F', '123456000037', '0770000037', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (42, 3, 2030, 38, '2030030038', 'Ranjith Perera', '38 Galle Road, Colombo', 'St. Thomas College', 'M', '123456000038', '0770000038', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (43, 3, 2030, 39, '2030030039', 'Chandrika Silva', '39 Galle Road, Colombo', 'Mahamaya College', 'F', '123456000039', '0770000039', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (44, 3, 2030, 40, '2030030040', 'Sunil K. Rao', '40 Galle Road, Colombo', 'Royal College', 'M', '123456000040', '0770000040', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (45, 3, 2030, 41, '2030030041', 'Ayesha M. Devi', '41 Galle Road, Colombo', 'Ananda College', 'F', '123456000041', '0770000041', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (46, 3, 2030, 42, '2030030042', 'Rohan N. Fernando', '42 Galle Road, Colombo', 'Nalanda College', 'M', '123456000042', '0770000042', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (47, 3, 2030, 43, '2030030043', 'Geetha P. Jayawardena', '43 Galle Road, Colombo', 'St. Thomas College', 'F', '123456000043', '0770000043', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (48, 3, 2030, 44, '2030030044', 'Priyantha S. Gamage', '44 Galle Road, Colombo', 'Mahamaya College', 'M', '123456000044', '0770000044', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (49, 3, 2030, 45, '2030030045', 'Chandrika N. Wickramasinghe', '45 Galle Road, Colombo', 'Royal College', 'F', '123456000045', '0770000045', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (50, 3, 2030, 46, '2030030046', 'Anura S. Abeygunawardena', '46 Galle Road, Colombo', 'Ananda College', 'M', '123456000046', '0770000046', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (51, 3, 2030, 47, '2030030047', 'Samantha P. Jayasinghe', '47 Galle Road, Colombo', 'Nalanda College', 'F', '123456000047', '0770000047', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (52, 3, 2030, 48, '2030030048', 'Deepthi R. Premadasa', '48 Galle Road, Colombo', 'St. Thomas College', 'M', '123456000048', '0770000048', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (53, 3, 2030, 49, '2030030049', 'Ranjith S. Bandara', '49 Galle Road, Colombo', 'Mahamaya College', 'F', '123456000049', '0770000049', TRUE);
+-- INSERT INTO students (user_id, institute_id, exam_year, seq_no, student_code, name_with_initials, address, school, gender, nic, mobile_number, is_active) VALUES (54, 3, 2030, 50, '2030030050', 'Sunethra P. Senanayake', '50 Galle Road, Colombo', 'Royal College', 'M', '123456000050', '0770000050', TRUE);
+
+-- -- ============================================
+-- STEP 4: Insert/update student_counters
+-- ============================================
+-- INSERT INTO student_counters (exam_year, institute_id, last_no) VALUES (2030, 3, 50) ON CONFLICT (exam_year, institute_id) DO UPDATE SET last_no = 50;
+
+-- ============================================
+-- STEP 5: Insert classes for 2030
+-- ============================================
+-- INSERT INTO classes (name, exam_year) VALUES ('2030 A/L Science Class A', 2030) RETURNING id;
+-- INSERT INTO classes (name, exam_year) VALUES ('2030 A/L Science Class B', 2030) RETURNING id;
+-- INSERT INTO classes (name, exam_year) VALUES ('2030 A/L Arts Class', 2030) RETURNING id;
+-- INSERT INTO classes (name, exam_year) VALUES ('2030 O/L Class', 2030) RETURNING id;
+
+-- ============================================
+-- STEP 6: Enroll students in classes
+-- ============================================
+-- NOTE: Update the class_id values below to match actual class IDs from step 5
+-- Enroll all 50 students into Class ID 1
+-- INSERT INTO enrollments (student_id, class_id)
+-- SELECT s.id, 1
+-- FROM students s
+-- WHERE s.exam_year = 2030 AND s.institute_id = 3;
+
+-- Enroll students 1-25 into Class ID 2
+-- INSERT INTO enrollments (student_id, class_id)
+-- SELECT s.id, 9
+-- FROM students s
+-- WHERE s.exam_year = 2030 AND s.institute_id = 3
+-- LIMIT 25;
+
+-- -- Enroll students 26-50 into Class ID 3
+-- INSERT INTO enrollments (student_id, class_id)
+-- SELECT s.id, 3
+-- FROM students s
+-- WHERE s.exam_year = 2030 AND s.institute_id = 3
+-- LIMIT 25 OFFSET 25;
+
+-- ============================================
+-- End of script
+-- ============================================

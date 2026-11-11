@@ -56,11 +56,12 @@ export default function AdminUsers() {
       ])
 
       setStudents(studentsRes.items || [])
-      setTotal(studentsRes.total || 0)
+      setTotal(studentsRes.total || (studentsRes.items?.length || 0))
       setCounts(countsRes)
       setInstitutes(filtersRes.institutes || [])
       setYears(filtersRes.exam_years || [])
     } catch (err) {
+      console.error('fetchData error:', err)
       setError(err.message || 'Failed to load students')
     } finally {
       setLoading(false)

@@ -5,7 +5,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 
 from app.database import engine
-from app.security import get_current_user, hash_password, require_role
+from app.security import get_current_user, hash_password, require_admin, require_role
 
 router = APIRouter(prefix="/admin/users", tags=["admin-users"])
 
@@ -18,7 +18,7 @@ def list_students(
     status: str = Query("all"),
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
-    current_user: dict = Depends(require_role("admin")),
+    current_user: dict = Depends(require_admin),
 ):
     if status not in ("all", "active", "disabled"):
         raise HTTPException(status_code=400, detail="status must be all, active or disabled")
@@ -78,14 +78,74 @@ def list_students(
     }
 
 
+@router.get("/students/{student_id}/preview")
+def get_student_preview(
+    student_id: int,
+    current_user: dict = Depends(require_admin),
+):
+    with engine.connect() as conn:
+        row = conn.execute(
+            text("""
+                SELECT s.id AS id,
+                       s.student_code AS student_code,
+                       u.full_name AS name,
+                       s.name_with_initials AS name_with_initials,
+                       i.name AS institute_name,
+                       s.exam_year AS exam_year,
+                       u.is_active AS is_active
+                FROM students s
+                JOIN users u ON u.id = s.user_id
+                JOIN institutes i ON i.id = s.institute_id
+                WHERE s.id = :student_id
+            """),
+            {"student_id": student_id},
+        ).mappings().first()
+
+    if row is None:
+        raise HTTPException(status_code=404, detail="Student not found")
+
+    student = dict(row)
+
+    with engine.connect() as conn:
+        rows = conn.execute(
+            text("""
+                SELECT e.id AS exam_id, e.exam_number, e.exam_name, e.test_date,
+                       m.mcq_marks, m.essay_marks, m.final_marks
+                FROM exam_marks m
+                JOIN exams e ON e.id = m.exam_id
+                WHERE m.student_id = :student_id
+                ORDER BY e.exam_number ASC
+            """),
+            {"student_id": student_id},
+        ).mappings().all()
+
+    marks = [
+        {
+            "exam_id": r["exam_id"],
+            "exam_number": r["exam_number"],
+            "exam_name": r["exam_name"],
+            "test_date": r["test_date"].isoformat() if r["test_date"] else None,
+            "mcq_marks": float(r["mcq_marks"]) if r["mcq_marks"] is not None else None,
+            "essay_marks": float(r["essay_marks"]) if r["essay_marks"] is not None else None,
+            "final_marks": float(r["final_marks"]) if r["final_marks"] is not None else None,
+        }
+        for r in rows
+    ]
+
+    return {
+        "student": student,
+        "marks": marks,
+    }
+
+
 @router.get("/admins")
-def list_admins(current_user: dict = Depends(require_role("admin"))):
+def list_admins(current_user: dict = Depends(require_admin)):
     with engine.connect() as conn:
         rows = conn.execute(
             text("""
                 SELECT id, full_name, email
                 FROM users
-                WHERE role = 'admin'
+                WHERE role IN ('admin', 'superadmin')
                 ORDER BY full_name
             """),
         ).mappings().all()
@@ -93,17 +153,17 @@ def list_admins(current_user: dict = Depends(require_role("admin"))):
 
 
 @router.get("/counts")
-def get_counts(current_user: dict = Depends(require_role("admin"))):
+def get_counts(current_user: dict = Depends(require_admin)):
     with engine.connect() as conn:
         students = conn.execute(text("SELECT COUNT(*) FROM students")).scalar()
         admins = conn.execute(
-            text("SELECT COUNT(*) FROM users WHERE role = 'admin'")
+            text("SELECT COUNT(*) FROM users WHERE role IN ('admin', 'superadmin')")
         ).scalar()
     return {"students": students, "admins": admins}
 
 
 @router.get("/filters")
-def get_filters(current_user: dict = Depends(require_role("admin"))):
+def get_filters(current_user: dict = Depends(require_admin)):
     with engine.connect() as conn:
         institutes = conn.execute(
             text("SELECT id, name FROM institutes ORDER BY name")

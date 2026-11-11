@@ -147,7 +147,7 @@ export default function TodayClasses() {
                       <button
                         type="button"
                         onClick={() => handleJoin(c.id)}
-                        className="px-3 py-1.5 rounded-lg bg-[#c2410c] text-white text-xs font-medium hover:bg-orange-700 transition-colors"
+                        className="px-3 py-1.5 rounded-lg btn-gold-fill text-xs font-medium transition-colors"
                       >
                         Join class
                       </button>

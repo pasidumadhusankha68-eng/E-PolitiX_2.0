@@ -50,7 +50,7 @@ function getColomboDate(iso) {
 function pillClasses(active) {
   return `px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${
     active
-      ? `bg-[#c2410c] border-[#c2410c] text-white`
+      ? 'btn-gold-fill border-transparent'
       : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
   }`
 }

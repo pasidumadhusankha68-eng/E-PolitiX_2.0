@@ -151,7 +151,7 @@ export default function OnlineClassCard() {
                 window.open(zoom_url, '_blank', 'noopener,noreferrer')
               }
             }}
-            className={`w-full py-2 rounded-lg bg-[#c2410c] text-white text-sm font-medium hover:bg-orange-700 transition-colors`}
+            className={`w-full py-2 rounded-lg btn-gold-fill text-sm font-medium transition-colors`}
           >
             Join class
           </button>

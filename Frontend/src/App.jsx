@@ -7,6 +7,7 @@ import Resources from './pages/Resources.jsx'
 import Gallery from './pages/Gallery.jsx'
 import Progress from './pages/Progress.jsx'
 import Classes from './pages/Classes'
+import Profile from './pages/Profile'
 import AdminGuard from './components/admin/AdminGuard'
 import AdminLayout from './components/AdminLayout'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -17,6 +18,7 @@ import AdminExams from './pages/admin/AdminExams'
 import AdminResults from './pages/admin/AdminResults'
 import AdminClasses from './pages/admin/AdminClasses'
 import AdminPayments from './pages/admin/AdminPayments'
+import AdminStudentPreview from './pages/admin/AdminStudentPreview'
 import StudentGuard from './components/StudentGuard'
 
 function App() {
@@ -35,6 +37,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/classes" element={<Classes />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
         {/* admin pages (students are redirected to /home) */}
@@ -56,6 +59,7 @@ function App() {
           <Route path="results" element={<AdminResults />} />
           <Route path="classes" element={<AdminClasses />} />
           <Route path="payments" element={<AdminPayments />} />
+          <Route path="users/students/:id/preview" element={<AdminStudentPreview />} />
         </Route>
       </Routes>
     </div>

@@ -135,7 +135,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gold text-white font-medium py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Logging in...' : 'Login'}
               </button>
@@ -143,7 +143,7 @@ export default function Login() {
 
             <p className="mt-6 text-center text-slate-600">
               Don't have an account?{' '}
-              <Link to="/register" className="text-sky-600 hover:text-sky-700 font-medium underline">
+              <Link to="/register" className="text-gold font-medium underline">
                 Register
               </Link>
             </p>
