@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../../utils/api'
-import AdminSideBar from '../../components/admin/AdminSideBar'
+import AdminSideBar from '../../components/admin/AdminSidebar'
 import StudentFormModal from '../../components/admin/StudentFormModal'
 import StatusConfirmModal from '../../components/admin/StatusConfirmModal'
 
