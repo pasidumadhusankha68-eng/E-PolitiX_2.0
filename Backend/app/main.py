@@ -15,7 +15,7 @@ app = FastAPI(title="E-PolitiX API")
 # Lets your React app (a different port) call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|0\.0\.0\.0):\d+",
+    allow_origins=["https://epolitix.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
