@@ -1683,3 +1683,18 @@
 .btn-gold-fill:disabled:hover {
   background-color: var(--gold);
 }
+
+@keyframes check-draw {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-check {
+  animation: check-draw 0.6s ease-out forwards;
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+}

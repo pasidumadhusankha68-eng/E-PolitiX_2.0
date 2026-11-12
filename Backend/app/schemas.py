@@ -19,3 +19,8 @@ class RegisterRequest(BaseModel):
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+
+class RegisterResponse(BaseModel):
+    message: str
+    student_code: str

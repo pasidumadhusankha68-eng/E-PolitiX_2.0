@@ -1,195 +1,196 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { api } from '../utils/api'
 import Navbar from '../components/Navbar'
+import ResourceViewer from '../components/ResourceViewer'
 
-const resources = [
-  {
-    id: 1,
-    title: 'Sri Lanka Constitution',
-    category: 'Documents',
-    type: 'pdf',
-    url: '#',
-  },
-  {
-    id: 2,
-    title: 'Parliamentary Procedures Guide',
-    category: 'Guides',
-    type: 'pdf',
-    url: '#',
-  },
-  {
-    id: 3,
-    title: 'Local Government Act',
-    category: 'Documents',
-    type: 'pdf',
-    url: '#',
-  },
-  {
-    id: 4,
-    title: 'How to Vote: Step by Step',
-    category: 'Videos',
-    type: 'video',
-    url: '#',
-  },
-  {
-    id: 5,
-    title: 'Political Party Registration',
-    category: 'Guides',
-    type: 'pdf',
-    url: '#',
-  },
-  {
-    id: 6,
-    title: 'Election Commission Reports',
-    category: 'Reports',
-    type: 'link',
-    url: '#',
-  },
-  {
-    id: 7,
-    title: 'Civic Education Curriculum',
-    category: 'Education',
-    type: 'pdf',
-    url: '#',
-  },
-  {
-    id: 8,
-    title: 'Youth Parliament Initiative',
-    category: 'Programs',
-    type: 'link',
-    url: '#',
-  },
-]
-
-const categories = ['All', 'Past Papers', 'Notes']
+const GOLD = 'btn-gold-fill px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
 
 export default function Resources() {
-  const [activeCategory, setActiveCategory] = useState('All')
-  const [searchTerm, setSearchTerm] = useState('')
+  const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [locked, setLocked] = useState(false)
+  const [error, setError] = useState(null)
 
-  const filteredResources = resources.filter((resource) => {
-    const matchesCategory = activeCategory === 'All' || resource.category === activeCategory
-    const matchesSearch = resource.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      resource.description.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
+  // Viewer state (embed_url only lives while the viewer is open)
+  const [viewerOpen, setViewerOpen] = useState(false)
+  const [viewTitle, setViewTitle] = useState(null)
+  const [viewEmbedUrl, setViewEmbedUrl] = useState(null)
+  const [viewWatermark, setViewWatermark] = useState(null)
 
-  const getTypeIcon = (type) => {
-    switch (type) {
-      case 'pdf':
-        return (
-          <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-        )
-      case 'video':
-        return (
-          <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M23 7.41V23a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V1a2 2 0 0 1 2-2h5.59" />
-            <polygon points="23 7 16 12 23 17" />
-          </svg>
-        )
-      case 'link':
-        return (
-          <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-          </svg>
-        )
-      default:
-        return (
-          <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-          </svg>
-        )
+  // Per-row "Opening..." state and row-level error messages
+  const [openingId, setOpeningId] = useState(null)
+  const [rowErrors, setRowErrors] = useState({})
+
+  const fetchResources = useCallback(async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await api('/resources')
+      setItems(data.items || [])
+    } catch (err) {
+      if (err.status === 402) {
+        setLocked(true)
+      } else {
+        setError(err.message || 'Failed to load resources')
+        setItems([])
+      }
+    } finally {
+      setLoading(false)
     }
+  }, [])
+
+  useEffect(() => {
+    fetchResources()
+  }, [fetchResources])
+
+  const handleViewerClose = useCallback(() => {
+    setViewerOpen(false)
+    setViewEmbedUrl(null)
+    setViewTitle(null)
+    setViewWatermark(null)
+  }, [])
+
+  const handleView = useCallback(async (r) => {
+    setOpeningId(r.id)
+    setRowErrors((prev) => ({ ...prev, [r.id]: null }))
+    try {
+      const data = await api(`/resources/${r.id}/view`)
+      setViewTitle(data.title)
+      setViewEmbedUrl(data.embed_url)
+      setViewWatermark(data.watermark)
+      setViewerOpen(true)
+    } catch (err) {
+      if (err.status === 402) {
+        setLocked(true)
+      } else {
+        setRowErrors((prev) => ({
+          ...prev,
+          [r.id]: err.message || 'This file cannot be shown here',
+        }))
+      }
+    } finally {
+      setOpeningId(null)
+    }
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="w-8 h-8 border-4 border-slate-200 border-t-[#c2410c] rounded-full animate-spin" />
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (locked) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="rounded-xl border border-red-100 bg-red-50 p-6 text-red-700 shadow-sm">
+            <h2 className="font-semibold text-red-800 mb-1">Payment required</h2>
+            <p className="text-sm text-red-600">
+              Your monthly payment is due. Pay your class fee to view resources.
+            </p>
+          </div>
+        </main>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white">
+        <Navbar />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="rounded-xl border border-red-100 bg-red-50 p-6 text-red-700">
+            <p className="font-medium">{error}</p>
+            <button
+              onClick={fetchResources}
+              className="mt-3 inline-flex items-center gap-1 text-sm text-red-600 hover:underline"
+            >
+              Try again
+            </button>
+          </div>
+        </main>
+      </div>
+    )
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-white">
       <Navbar />
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">Resources</h1>
-          <p className="text-slate-600 mt-1">Access documents, guides, videos, and more for civic education</p>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Resources</h1>
+            <p className="text-slate-500 text-sm">Study materials shared by your institute</p>
+          </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
-            <div className="relative flex-1">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input
-                type="text"
-                placeholder="Search resources..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
-              />
-            </div>
+        {items.length === 0 ? (
+          <div className="rounded-xl border border-slate-200 bg-white p-12 shadow-sm text-center">
+            <p className="text-sm text-slate-500">No resources available</p>
           </div>
-
-          <div className="flex flex-wrap gap-2 mb-6" role="tablist" aria-label="Resource categories">
-            {categories.map((category) => (
-              <button
-                key={category}
-                role="tab"
-                aria-selected={activeCategory === category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                  activeCategory === category
-                    ? 'bg-sky-600 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
-          <div className="">
-            {filteredResources.length === 0 ? (
-              <div className="col-span-full text-center py-12">
-                <svg className="mx-auto h-12 w-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <h3 className="mt-2 text-slate-900">No resources found</h3>
-                <p className="text-slate-500">Try adjusting your search or filter</p>
-              </div>
-            ) : (
-              filteredResources.map((resource) => (
-                <article
-                  key={resource.id}
-                  className="group border border-slate-200 rounded-xl p-5 hover:border-sky-300 hover:shadow-md transition-all duration-200"
+        ) : (
+          <div className="space-y-3">
+            {items.map((r) => {
+              const isOpening = openingId === r.id
+              return (
+                <div
+                  key={r.id}
+                  className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
                 >
-                  <div className="flex items-start justify-between gap-4 mb-3">
-                    <div className="flex-1 min-w-0">
-                      <span className="inline-block px-2.5 py-0.5 text-xs font-medium bg-sky-50 text-sky-700 rounded-full mb-2">
-                        {resource.category}
-                      </span>
-                      <h3 className="text-lg font-semibold text-slate-900 group-hover:text-sky-600 transition-colors">
-                        {resource.title}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <h3 className="text-sm font-bold text-slate-900 truncate">
+                        {r.title}
                       </h3>
+                      {r.is_new && (
+                        <span className="text-[10px] font-semibold text-[#c2410c] uppercase tracking-wider px-2 py-0.5 border border-[#c2410c]/20 bg-[#c2410c]/10 rounded-full">
+                          New
+                        </span>
+                      )}
                     </div>
-                    <div className="flex-shrink-0">
-                      {getTypeIcon(resource.type)}
-                    </div>
+                    <p className="text-xs text-slate-500 mb-1">{r.category}</p>
+                    {r.description && (
+                      <p className="text-sm text-slate-600 mb-1 line-clamp-2">{r.description}</p>
+                    )}
+                    <p className="text-xs text-slate-400">
+                      {r.resource_date}
+                    </p>
                   </div>
-                  <p className="text-slate-600 text-sm line-clamp-2">{resource.description}</p>
-                  
-                </article>
-              ))
-            )}
+                  <button
+                    type="button"
+                    disabled={isOpening}
+                    onClick={() => handleView(r)}
+                    className={`${GOLD} w-full sm:w-auto`}
+                  >
+                    {isOpening ? 'Opening...' : 'View'}
+                  </button>
+                  {rowErrors[r.id] && (
+                    <p className="text-xs text-red-600 font-medium">
+                      {rowErrors[r.id]}
+                    </p>
+                  )}
+                </div>
+              )
+            })}
           </div>
+        )}
 
-          {filteredResources.length > 0 && (
-            <div className="mt-8 pt-6 border-t border-slate-200">
-              <p className="text-sm text-slate-500 text-center">
-                Showing {filteredResources.length} of {resources.length} resources
-              </p>
-            </div>
-          )}
-        </div>
+        {viewerOpen && viewEmbedUrl && (
+          <ResourceViewer
+            title={viewTitle}
+            embedUrl={viewEmbedUrl}
+            watermark={viewWatermark}
+            onClose={handleViewerClose}
+          />
+        )}
       </main>
     </div>
   )

@@ -4,6 +4,7 @@ import { api } from '../utils/api'
 import Logo from '../components/Logo'
 import InputField from '../components/InputField'
 import SelectField from '../components/SelectField'
+import RegistrationSuccessModal from '../components/RegistrationSuccessModal'
 import { validateEmail, validateMobile, validateNIC, validatePassword } from '../utils/validation'
 import regBg from '../img/reg_bg.png'
 
@@ -34,6 +35,7 @@ export default function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [serverError, setServerError] = useState('')
   const [institutes, setInstitutes] = useState([])
+  const [successCode, setSuccessCode] = useState(null)
 
   // Load the institute list from the database
   useEffect(() => {
@@ -130,7 +132,7 @@ export default function Register() {
 
     setIsSubmitting(true)
     try {
-      await api('/auth/register', {
+      const data = await api('/auth/register', {
         method: 'POST',
         body: {
           full_name: formData.fullName.trim(),
@@ -146,7 +148,10 @@ export default function Register() {
           exam_year: Number(formData.alYear),
         },
       })
-      navigate('/login')
+      setSuccessCode(data.student_code ?? null)
+      setFormData(initialFormData)
+      setTouched({})
+      setErrors(initialErrors)
     } catch (err) {
       setServerError(err.status === 409 ? 'This email is already registered' : err.message)
     } finally {
@@ -338,6 +343,16 @@ export default function Register() {
           </div>
         </div>
       </div>
+
+      {successCode && (
+        <RegistrationSuccessModal
+          studentCode={successCode}
+          onContinue={() => {
+            setSuccessCode(null)
+            navigate('/login')
+          }}
+        />
+      )}
     </div>
   )
 }

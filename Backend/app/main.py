@@ -4,7 +4,7 @@ from sqlalchemy import text
 from app.exam_progress import router as exam_progress_router
 
 from app.database import engine
-from app.routers import admin_dashboard, admin_exams, admin_online_classes, admin_payments, admin_results, admin_users, auth, online_classes, student_profile
+from app.routers import admin_dashboard, admin_exams, admin_online_classes, admin_payments, admin_results, admin_users, auth, online_classes, resources, student_profile
 
 
 
@@ -30,6 +30,7 @@ app.include_router(admin_online_classes.router)
 app.include_router(admin_payments.router)
 app.include_router(online_classes.router)
 app.include_router(admin_users.router)
+app.include_router(resources.router)
 app.include_router(student_profile.router)
 
 

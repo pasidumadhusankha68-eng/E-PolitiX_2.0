@@ -6,11 +6,14 @@ export default {
   ],
   theme: {
     extend: {
+
+
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
         abhaya: ['"Abhaya Libre"', 'serif'],
         gemunu: ['"Gemunu Libre"', 'sans-serif'],
         yotive: ['"Yotive"', 'sans-serif'],
+        sinhala: ['"Noto Sans Sinhala"', 'Iskoola Pota', 'sans-serif'],
       },
       filter: {
         'brightness-75': '.75',

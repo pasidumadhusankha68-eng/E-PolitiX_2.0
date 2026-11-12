@@ -3,7 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
 
 from app.database import engine
-from app.schemas import LoginRequest, RegisterRequest
+from app.schemas import LoginRequest, RegisterRequest, RegisterResponse
 from app.security import (
     create_access_token,
     get_current_user,
@@ -15,7 +15,7 @@ from app.security import (
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/register", status_code=201)
+@router.post("/register", status_code=201, response_model=RegisterResponse)
 def register(data: RegisterRequest):
     email = data.email.lower()
     try:

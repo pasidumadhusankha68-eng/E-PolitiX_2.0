@@ -7,6 +7,7 @@ import welcomeBanner from '../img/welcome_banner.png'
 import whatsappIcon from '../img/whatsapp.svg'
 import facebookIcon from '../img/facebook.svg'
 import youtubeIcon from '../img/youtube.svg'
+import { api } from '../utils/api'
 
 /**
  * Home page - Main dashboard for logged-in students.
@@ -22,7 +23,9 @@ export default function Home() {
   // Why: Persists user session across page reloads without backend
   const user = JSON.parse(localStorage.getItem('user') || '{}')
   const firstName = user.fullName ? user.fullName.trim().split(/\s+/)[0] : 'Student'
-  const gender = user.gender || 'male'
+
+  // Gender fetched from backend (/student/profile) — no localStorage gender field exists
+  const [gender, setGender] = useState('male')
   const characterImg = gender === 'female' ? girlImg : boyImg
 
   // Compute greeting based on current hour
@@ -42,6 +45,26 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
+  // Fetch the user's gender from the backend so the greeting card shows
+  // the correct character image for male/female students.
+  useEffect(() => {
+    let mounted = true
+    async function fetchGender() {
+      try {
+        const profile = await api('/student/profile')
+        if (mounted && profile.gender) {
+          setGender(profile.gender.toLowerCase())
+        }
+      } catch {
+        // Keep the default 'male' gender if the backend call fails
+      }
+    }
+    fetchGender()
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation bar with logo, tabs, notifications, profile/logout */}
@@ -55,37 +78,19 @@ export default function Home() {
           <div className="rounded-xl bg-white border border-slate-200 h-44 flex items-center justify-between relative shadow-md w-full md:w-1/2">
             <div className="flex items-center gap-3 ml-6">
               <div>
-                <p className="text-2xl font-bold text-slate-900 tracking-wide">
+                <p className="text-2xl font-bold text-slate-900 tracking-wide [@media(max-width:500px)]:text-base">
                   {greeting}, {firstName}!
                 </p>
-                <p className="text-slate-500 text-sm">Ready to continue learning?</p>
+                <p className="text-slate-500 text-sm [@media(max-width:500px)]:text-xs">Ready to continue learning?</p>
               </div>
             </div>
             <img
               src={characterImg}
               alt={gender === 'female' ? 'Girl' : 'Boy'}
-              className="w-40 h-40 absolute right-8 top-1/2 -translate-y-1/2 "
+              className="w-40 h-40 absolute right-8 top-1/2 -translate-y-1/2 [@media(max-width:500px)]:w-[120px] [@media(max-width:500px)]:h-[120px] [@media(max-width:500px)]:-right-1"
             />
           </div>
           
-          {/* Social Links Boxes */}
-          <div className="flex gap- flex-shrink-0 gap-7 ">
-            <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" className="bg-white text-green-600 rounded-lg p-4 w-44 h-44 flex flex-col items-center justify-center gap-2 transition-colors shadow-md hover:shadow-lg" aria-label="WhatsApp">
-              <img src={whatsappIcon} alt="WhatsApp" className="w-2/3 transition-transform duration-300 hover:scale-105" />
-              <span className="text-s font-bold text-black">WhatsApp</span>
-              <span className="text-xs font-normal text-black -m-3">Community</span>
-            </a>
-            <a href="https://www.facebook.com/share/18apYRAecC/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className=" text-blue-600 rounded-lg p-4 w-44 h-44 flex flex-col items-center justify-center gap-2 transition-colors shadow-md hover:shadow-lg" aria-label="Facebook">
-              <img src={facebookIcon} alt="WhatsApp" className="w-2/3 transition-transform duration-300 hover:scale-105" />
-              <span className="text-s font-bold text-black">Facebook</span>
-              <span className="text-xs font-normal text-black -m-3">Page</span>
-            </a>
-            <a href="https://youtube.com/@indunilsgamage?si=FAjeXsbUp3BttpXv" target="_blank" rel="noopener noreferrer" className=" text-red-600 rounded-lg p-4 w-44 h-44 flex flex-col gap-2 items-center justify-center transition-colors shadow-md hover:shadow-lg" aria-label="YouTube">
-              <img src={youtubeIcon} alt="WhatsApp" className="w-2/3 transition-transform duration-300 hover:scale-105" />
-              <span className="text-s font-bold text-black">Youtube</span>
-              <span className="text-xs font-normal text-black -m-3">Channel</span>
-            </a>
-          </div>
         </div>
 
         {/* Welcome Box - Platform branding and WhatsApp CTA */}
