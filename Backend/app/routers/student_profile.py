@@ -123,6 +123,73 @@ def get_student_profile(current_user: dict = Depends(get_current_user)):
     return profile
 
 
+@router.get("/top-students")
+def get_top_students(
+    exam_year: int | None = None,
+    exam_number: int | None = None,
+    current_user: dict = Depends(get_current_user),
+):
+    if current_user["role"] != "student":
+        raise HTTPException(status_code=403, detail="Students only")
+
+    with engine.connect() as conn:
+        student_row = conn.execute(
+            text("SELECT s.id, s.exam_year FROM students s WHERE s.user_id = :id"),
+            {"id": current_user["id"]},
+        ).mappings().first()
+
+        if student_row is None:
+            raise HTTPException(status_code=404, detail="Student profile not found")
+
+        if exam_year is None:
+            exam_year = student_row["exam_year"]
+
+        params = {"exam_year": exam_year, "exam_number": exam_number}
+
+        rows = conn.execute(
+            text("""
+                WITH ranked AS (
+                    SELECT
+                        s.student_code,
+                        s.name_with_initials AS name,
+                        i.name AS institute_name,
+                        em.final_marks,
+                        RANK() OVER (ORDER BY em.final_marks DESC NULLS LAST) AS rank_pos
+                    FROM exam_marks em
+                    JOIN exams ex ON ex.id = em.exam_id
+                    JOIN classes c ON c.id = ex.class_id
+                    JOIN students s ON s.id = em.student_id
+                    LEFT JOIN institutes i ON i.id = s.institute_id
+                    WHERE em.final_marks IS NOT NULL
+                      AND c.exam_year = :exam_year
+                      AND (:exam_number IS NULL OR ex.exam_number = :exam_number)
+                )
+                SELECT student_code, name, institute_name, final_marks, rank_pos
+                FROM ranked
+                WHERE rank_pos <= 3
+                ORDER BY rank_pos, student_code
+            """),
+            params,
+        ).mappings().all()
+
+    top_students = [
+        {
+            "rank": r["rank_pos"],
+            "student_code": r["student_code"],
+            "name": r["name"],
+            "institute_name": r["institute_name"],
+            "final_marks": float(r["final_marks"]) if r["final_marks"] is not None else None,
+        }
+        for r in rows
+    ]
+
+    return {
+        "exam_year": exam_year,
+        "exam_number": exam_number,
+        "top_students": top_students,
+    }
+
+
 @router.put("")
 def update_student_profile(
     body: ProfileUpdate,

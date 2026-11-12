@@ -57,7 +57,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex">
-      <div className="w-1/2 min-h-screen flex items-center justify-center p-[1%] hidden lg:flex">
+      <div className="bg-white w-1/2 min-h-screen flex items-center justify-center p-[1%] hidden lg:flex">
         <img src={loginBg} alt="E-PolitiX" className="w-full h-auto max-w-full" />
       </div>
 
