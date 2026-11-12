@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api, downloadFile } from '../../utils/api'
-import AdminSideBar from '../../components/admin/AdminSideBar'
+import AdminSideBar from '../../components/admin/AdminSidebar'
 import ResultsFilters from '../../components/admin/results/ResultsFilters'
 import SummaryCards from '../../components/admin/results/SummaryCards'
 import RankListTable from '../../components/admin/results/RankListTable'

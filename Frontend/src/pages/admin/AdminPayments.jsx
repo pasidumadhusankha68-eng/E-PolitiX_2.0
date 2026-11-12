@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import AdminSideBar from '../../components/admin/AdminSideBar'
+import AdminSideBar from '../../components/admin/AdminSidebar'
 import { api } from '../../utils/api'
 import PaymentModal from '../../components/admin/PaymentModal'
 

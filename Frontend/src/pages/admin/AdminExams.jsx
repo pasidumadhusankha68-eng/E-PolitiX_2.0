@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from '../../utils/api'
-import AdminSideBar from '../../components/admin/AdminSideBar'
+import AdminSideBar from '../../components/admin/AdminSidebar'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 const MAX_MARKS = 100

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import AdminSideBar from '../../components/admin/AdminSideBar'
+import AdminSideBar from '../../components/admin/AdminSidebar'
 import OnlineClassForm from '../../components/admin/OnlineClassForm'
 import { api } from '../../utils/api'
 
