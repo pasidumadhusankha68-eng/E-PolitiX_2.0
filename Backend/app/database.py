@@ -1,15 +1,12 @@
 import os
-from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 
-load_dotenv()
-
 url = URL.create(
-    "postgresql://postgres.sltguoujgnixlspnwrmq:ePol1tiX_user@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres",
+    drivername="postgresql+psycopg2",
     username=os.getenv("DB_USER"),
     password=os.getenv("DB_PASSWORD"),
-    host=os.getenv("DB_HOST", "localhost"),
+    host=os.getenv("DB_HOST"),
     port=int(os.getenv("DB_PORT", "5432")),
     database=os.getenv("DB_NAME"),
 )
