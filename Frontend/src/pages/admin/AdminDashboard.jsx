@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Users, UserPlus, ClipboardList, TrendingUp, ChevronRight, CheckCircle2 } from 'lucide-react'
 import { api } from '../../utils/api'
-import AdminSideBar from '../../components/admin/AdminSideBar'
+import AdminSidebar from '../../components/admin/AdminSidebar'
 import {
   LineChart,
   Line,
