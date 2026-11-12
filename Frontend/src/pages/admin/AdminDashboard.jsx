@@ -262,7 +262,7 @@ export default function AdminDashboard() {
                       <XAxis dataKey="test" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} />
                       <YAxis
                         domain={[0, 100]}
-                        tick={[0, 25, 50, 75, 100]}
+                        ticks={[0, 25, 50, 75, 100]}
                         tickFormatter={(v) => v + '%'}
                         tick={{ fill: '#64748b', fontSize: 12 }}
                         axisLine={false}
