@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import landingpgLogo from '../img/landingpg_logo.png'
+import signatureImg from '../img/signature.png'
 
 export default function Footer() {
   return (
@@ -7,10 +9,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-14 lg:gap-16">
           {/* LEFT */}
           <div>
-            <p className="text-5xl md:text-6xl font-bold text-white mb-9" style={{ fontFamily: '"Bodoni Moda", Georgia, serif' }}>E-Politi<span className="text-yellow-500">X</span></p>
-            <p className="text-xl font-semibold text-white">Teacher Name</p>
-            <p className="text-white/55 mt-2">Qualification, University</p>
-            <p className="text-lg text-white mt-5 max-w-[36ch] leading-relaxed">Expert Political Science guidance for A/L students, since 2020.</p>
+            <img src={landingpgLogo} alt="E-PolitiX" className="w-[200px] h-auto mb-5 -ml-2" />
+            <img src={signatureImg} alt="Signature" className="w-[150px] h-auto mb-2" />
+            <p className="text-white/55 mt-2 text-xs">BA(sp) University of Peradeniya </p>
+            <p className="text- text-white mt-5 max-w-[36ch] leading-relaxed">Expert Political Science guidance for A/L students, since 2020.</p>
             <a href="tel:+94778808610" className="block mt-10 text-3xl font-semibold tracking-wide text-white hover:text-yellow-500 transition-colors">077 880 8610</a>
             <div className="mt-14 flex flex-wrap gap-x-8 gap-y-4">
               <a
