@@ -14,7 +14,7 @@ origins = [
     o.strip()
     for o in os.getenv(
         "CORS_ORIGINS", 
-        "http://localhost:5173,http://127.0.0.1:5173,https://epolitix.lk,https://www.epolitix.lk",
+        "http://localhost:5173,http://127.0.0.1:5173,https://epolitix.lk,https://www.epolitix.lk,https://epolitix.vercel.app",
         ).split(",")
     if o.strip()
 ]
