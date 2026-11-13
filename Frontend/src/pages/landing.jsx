@@ -11,8 +11,8 @@ import LevelCard from '../components/LevelCard'
 import BranchCard from '../components/BranchCard'
 import useScrollReveal from '../hooks/useScrollReveal'
 import about_bg from '../img/about_bg.png'
-import mainElement from '../img/about/main_element.png'
 import description from '../img/about/description.png'
+import mainElementImg from '../img/about/main_element.png'
 import TypingText from '../components/TypingText'
 import GalleryMobile from '../components/GalleryMobile'
 import ReviewsMobile from '../components/ReviewsMobile'
@@ -58,6 +58,20 @@ const REVIEWS = [
   { text: "මෙච්චර කාලයක් හරිම ආසාවෙන් ආපු පන්තිය අදින් ඉවර වෙනවා කියද්දි මාරම දුකක් දැනෙනවා . මෙච්චර කාලයක් තිස්සෙ අපිට පොලිටිකල් විෂය ලස්සනට ,තේරෙන විදිහට ඉගැන්නුවා . ඒ වගේම ජීවිතයට වැදගත් පාඩම් ගොඩකුත් කියලා දුන්නට සර්ට ගොඩක් ස්තූතියි.සර්ගෙ කැපවීම සහ මගපෙන්වීම අපිට ලොකු ශක්තියක් වුනා . සර් කරපු හැමදේටම ගොඩක් පින් , සර්ගෙ ඉදිරි සියලු වැඩ කටයුතු සාර්ථක වේවා! කියලා ප්‍රාර්ථනා කරනවා", name: "Student Name", batch: "2025 A/L Theory" },
   { text: "සර්ගෙ වෙඩිල්ල එක්ක බලුවා ම නම් පේපර් එක මොකක් ද කියලා හිතුනා Mcq එක නම් සර් ගෙ වෙඩිල්ල පේපර් ළගින් තියන්නවත් බෑ සර් එච්චර වෙඩිල්ල කොලිටියි ..", name: "Student Name", batch: "2025 A/L Theory" },
 ]
+
+const teacherBio = `ගා/දෙල්ලව විද්‍යාලයෙන් මූලික අධ්‍යාපනය ලබා,
+අ.පො.ස. උසස් පෙළට මාතර රාහුල විද්‍යාලයේ
+සිසුවෙකු ලෙස පෙනීහිඳ ලංකාවේ විශ්ව විදද්‍යාල
+ශ්‍රේණිගතකිරීම් අතර ඉහළම විශ්ව විද්‍යාලයක් වන
+පේරාදෙණිය විශ්ව විද්‍යාලය තුළින් තම විශේෂවේදී
+ උපාධිය හදාර ඇත. එමෙන්ම රුහුණු විශ්ව විදද්‍යාලයේ
+Politics පිළිබඳ උපාධියක් හදාරා තිබේ.
+
+
+ළමයින් 6 දෙනෙකුගෙන් ආරම්භ වූ අපගේ දේශපාලන
+විද්‍යා පන්තිය මේ වන විට නෙළුව, මොරවක, දෙනියාය,
+ඌරු බොක්ක යන ප්‍රදේශ වල වැඩිම සිසුන් පිරිසක්
+සම්බන්ධවන පන්තිය බවට පත්වී ඇත.`
 
 export default function Landing() {
   const heroRef = useRef(null)
@@ -161,7 +175,7 @@ export default function Landing() {
           }
         })
       },
-      { threshold: 0.3, rootMargin: '0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -15% 0px' }
     )
 
     observer.observe(section)
@@ -321,37 +335,19 @@ export default function Landing() {
           Meet your <span className='text-yellow-500'>Teacher</span>
         </h2>
 
-        <p
-          className={`about-subtitle ${isAboutVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}
-        >
-            From the first scholarship paper to the final A/L exam, one institute that knows every step.
-        </p>
-
-        <div className="flex justify-center items-center gap-8 mt-12">
-          <div className='w-1/3 ml-28'>
-            <img
-              src={mainElement}
-              alt="Main Element"
-              className={`h-auto ${isAboutVisible ? 'animate-image-appear' : 'opacity-0'}`}
-            />
+        <div className="flex flex-col md:flex-row gap-10 md:gap-20 p-4 mt-10 w-full max-w-6xl mx-auto">
+          <div className="p-6 flex flex-col items-center justify-center h-[63vh] md:h-[70vh] text-center text-2xl font-bold text-slate-900 teacher-arch w-[95%] mx-auto self-center md:flex-1 md:w-auto md:mx-0 md:self-stretch">
+            <img src={mainElementImg} alt="Main Element" className="max-w-full h-auto max-h-full object-contain mb-4 scale-[135%] md:scale-150" />
           </div>
-          <div className='w-1/2 ml-16 -mt-44'>
+          <div className="flex-1  p-6 rounded-xl text-center font-bold text-slate-300">
             <TypingText
-              text="ගුරුවරයා පිළිබඳව, "
-              as="h2"
-              className="text-4xl text-yellow-500"
-              typeSpeed={80}
-              startDelay={800}
+              text={teacherBio}
+              as="p"
+              className={`text-lg md:text-2xl font-bold leading-relaxed whitespace-pre-line ${isAboutVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
+              typeSpeed={30}
+              startDelay={100}
               trigger={isAboutVisible}
-              cursorBlinkDuration={2000}
             />
-            <p
-              className={`text-2xl ${isAboutVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
-              style={{ animationDelay: '2.1s' }}
-            >
-              <br></br>ගා/දෙල්ලව විද්‍යාලයෙන් මූලික අධ්‍යාපනය ලබා, <br></br>අ.පො.ස. උසස් පෙළට මාතර රාහුල විද්‍යාලයේ <br></br>සිසුවෙකු ලෙස පෙනීහිඳ ලංකාවේ විශ්ව විදද්‍යාල <br></br>ශ්‍රේණිගතකිරීම් අතර ඉහළම විශ්ව විද්‍යාලයක් වන <br></br>පේරාදෙණිය විශ්ව විද්‍යාලය තුළින් තම විශේෂවේදී<br></br> උපාධිය හදාර ඇත. එමෙන්ම රුහුණු විශ්ව විදද්‍යාලයේ <br></br>Politics පිළිබඳ උපාධියක් හදාරා තිබේ.<br></br><br></br>
-              ළමයින් 6 දෙනෙකුගෙන් ආරම්භ වූ අපගේ දේශපාලන <br></br>විද්‍යා පන්තිය මේ වන විට නෙළුව, මොරවක, දෙනියාය, <br></br>ඌරු බොක්ක යන ප්‍රදේශ වල වැඩිම සිසුන් පිරිසක් <br></br>සම්බන්ධවන පන්තිය බවට පත්වී ඇත. 
-            </p>
           </div>
         </div>
         {/* <div className='flex'>

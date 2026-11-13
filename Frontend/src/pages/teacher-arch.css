@@ -1,0 +1,34 @@
+/* Paste into your global CSS (e.g. src/index.css).
+   Only the shape. Layout, size, padding and the image stay as they are. */
+
+.teacher-arch {
+  position: relative;
+  isolation: isolate;
+  border-radius: 50% 50% 28px 28px / 35% 35% 28px 28px;
+}
+
+/* Arch fill (replaces bg-[#d4a017]/30) */
+.teacher-arch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 214, 102, 0.35), transparent 55%),
+    linear-gradient(160deg, #7a5c0a 0%, #4a3606 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 214, 102, 0.25),
+    0 30px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* Offset gold outline behind the arch */
+.teacher-arch::before {
+  content: "";
+  position: absolute;
+  inset: -18px 18px 18px -18px;
+  z-index: -1;
+  border: 2px solid #d4a017;
+  border-radius: inherit;
+  opacity: 0.7;
+}
