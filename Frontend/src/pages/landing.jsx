@@ -118,7 +118,7 @@ function InfoCard({ className = '' }) {
         <div className=" px-3 py-5 text-center sm:p-5 md:border-t-0  md:py-8">
           <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#ffc901]">Centers</p>
           <div className="mt-3 flex flex-nowrap justify-between gap-1.5 sm:flex-wrap sm:justify-center sm:gap-2">
-            {['Morawaka', 'Deniyaya', 'Urubokka', 'Weliwa'].map((c) => (
+            {['Morawaka', 'Deniyaya', 'Urubokka', 'Neluwa'].map((c) => (
               <span
                 key={c}
                 className="whitespace-nowrap rounded-full border border-[#ffc901]/40 bg-white/5 px-2 py-1 text-[9px] uppercase tracking-wider text-white/85 sm:px-3 sm:text-[11px] sm:tracking-widest"
