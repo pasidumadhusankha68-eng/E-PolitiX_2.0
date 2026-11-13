@@ -1,14 +1,14 @@
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import text
 
 from app.database import engine
 from app.security import get_current_user, hash_password, verify_password
 
-router = APIRouter(prefix="/student/profile", tags=["student-profile"])
+router = APIRouter(prefix="/student", tags=["student-profile"])
 
 
 def _current_month_colombo() -> date:
@@ -40,7 +40,7 @@ class PasswordChange(BaseModel):
     new_password: str
 
 
-@router.get("")
+@router.get("/profile")
 def get_student_profile(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "student":
         raise HTTPException(status_code=403, detail="Students only")
@@ -125,72 +125,166 @@ def get_student_profile(current_user: dict = Depends(get_current_user)):
 
 @router.get("/top-students")
 def get_top_students(
-    exam_year: int | None = None,
-    exam_number: int | None = None,
+    response: Response,
+    view: str | None = None,
     current_user: dict = Depends(get_current_user),
 ):
     if current_user["role"] != "student":
         raise HTTPException(status_code=403, detail="Students only")
 
+    response.headers["Cache-Control"] = "private, max-age=60"
+
+    view = (view or "latest").strip().lower()
+    if view not in ("latest", "average"):
+        view = "latest"
+
     with engine.connect() as conn:
-        student_row = conn.execute(
-            text("SELECT s.id, s.exam_year FROM students s WHERE s.user_id = :id"),
+        viewer = conn.execute(
+            text("""
+                SELECT s.id AS student_id, s.exam_year
+                FROM students s
+                JOIN users u ON u.id = s.user_id
+                WHERE u.id = :id
+            """),
             {"id": current_user["id"]},
         ).mappings().first()
 
-        if student_row is None:
+        if viewer is None:
             raise HTTPException(status_code=404, detail="Student profile not found")
 
-        if exam_year is None:
-            exam_year = student_row["exam_year"]
+        exam_year = viewer["exam_year"]
+        base_filters = """
+            c.exam_year = :year
+            AND s.exam_year = :year
+            AND u.is_active
+            AND em.final_marks IS NOT NULL
+        """
 
-        params = {"exam_year": exam_year, "exam_number": exam_number}
+        test = None
+        rows = []
 
-        rows = conn.execute(
-            text("""
-                WITH ranked AS (
-                    SELECT
-                        s.student_code,
-                        s.name_with_initials AS name,
-                        i.name AS institute_name,
-                        em.final_marks,
-                        RANK() OVER (ORDER BY em.final_marks DESC NULLS LAST) AS rank_pos
+        if view == "latest":
+            total = conn.execute(
+                text("""
+                    SELECT COUNT(*)
+                    FROM students s
+                    JOIN users u ON u.id = s.user_id
+                    WHERE s.exam_year = :year AND u.is_active
+                """),
+                {"year": exam_year},
+            ).scalar()
+
+            mark_counts = conn.execute(
+                text(f"""
+                    SELECT ex.exam_number AS exam_number, COUNT(*) AS cnt
                     FROM exam_marks em
                     JOIN exams ex ON ex.id = em.exam_id
                     JOIN classes c ON c.id = ex.class_id
                     JOIN students s ON s.id = em.student_id
-                    LEFT JOIN institutes i ON i.id = s.institute_id
-                    WHERE em.final_marks IS NOT NULL
-                      AND c.exam_year = :exam_year
-                      AND (:exam_number IS NULL OR ex.exam_number = :exam_number)
-                )
-                SELECT student_code, name, institute_name, final_marks, rank_pos
-                FROM ranked
-                WHERE rank_pos <= 3
-                ORDER BY rank_pos, student_code
-            """),
-            params,
-        ).mappings().all()
+                    JOIN users u ON u.id = s.user_id
+                    WHERE {base_filters}
+                    GROUP BY ex.exam_number
+                """),
+                {"year": exam_year},
+            ).mappings().all()
 
-    top_students = [
-        {
-            "rank": r["rank_pos"],
-            "student_code": r["student_code"],
+            chosen = None
+            if total and total > 0:
+                for r in sorted(mark_counts, key=lambda x: x["exam_number"], reverse=True):
+                    if r["cnt"] * 100 >= total * 80:
+                        chosen = r["exam_number"]
+                        break
+            if chosen is None and mark_counts:
+                chosen = max(r["exam_number"] for r in mark_counts)
+
+            if chosen is not None:
+                test_row = conn.execute(
+                    text("""
+                        SELECT ex.exam_number, ex.exam_name, ex.test_date
+                        FROM exams ex
+                        JOIN classes c ON c.id = ex.class_id
+                        WHERE c.exam_year = :year AND ex.exam_number = :num
+                        ORDER BY ex.id
+                        LIMIT 1
+                    """),
+                    {"year": exam_year, "num": chosen},
+                ).mappings().first()
+                if test_row is not None:
+                    test = {
+                        "exam_number": test_row["exam_number"],
+                        "exam_name": test_row["exam_name"],
+                        "test_date": test_row["test_date"].isoformat(),
+                    }
+
+                rows = conn.execute(
+                    text(f"""
+                        SELECT s.id AS student_id, s.student_code,
+                               s.name_with_initials AS name,
+                               i.name AS institute_name,
+                               em.final_marks AS mark,
+                               RANK() OVER (ORDER BY em.final_marks DESC) AS place
+                        FROM exam_marks em
+                        JOIN exams ex ON ex.id = em.exam_id
+                        JOIN classes c ON c.id = ex.class_id
+                        JOIN students s ON s.id = em.student_id
+                        LEFT JOIN institutes i ON i.id = s.institute_id
+                        JOIN users u ON u.id = s.user_id
+                        WHERE {base_filters}
+                          AND ex.exam_number = :num
+                    """),
+                    {"year": exam_year, "num": chosen},
+                ).mappings().all()
+        else:
+            rows = conn.execute(
+                text(f"""
+                    WITH student_avg AS (
+                        SELECT s.id AS student_id, s.student_code,
+                               s.name_with_initials AS name,
+                               i.name AS institute_name,
+                               ROUND(AVG(em.final_marks), 1) AS mark
+                        FROM exam_marks em
+                        JOIN exams ex ON ex.id = em.exam_id
+                        JOIN classes c ON c.id = ex.class_id
+                        JOIN students s ON s.id = em.student_id
+                        LEFT JOIN institutes i ON i.id = s.institute_id
+                        JOIN users u ON u.id = s.user_id
+                        WHERE {base_filters}
+                        GROUP BY s.id, s.student_code, s.name_with_initials, i.name
+                    )
+                    SELECT student_id, student_code, name, institute_name, mark,
+                           RANK() OVER (ORDER BY mark DESC) AS place
+                    FROM student_avg
+                    ORDER BY place ASC, name ASC
+                """),
+                {"year": exam_year},
+            ).mappings().all()
+
+    items = []
+    for r in rows:
+        place = r["place"]
+        if place is None or place > 3:
+            continue
+        items.append({
+            "place": place,
             "name": r["name"],
             "institute_name": r["institute_name"],
-            "final_marks": float(r["final_marks"]) if r["final_marks"] is not None else None,
-        }
-        for r in rows
-    ]
+            "mark": float(r["mark"]),
+            "code_masked": (r["student_code"] or "")[:6] + "****",
+            "is_me": r["student_id"] == viewer["student_id"],
+        })
+
+    items.sort(key=lambda x: (x["place"], x["name"]))
+    items = items[:6]
 
     return {
+        "view": view,
         "exam_year": exam_year,
-        "exam_number": exam_number,
-        "top_students": top_students,
+        "test": test,
+        "items": items,
     }
 
 
-@router.put("")
+@router.put("/profile")
 def update_student_profile(
     body: ProfileUpdate,
     current_user: dict = Depends(get_current_user),
@@ -254,7 +348,7 @@ MIN_PASSWORD_LEN = 8
 MAX_PASSWORD_LEN = 72
 
 
-@router.post("/password")
+@router.post("/profile/password")
 def change_password(
     body: PasswordChange,
     current_user: dict = Depends(get_current_user),

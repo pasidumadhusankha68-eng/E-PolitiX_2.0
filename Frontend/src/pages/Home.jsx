@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
+import TopStudents from '../components/TopStudents'
 import TodayClasses from '../components/TodayClasses'
 import boyImg from '../img/boy.svg'
 import girlImg from '../img/Girl.svg'
 import welcomeBanner from '../img/welcome_banner.png'
-import whatsappIcon from '../img/whatsapp.svg'
-import facebookIcon from '../img/facebook.svg'
-import youtubeIcon from '../img/youtube.svg'
 import { api } from '../utils/api'
 
 /**
@@ -27,11 +25,6 @@ export default function Home() {
   // Gender fetched from backend (/student/profile) — no localStorage gender field exists
   const [gender, setGender] = useState('male')
   const characterImg = gender === 'female' ? girlImg : boyImg
-
-  // Top students cards (whole institutes, derived from student's exam year)
-  const [topStudents, setTopStudents] = useState([])
-  const [topLoading, setTopLoading] = useState(true)
-  const [topError, setTopError] = useState(null)
 
   // Compute greeting based on current hour
   // Why: Runs on mount and updates if component stays mounted past time boundaries
@@ -60,17 +53,8 @@ export default function Home() {
         if (mounted && profile.gender) {
           setGender(profile.gender.toLowerCase())
         }
-        if (mounted && profile.exam_year) {
-          const data = await api(`/student/top-students?exam_year=${profile.exam_year}`)
-          setTopStudents(Array.isArray(data.top_students) ? data.top_students : [])
-        } else if (mounted) {
-          setTopStudents([])
-        }
       } catch {
         setGender('male')
-        setTopStudents([])
-      } finally {
-        if (mounted) setTopLoading(false)
       }
     }
     fetchProfileAndTop()
@@ -78,13 +62,6 @@ export default function Home() {
       mounted = false
     }
   }, [])
-
-  // Medal colors for 1st / 2nd / 3rd place (matches existing gold theme)
-  const RANK_STYLES = [
-    { medal: '1', fill: '#c2410c', text: '#ffffff' },
-    { medal: '2', fill: '#c0c0c0', text: '#333333' },
-    { medal: '3', fill: '#cd7f32', text: '#ffffff' },
-  ]
 
   return (
     <div className="min-h-screen bg-white">
@@ -111,56 +88,10 @@ export default function Home() {
               className="w-40 h-40 absolute right-8 top-1/2 -translate-y-1/2 [@media(max-width:500px)]:w-[120px] [@media(max-width:500px)]:h-[120px] [@media(max-width:500px)]:-right-1"
             />
           </div>
-          
+
         </div>
 
-        {/* Top students cards - whole institutes */}
-        {topLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-48 bg-slate-100 rounded-2xl animate-pulse" />
-            ))}
-          </div>
-        ) : topError ? (
-          <div className="mb-6 rounded-xl border border-red-100 bg-red-50 p-4 text-sm text-red-700">
-            {topError}
-          </div>
-        ) : topStudents.length === 0 ? (
-          <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 p-6 text-center text-sm text-slate-500">
-            No results yet
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            {topStudents.map((student, i) => {
-              const rank = RANK_STYLES[i] || RANK_STYLES[2]
-              return (
-                <div
-                  key={i}
-                  className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col items-center text-center"
-                >
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-3 text-white font-bold text-lg shadow-sm"
-                    style={{ backgroundColor: rank.fill, color: rank.text }}
-                  >
-                    {rank.medal}
-                  </div>
-                  <div className="font-mono font-bold text-slate-900 text-sm mb-1">
-                    {student.student_code}
-                  </div>
-                  <div className="font-semibold text-slate-800 text-sm mb-1 line-clamp-2">
-                    {student.name}
-                  </div>
-                  <div className="text-xs text-slate-500 mb-2">
-                    {student.institute_name || '-'}
-                  </div>
-                  <div className="text-2xl font-bold text-slate-900">
-                    {student.final_marks != null ? student.final_marks : '-'}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
+        <TopStudents />
 
         {/* Welcome Box - Platform branding and WhatsApp CTA */}
         {/* Why: Reinforces brand identity and drives community engagement */}
