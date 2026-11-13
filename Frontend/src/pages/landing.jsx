@@ -1,11 +1,12 @@
 import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import landingBg from '../img/landing_page_bg.png'
 import NavbarLanding from '../components/NavbarLanding'
 import FlipText from '../components/FlipText'
-import AL from '../img/AL.png'
-import Name from '../img/Name.png'
-import landingSlang from '../img/landing_page_slang.png'
+import heroBg from '../img/landing_page/background.png'
+import userImg from '../img/landing_page/container_two/user.png'
+import ALImg from '../img/landing_page/container_one/AL.png'
+import NameImg from '../img/landing_page/container_one/Name.png'
+import landingSlangImg from '../img/landing_page/container_one/landing_page_slang.png'
 import LevelCard from '../components/LevelCard'
 import BranchCard from '../components/BranchCard'
 import useScrollReveal from '../hooks/useScrollReveal'
@@ -227,14 +228,17 @@ export default function Landing() {
       <NavbarLanding />
       
       {/* Hero Section - landing_page_bg.png */}
-      <section id="hero" ref={heroRef} className="min-h-screen relative overflow-hidden flex items-center justify-start px-6 pt-16 bg-reveal" style={{ backgroundImage: `url(${landingBg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', '--delay': '0.2s' }}>
+      <section id="hero" ref={heroRef} className="min-h-screen relative overflow-hidden flex items-center justify-start px-6 pt-16 bg-reveal" style={{ backgroundImage: `url(${heroBg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', '--delay': '0.2s' }}>
         <div className="absolute inset-0 bg-black/40" />
-        <div className="relative z-10 text-center text-white max-w-3xl">
-        </div>
-        <div className='w-1/3 h-72 ml-32 flex flex-col items-start justify-center'>
-          <img className='banner-reveal w-52 ml-3' style={{ '--delay': '0.2s' }} src={AL} alt="AL" />
-          <img className='banner-reveal' style={{ '--delay': '0.4s' }} src={Name} alt="Name" />
-          <img className='banner-reveal' style={{ '--delay': '0.7s' }} src={landingSlang} alt="Landing Slang" />
+        <div className="relative z-10 flex flex-col md:flex-row min-h-[70vh] w-full max-w-7xl mx-auto gap-10 pt-10 rounded-xl shadow-sm">
+          <div className="flex-1 p-4 md:p-8 text-center flex flex-col items-start justify-center -gap-2">
+            <img src={ALImg} alt="AL" className="max-w-[120px] ml-2 md:max-w-[200px] md:ml-3 h-auto max-h-[200px] object-contain " />
+            <img src={NameImg} alt="Name" className="max-w-[300px] md:max-w-full h-auto max-h-[200px] object-contain" />
+            <img src={landingSlangImg} alt="Landing Slang" className="max-w-full h-auto max-h-[200px] object-contain" />
+          </div>
+          <div className="flex-1 text-center">
+            <img src={userImg} alt="User" className="max-w-full h-auto max-h-[800px] object-contain" />
+          </div>
         </div>
       </section>
       
