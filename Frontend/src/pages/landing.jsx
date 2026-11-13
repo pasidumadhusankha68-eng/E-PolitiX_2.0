@@ -242,7 +242,7 @@ export default function Landing() {
       <NavbarLanding />
       
       {/* Hero Section - landing_page_bg.png */}
-      <section id="hero" ref={heroRef} className="min-h-screen relative overflow-hidden flex items-center justify-start px-6 pt-16 bg-reveal" style={{ backgroundImage: `url(${heroBg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', '--delay': '0.2s' }}>
+      <section id="hero" ref={heroRef} className="min-h-screen relative overflow-hidden flex items-center justify-start px-6 pt-24 bg-reveal" style={{ backgroundImage: `url(${heroBg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', '--delay': '0.2s' }}>
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative z-10 flex flex-col md:flex-row min-h-[70vh] w-full max-w-6xl mx-auto gap-10 pt-10 rounded-xl shadow-sm ">
           <div className="flex-1 p-2 md:p-8 text-center flex flex-col items-start justify-center -gap-2 " >

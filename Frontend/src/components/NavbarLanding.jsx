@@ -16,19 +16,34 @@ const splitText = (text, startIndex) => {
   ))
 }
 
+const ICONS = {
+  '#classes': <><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></>,
+  '#about': <><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M6.2 19a6 6 0 0 1 11.6 0"/></>,
+  '#programme': <><path d="M12 2 2 7l10 5 10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></>,
+  '#results': <><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></>,
+  '#reviews': <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>,
+  '#gallery': <><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></>,
+  '#contact': <><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></>,
+}
+
+const Icon = ({ name }) => (
+  <svg viewBox="0 0 24 24" className="nav-slide-in h-[18px] w-[18px] flex-none fill-none stroke-current" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{ICONS[name]}</svg>
+)
+
 export default function NavbarLanding() {
   let letterIndex = 0
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [active, setActive] = useState('')
 
   const navItems = [
-    { href: '#classes', label: 'Classes' },
-    { href: '#about', label: 'About'},
-    { href: '#programme', label: 'Our Programme' },
-    { href: '#results', label: 'Result' },
-    { href: '#reviews', label: 'Reviews' },
-    { href: '#gallery', label: 'Gallery' },
-    { href: '#contact', label: 'Contact' }
+    { href: '#classes', label: ' Classes' },
+    { href: '#about', label: ' About'},
+    { href: '#programme', label: ' Our Programme' },
+    { href: '#results', label: ' Result' },
+    { href: '#reviews', label: ' Reviews' },
+    { href: '#gallery', label: ' Gallery' },
+    { href: '#contact', label: ' Contact' }
   ]
 
   useEffect(() => {
@@ -49,6 +64,17 @@ export default function NavbarLanding() {
   }, [])
 
   useEffect(() => {
+    const els = navItems.map((n) => document.getElementById(n.href.slice(1))).filter(Boolean)
+    if (!els.length) return
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive('#' + e.target.id) }),
+      { rootMargin: '-45% 0px -50% 0px' }
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+
+  useEffect(() => {
     if (open) {
       const prev = document.body.style.overflow
       document.body.style.overflow = 'hidden'
@@ -59,9 +85,9 @@ export default function NavbarLanding() {
   }, [open])
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition duration-200 ease-out shadow-[0_10px_32px_rgba(0,0,0,0.5)] ${open ? 'bg-transparent border-none' : scrolled ? 'bg-[#0c0b0b]/90 backdrop-blur-md border-b border-white/10 lg:bg-white/05 lg:backdrop-blur-sm lg:border-b lg:border-none' : 'bg-white/05 backdrop-blur-sm border-b border-none'}`}>
-      <div className="max-w-7xl mx-auto px-[10vw] lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <nav className={`fixed inset-x-0 top-0 z-50 transition duration-200 ease-out max-lg:shadow-[0_10px_32px_rgba(0,0,0,0.5)] nav-slide-in ${open ? 'max-lg:bg-transparent max-lg:border-none' : scrolled ? 'max-lg:bg-[#0c0b0b]/90 max-lg:backdrop-blur-md max-lg:border-b max-lg:border-white/10' : 'max-lg:bg-white/05 max-lg:backdrop-blur-sm max-lg:border-b max-lg:border-none'} lg:top-3 lg:px-4 lg:pointer-events-none`} aria-label="Main">
+      <div className="max-w-7xl mx-auto px-[10vw] lg:px-0 lg:max-w-[1360px] lg:pointer-events-auto lg:rounded-[22px] lg:border lg:border-white/10 lg:bg-[#181513]/80 lg:shadow-[0_18px_50px_rgba(0,0,0,0.55)] lg:backdrop-blur-xl lg:pl-5 lg:pr-2.5 nav-slide-in">
+        <div className="flex items-center justify-between h-16 lg:h-[px]">
           {/* Logo */}
           <span className="nav-pop inline-flex" style={{ '--delay': '1.3s' }}>
             <Link
@@ -90,27 +116,34 @@ export default function NavbarLanding() {
           </span>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8 tracking-wide whitespace-nowrap">
+          <div className="hidden lg:flex gap-0.5 rounded-2xl bg-white/[0.07] p-[3px] whitespace-nowrap">
             {navItems.map((item) => {
               const letters = splitText(item.label, letterIndex)
               letterIndex += item.label.length
               const isAnchor = item.href.startsWith('#')
+              const base = 'flex items-center gap-[2px] whitespace-nowrap rounded-xl px-3.5 py-[9px] text-[0.9rem] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#d4a017]'
+              const activeCls = active === item.href ? 'bg-[#d4a017]/40 text-white shadow-[0_4px_14px_rgba(0,0,0,0.18)] [&_svg]:stroke-slate-300' : 'text-white/70 hover:text-white'
+              const cls = base + ' ' + activeCls
               return isAnchor ? (
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-white hover:text-orange-400 font-medium transition-colors whitespace-nowrap text-sm"
+                  onClick={() => setActive(item.href)}
+                  className={cls}
                   aria-label={item.label}
                 >
+                  <Icon name={item.href} />
                   {letters}
                 </a>
               ) : (
                 <Link
                   key={item.href}
                   to={item.href}
-                  className="text-white hover:text-orange-400 font-medium transition-colors whitespace-nowrap text-sm"
+                  onClick={() => setActive(item.href)}
+                  className={cls}
                   aria-label={item.label}
                 >
+                  <Icon name={item.href} />
                   {letters}
                 </Link>
               )
@@ -118,11 +151,11 @@ export default function NavbarLanding() {
           </div>
 
           {/* Auth Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2">
             <span className="nav-pop inline-flex" style={{ '--delay': '1.45s' }}>
               <Link
                 to="/login"
-                className="rounded-lg text-white hover:text-white hover:bg-white/10 font-light transition-colors px-6 py-2 tracking-widest border-1 "
+                className="inline-flex h-11 items-center rounded-[14px] border border-white/10 bg-white/[0.07] px-[22px] text-[0.92rem] font-semibold text-white transition hover:-translate-y-px hover:bg-white/15"
                 aria-label="Login"
               >
                 Login
@@ -131,7 +164,7 @@ export default function NavbarLanding() {
             <span className="nav-pop inline-flex" style={{ '--delay': '1.6s' }}>
               <Link
                 to="/register"
-                className="bg-orange-500 hover:bg-orange-700 text-white font-light px-5 py-2 rounded-lg transition-all tracking-widest shadow-[0_8px_16px_-5px_rgba(249,115,22,0.6)] hover:shadow-[0_12px_24px_-6px_rgba(249,115,22,0.4)]"
+                className="inline-flex h-11 items-center rounded-[14px] bg-orange-500 px-[22px] text-[0.92rem] font-semibold text-white shadow-[0_8px_18px_-8px_rgba(255,96,0,0.8)] transition hover:-translate-y-px hover:bg-orange-600"
                 aria-label="Register"
               >
                 Register

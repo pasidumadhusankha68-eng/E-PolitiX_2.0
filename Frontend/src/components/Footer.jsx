@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import landingpgLogo from '../img/landingpg_logo.png'
 import signatureImg from '../img/signature.png'
+import landingPageSlang from '../img/landing_page_slang.png'
 
 export default function Footer() {
   return (
@@ -12,7 +13,7 @@ export default function Footer() {
             <img src={landingpgLogo} alt="E-PolitiX" className="w-[200px] h-auto mb-5 -ml-2" />
             <img src={signatureImg} alt="Signature" className="w-[150px] h-auto mb-2" />
             <p className="text-white/55 mt-2 text-xs">BA(sp) University of Peradeniya </p>
-            <p className="text- text-white mt-5 max-w-[36ch] leading-relaxed">Expert Political Science guidance for A/L students, since 2020.</p>
+            <img src={landingPageSlang} alt="Slang" className="mt-2 -ml-2 max-w-[36ch] h-auto" />
             <a href="tel:+94778808610" className="block mt-10 text-3xl font-semibold tracking-wide text-white hover:text-yellow-500 transition-colors">077 880 8610</a>
             <div className="mt-14 flex flex-wrap gap-x-8 gap-y-4">
               <a
@@ -110,31 +111,13 @@ export default function Footer() {
         {/* BOTTOM BAR */}
         <div className="mt-16 md:mt-20 py-8 border-t border-white/10 flex flex-col md:flex-row md:justify-between gap-3 text-sm text-white/55">
           <span>© {new Date().getFullYear()} E-PolitiX</span>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <Link
-              to="/privacy"
-              className="hover:text-white transition-colors"
-            >
-              Privacy
-            </Link>
-            <span className="text-white/55 mx-1">and</span>
-            <Link
-              to="/terms"
-              className="hover:text-white transition-colors"
-            >
-              Terms
-            </Link>
+          <div>
             <span className="text-white">
-              Designed &amp; built by Lumoria and{' '}
-              <a
-                href="https://oryn.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#ff6000] border-b border-[#ff6000] hover:text-yellow-500 hover:border-yellow-500"
-              >
-                Oryn.dev
-              </a>
-            </span>
+              Designed by <span>Lumoria</span></span>
+          </div>
+          <div>
+            <span className="text-white">
+              Developed by <span>Pasidu Madhusankha</span></span>
           </div>
         </div>
       </div>

@@ -3,6 +3,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-padding-top: 110px;
+}
+
+@keyframes navFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.nav-fade-in {
+  animation: navFadeIn 0.5s ease-out 0s forwards;
+}
+
 :root {
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -112,6 +124,10 @@
     animation: cardReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s) both;
     opacity: 0;
   }
+  .ts-card {
+    animation: tsCardReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s) both;
+    opacity: 0;
+  }
   .reveal-card {
     opacity: 0;
     transform: translateY(48px) scale(0.96);
@@ -144,6 +160,7 @@
     .nav-pop,
     .bg-reveal,
     .card-reveal,
+    .ts-card,
     .reveal-card,
     .reveal-text {
       animation: none;
@@ -255,6 +272,17 @@
 }
 
 @keyframes cardReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tsCardReveal {
   0% {
     opacity: 0;
     transform: translateY(20px);
