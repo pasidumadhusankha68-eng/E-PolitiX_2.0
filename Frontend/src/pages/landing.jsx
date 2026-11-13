@@ -3,12 +3,16 @@ import { Link } from 'react-router-dom'
 import NavbarLanding from '../components/NavbarLanding'
 import FlipText from '../components/FlipText'
 import heroBg from '../img/landing_page/background.png'
+import headerImg from '../img/header.png'
+import headerMobileImg from '../img/header_mobile.png'
+import pgcovImg from '../img/pgcov.png'
 import userImg from '../img/landing_page/container_two/user.png'
 import ALImg from '../img/landing_page/container_one/AL.png'
 import NameImg from '../img/landing_page/container_one/Name.png'
 import landingSlangImg from '../img/landing_page/container_one/landing_page_slang.png'
 import LevelCard from '../components/LevelCard'
 import BranchCard from '../components/BranchCard'
+import FaqSection from '../components/FaqSection'
 import useScrollReveal from '../hooks/useScrollReveal'
 import about_bg from '../img/about_bg.png'
 import description from '../img/about/description.png'
@@ -20,8 +24,10 @@ import Footer from '../components/Footer'
 
 
 import '@fontsource/bodoni-moda/700.css'
+// Noto Serif Sinhala (install first: npm i @fontsource/noto-serif-sinhala)
+import '@fontsource/noto-serif-sinhala/400.css'
+import '@fontsource/noto-serif-sinhala/700.css'
 
-const WHATSAPP_NUMBER = '94778808610'
 const gradientBg = 'linear-gradient(180deg, #0B0A0A 0%, #0E0D0D 50%, #0B0A0A 100%)'
 
 const resultFiles = import.meta.glob('../img/results/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true, import: 'default' })
@@ -38,13 +44,20 @@ const SUB_BANNERS = [{ id: 'sub-1', alt: 'Result banner 3' }, { id: 'sub-2', alt
 
 const PROGRAMME_INTRO = ''
 const SINHALA_FONT = '"Noto Sans Sinhala", "Iskoola Pota", sans-serif'
+// Font for the closing letter paragraph
+const SERIF_SINHALA = '"Noto Serif Sinhala", "Iskoola Pota", serif'
 const LABEL_GRADIENT = 'linear-gradient(90deg, #c2410c, #ff6000)'
+
+// Shared section-title styles (same look as the FAQ title)
+const TITLE_CLASS = 'classes-title uppercase text-4xl sm:text-6xl lg:text-7xl leading-none tracking-tight'
+const EYEBROW_CLASS = 'block mb-3 text-xs font-bold uppercase tracking-[0.2em] text-yellow-500'
+
 const PROGRAMME_STEPS = [
-  { id: 'theory', label: 'Theory', description: '' },
+  { id: 'theory', label: 'Theory', description: 'විෂය කරුණු සරලව හා පැහැදිලිව අවබෝධ කරගැනීමට අවශ්‍ය මූලික දැනුම මෙහිදී ලබාගත හැකිය.' },
   { id: 'skill-up', label: 'Skill Up', description: 'උසස්පෙළ විභාගයේ බහුවරණ ප්‍රශ්න පත්‍රය ඉලක්ක කරගත් මූලික අවධියේ සිට යන වැඩසටහනකි.' },
   { id: 'confidence', label: 'Confidence', description: 'උසස්පෙළ විභාගයේ ලියන ප්‍රශ්න පත්‍රය ඉලක්ක කරගත් මූලික අවධියේ සිට යන වැඩසටහනකි.' },
   { id: 'lessonmax', label: 'LessonMax', description: 'අප විභාගය සඳහා තෝරාගත් අනිවාර්ය පාඩම්වල උපරිමයට ගෙන ඒමේ වැඩසටහනකි.' },
-  { id: 'revision', label: 'Revision', description: '' },
+  { id: 'revision', label: 'Revision', description: 'ඉගෙනගත් පාඩම් නැවත මතක් කරගෙන දැනුම තහවුරු කරගැනීමට මෙය උපකාරී වේ.' },
   { id: 'ranking-papers', label: 'Ranking Papers', description: 'දිස්ත්‍රික් කුසලතා ඉලක්ක කර ගනිමින් සකස් වූ විධිමත් වැඩසටහනකි.' },
   { id: 'weddilla', label: 'වෙඩිල්ල', sinhalaLabel: true, description: 'අපගේ ප්‍රශ්න පත්‍ර මාලාව තුල සම්පූර්ණ උසස්පෙළ ප්‍රශ්න පත්‍ර අනුමාන කරමින් මාස 6ක් තිස්සේ ක්‍රියාත්මක වන වැඩසටහනකි.' },
 ]
@@ -73,52 +86,73 @@ Politics පිළිබඳ උපාධියක් හදාරා තිබ�
 ඌරු බොක්ක යන ප්‍රදේශ වල වැඩිම සිසුන් පිරිසක්
 සම්බන්ධවන පන්තිය බවට පත්වී ඇත.`
 
+// Info card: mobile = 2 boxes on top + Centers row below. Desktop (md+) = all three in ONE line.
+function InfoCard({ className = '' }) {
+  return (
+    <div className={`card-reveal is-visible overflow-hidden mt-10 border-t border-slate-100/0 md:border-slate-100/20 backdrop-blur-sm font-mono ${className}`}>
+      <div className="md:grid md:grid-cols-3">
+        {/* Batches + Medium: 2 columns on mobile, become direct grid cells on desktop (md:contents) */}
+        <div className="grid grid-cols-2 md:contents">
+          <div className="p-5 text-center md:py-8">
+            <p
+              className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#ffc901] animate-bounce"
+              style={{ animationDuration: '3s', animationDelay: '0ms' }}
+            >
+              Batches
+            </p>
+            <p
+              className="mt-2 text-sm text-white whitespace-nowrap animate-zoom"
+              style={{ animationDuration: '3s', animationDelay: '0ms' }}
+            >
+              2027 | 2028
+            </p>
+          </div>
+
+          <div className=" p-5 text-center md:py-8">
+            <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#ffc901]">Medium</p>
+            <p className="mt-2 text-sm text-white">SINHALA</p>
+          </div>
+        </div>
+
+        {/* Centers: own row on mobile, third column on desktop */}
+        <div className=" px-3 py-5 text-center sm:p-5 md:border-t-0  md:py-8">
+          <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-[#ffc901]">Centers</p>
+          <div className="mt-3 flex flex-nowrap justify-between gap-1.5 sm:flex-wrap sm:justify-center sm:gap-2">
+            {['Morawaka', 'Deniyaya', 'Urubokka', 'Weliwa'].map((c) => (
+              <span
+                key={c}
+                className="whitespace-nowrap rounded-full border border-[#ffc901]/40 bg-white/5 px-2 py-1 text-[9px] uppercase tracking-wider text-white/85 sm:px-3 sm:text-[11px] sm:tracking-widest"
+              >
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Landing() {
   const heroRef = useRef(null)
   const branchesGridRef = useRef(null)
   const aboutTextRef = useRef(null)
   const aboutSectionRef = useRef(null)
   const classesSectionRef = useRef(null)
-  const contactSectionRef = useRef(null)
+  const faqSectionRef = useRef(null)
   const reviewsSectionRef = useRef(null)
   const resultSectionRef = useRef(null)
   const programmeSectionRef = useRef(null)
   const [classesLoading, setClassesLoading] = useState(true)
   const [isAboutVisible, setIsAboutVisible] = useState(false)
   const [isClassesVisible, setIsClassesVisible] = useState(false)
-  const [isContactVisible, setIsContactVisible] = useState(false)
+  const [isFaqVisible, setIsFaqVisible] = useState(false)
   const [isReviewsVisible, setIsReviewsVisible] = useState(false)
 
   useScrollReveal(branchesGridRef)
   useScrollReveal(aboutTextRef)
   useScrollReveal(resultSectionRef)
   useScrollReveal(programmeSectionRef)
-
-  const [form, setForm] = useState({ name: '', phone: '', message: '' })
-
-  const  handleChange = (e) => 
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
-
-  const handlePhoneChange = (e) => {
-  const digits = e.target.value
-    .replace(/\D/g, '')   
-    .replace(/^0+/, '')   
-    .slice(0, 9)          
-  setForm((f) => ({ ...f, phone: digits }))
-}
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    const text =
-    `Hello E-Politix,\n\n` +
-    `Name: ${form.name}\n` +
-    (form.phone ? `Phone: +94${form.phone}\n` : '') +
-    `\nMessage: ${form.message}`
-    
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`
-  window.open(url, '_blank', 'noopener,noreferrer')
-  }
 
   useEffect(() => {
     if ('scrollRestoration' in history) {
@@ -183,13 +217,15 @@ export default function Landing() {
     return () => observer.disconnect()
   }, [])
 
+  // FAQ reveal. The ref is attached to the wrapper <div> around <FaqSection />
+  // (it was never attached before, which kept the section invisible).
   useEffect(() => {
-    const section = contactSectionRef.current
+    const section = faqSectionRef.current
     if (!section) return
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) {
-      setIsContactVisible(true)
+      setIsFaqVisible(true)
       return
     }
 
@@ -197,12 +233,12 @@ export default function Landing() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setIsContactVisible(true)
+            setIsFaqVisible(true)
             observer.unobserve(section)
           }
         })
       },
-      { threshold: 0.3, rootMargin: '0px' }
+      { threshold: 0.1, rootMargin: '0px' }
     )
 
     observer.observe(section)
@@ -240,25 +276,43 @@ export default function Landing() {
   return (
     <div className="w-full relative min-h-screen cursor-default" style={{ background: gradientBg }}>
       <NavbarLanding />
-      
+
       {/* Hero Section - landing_page_bg.png */}
       <section id="hero" ref={heroRef} className="min-h-screen relative overflow-hidden flex items-center justify-start px-6 pt-24 bg-reveal" style={{ backgroundImage: `url(${heroBg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', '--delay': '0.2s' }}>
         <div className="absolute inset-0 bg-black/20" />
-        <div className="relative z-10 flex flex-col md:flex-row min-h-[70vh] w-full max-w-6xl mx-auto gap-10 pt-10 rounded-xl shadow-sm ">
+        <div className="relative z-10 w-full max-w-6xl mx-auto rounded-xl shadow-sm">
+          <div className="flex flex-col md:flex-row min-h-0 md:min-h-[70vh] gap-0 md:gap-10">
           <div className="flex-1 p-2 md:p-8 text-center flex flex-col items-start justify-center -gap-2 " >
             <img src={ALImg} alt="AL" className="max-w-[120px] ml-2 md:max-w-[200px] md:ml-3 h-auto max-h-[200px] object-contain " />
             <img src={NameImg} alt="Name" className="max-w-[300px] md:max-w-full h-auto max-h-[200px] object-contain" />
             <img src={landingSlangImg} alt="Landing Slang" className="max-w-full h-auto max-h-[200px] object-contain" />
+            <div className="flex flex-col md:flex-row gap-4 mt-8 md:mt-10 justify-start items-start">
+              <Link
+                to="/register"
+                className="group inline-flex items-center gap-2 text-xs px-5 py-2 md:px-5 md:py-3.5 rounded-lg md:rounded-[14px] bg-gradient-to-r from-[#ffc901] via-[#fff3b0] to-[#ff9a00] shadow-[0_8px_30px_-8px_rgba(255,160,0,0.6)] text-[#1a1204] font-extrabold uppercase tracking-wider md:text-sm animate-float hover:-translate-y-px hover:shadow-[0_0_20px_rgba(212,160,23,0.6)] transition-all duration-300 ml-2 md:ml-4"
+                aria-label="Student Portal"
+              >
+                Student Portal
+                <span className="ml-2 inline-block text-lg text-[#1a1204] transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">&#8594;</span>
+              </Link>
+            </div>
           </div>
-          <div className="flex-1 text-center">
-            <img src={userImg} alt="User" className="max-w-full h-auto max-h-[800px] object-contain" />
+
+          {/* Teacher image: on mobile it now sits directly under the button (no empty gap) */}
+          <div className="flex-1 text-center -mt-2 md:mt-0">
+            <img src={userImg} alt="User" className="mx-auto max-w-full h-auto max-h-[800px] object-contain" />
           </div>
+          </div>
+
+          {/* Info card: mobile only, now BELOW the teacher image (full device width) */}
+          <InfoCard className="md:hidden w-screen relative -ml-5" />
+
+          {/* Info card: desktop only, one full-width line (Batches | Medium | Centers) */}
+          <InfoCard className="hidden md:block mt-8" />
         </div>
       </section>
-      
-      
 
-  {/* Classes Section */}
+      {/* Classes Section */}
       <section
         id="classes"
         ref={classesSectionRef}
@@ -266,18 +320,25 @@ export default function Landing() {
         aria-labelledby="classes-title"
         style={{ background: 'linear-gradient(180deg, #0B0A0A 0%, #141211 50%, #0B0A0A 100%)' }}
       >
-       <header className="classes-header">
-           <h2 id="classes-title" className={`classes-title ${isClassesVisible ? 'animate-slide-in-right' : 'opacity-0'}`}><span className='text-yellow-500'>Classes</span> for every stage</h2>
-           <p className={`classes-subtitle ${isClassesVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}>
-             From the first scholarship paper to the final A/L exam, one institute that knows every step.
-           </p>
+        <header className="classes-header">
+          <span className={EYEBROW_CLASS}>01 · Classes</span>
+          <h2
+            id="classes-title"
+            className={`${TITLE_CLASS} ${isClassesVisible ? 'animate-slide-in-right' : 'opacity-0'}`}
+          >
+            YOUR CITY . <span className="text-yellow-500">YOUR CLASS .</span>
+          </h2>
+          <p className={`classes-subtitle text-md ${isClassesVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}>
+            From the first scholarship paper to the final A/L exam, one institute that knows every step.
+          </p>
         </header>
         <div className="branches-grid" ref={branchesGridRef}>
           <div className="reveal-card">
             <BranchCard
               name="Sapala - Deniyaya"
-              al2027={{ date: '', time: '' }}
-              al2028={{ date: '', time: '' }}
+              al2027={{ date: 'සෙනසුරාදා', time: '12:30 - 14:30' }}
+              alrev2027={{ date: 'බ්‍රහස්පතින්දා', time: '08:30 - 14:30' }}
+              al2028={{ date: 'සෙනසුරාදා', time: '14:30 - 16:30' }}
               href="/branches/sapala-deniyaya"
               loading={classesLoading}
             />
@@ -285,8 +346,9 @@ export default function Landing() {
           <div className="reveal-card">
             <BranchCard
               name="Sasipro - Neluwa"
-              al2027={{ date: '', time: '' }}
-              al2028={{ date: '', time: '' }}
+              al2027={{ date: 'සඳුදා', time: '08:30 - 12:00' }}
+              alrev2027={{ date: 'සිකුරාදා', time: '08:30 - 14:00' }}
+              al2028={{ date: 'සෙනසුරාදා', time: '08:30 - 11:30' }}
               href="/branches/sasipro-neluwa"
               loading={classesLoading}
             />
@@ -294,8 +356,9 @@ export default function Landing() {
           <div className="reveal-card">
             <BranchCard
               name="Wimasuma - Morawaka"
-              al2027={{ date: '', time: '' }}
-              al2028={{ date: '', time: '' }}
+              al2027={{ date: 'ඉරිදා', time: '10:30 - 12:30' }}
+              alrev2027={{ date: 'අඟහරුවාදා', time: '12:30 - 14:30' }}
+              al2028={{ date: 'ඉරිදා', time: '08:30 - 10:30' }}
               href="/branches/wimasuma-morawaka"
               loading={classesLoading}
             />
@@ -303,8 +366,9 @@ export default function Landing() {
           <div className="reveal-card">
             <BranchCard
               name="New Excellent - Urubokka"
-              al2027={{ date: '', time: '' }}
-              al2028={{ date: '', time: '' }}
+              al2027={{ date: 'බදාදා', time: '08:30 - 14:00' }}
+              alrev2027={{ date: 'බදාදා', time: '08:30 - 14:00' }}
+              al2028={{ date: 'ඉරිදා', time: '12:30 - ' }}
               href="/branches/new-excellent-urubokka"
               loading={classesLoading}
             />
@@ -313,6 +377,7 @@ export default function Landing() {
             <BranchCard
               name="Online - Islandwide"
               al2027={{ date: '', time: '' }}
+              alrev2027={{ date: '', time: '' }}
               al2028={{ date: '', time: '' }}
               href="/branches/online"
               loading={classesLoading}
@@ -321,25 +386,28 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* About Section */}
       <section
         ref={aboutSectionRef}
         id="about"
         className="min-h-screen relative overflow-hidden px-6 pt-16 bg-reveal"
         style={{ backgroundImage: `url(${about_bg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', '--delay': '0.2s' }}
       >
-
-        <h2
-          id="about-title"
-          className={`about-title text-center w-full ${isAboutVisible ? 'animate-slide-in-right' : 'opacity-0'}`}
-        >
-          Meet your <span className='text-yellow-500'>Teacher</span>
-        </h2>
+        <div className="text-center w-full">
+          <span className={EYEBROW_CLASS}>02 · The Teacher</span>
+          <h2
+            id="about-title"
+            className={`${TITLE_CLASS} text-center w-full ${isAboutVisible ? 'animate-slide-in-right' : 'opacity-0'}`}
+          >
+            THE MIND BEHIND <span className="text-yellow-500"><br></br>THE MOVES.</span>
+          </h2>
+        </div>
 
         <div className="flex flex-col md:flex-row gap-10 md:gap-20 p-4 mt-10 w-full max-w-6xl mx-auto">
           <div className="p-6 flex flex-col items-center justify-center h-[63vh] md:h-[70vh] text-center text-2xl font-bold text-slate-900 teacher-arch w-[95%] mx-auto self-center md:flex-1 md:w-auto md:mx-0 md:self-stretch">
             <img src={mainElementImg} alt="Main Element" className="max-w-full h-auto max-h-full object-contain mb-4 scale-[135%] md:scale-150" />
           </div>
-          <div className="flex-1  p-6 rounded-xl text-center font-bold text-slate-300">
+          <div className="flex-1 p-6 rounded-xl text-center font-bold text-slate-300">
             <TypingText
               text={teacherBio}
               as="p"
@@ -350,16 +418,9 @@ export default function Landing() {
             />
           </div>
         </div>
-        {/* <div className='flex'>
-          <div className="w-1/2 h-40 m-10 mt-24"><h1 className="text-4xl font-gemunu">අපේ වැඩපිළිවෙල</h1>
-
-<p className="text-md mt-4">වසර දෙකක අධ්යන කාලයක් තුළ අධයනය කිරීමට ඇති විෂය නිර්දේශය අප විභාගයට මාස 3කට පෙර අවසන් කර උසස් පෙළ විභාගය ඉලක්ක කොට ළමයකුගේ තාර්කිකත්වය සහ ප්‍රශ්නවලට සාර්ථකව මුහුණදීමට ඇති හැකියාව ඔප්නම් වන විධිමත් වැඩ පිළිවෙලක් සහිතව අප පාඨමාලව සකස්කොට ඇත.</p>
-
- </div>
-          <div className="w-1/2 bg-white h-40 m-10"></div>
-        </div> */}
       </section>
 
+      {/* Blueprint / Programme Section */}
       <section
         id="programme"
         ref={programmeSectionRef}
@@ -367,12 +428,13 @@ export default function Landing() {
       >
         <div className="relative mx-auto max-w-5xl">
           <div className="text-center mb-14">
-            <h2 className="classes-title reveal-text">
-              Our <span className="text-yellow-500">Blueprint</span>
+            <span className={EYEBROW_CLASS}>03 · The Blueprint</span>
+            <h2 className={`${TITLE_CLASS} reveal-text`}>
+              7 STEPS TO | <span className="text-yellow-500">CHECKMATE.</span>
             </h2>
             <p className="classes-subtitle reveal-text" data-delay="150">
-        From the first lesson to the final paper, one clear path
-      </p>
+              From the first lesson to the final paper, one clear path
+            </p>
           </div>
 
           <div className="relative">
@@ -440,73 +502,81 @@ export default function Landing() {
         </div>
       </section>
 
-<section
-  id="results"
-  ref={resultSectionRef}
-  className="result-bg relative px-6 py-20 scroll-mt-20"
->
-  <div className="mx-auto max-w-7xl">
-    <div className="text-center mb-12">
-      <h2 className="classes-title reveal-text"><span className="text-yellow-500">Proof</span>, not Promises</h2>
-      <p className="classes-subtitle reveal-text" data-delay="150">
-        Real students, real A/L results
-      </p>
-    </div>
-
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      {MAIN_BANNERS.map((banner) => {
-        const src = resultImage(banner.id)
-        return (
-          <div key={banner.id} className="reveal-card">
-            <div
-              className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141211] aspect-[16/9] transition duration-300 hover:-translate-y-1 hover:border-[#ffc901]/70 hover:shadow-[0_0_40px_-12px_rgba(255,201,1,0.45)]"
-            >
-              {src ? (
-                <img src={src} alt={banner.alt} className="block h-full w-full object-cover" />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center border border-dashed border-[#ffc901]/35">
-                  <p className="text-sm text-white/60 text-center">
-                    Add {banner.id} to src/img/results
-                  </p>
-                </div>
-              )}
-            </div>
+      {/* Results Section */}
+      <section
+        id="results"
+        ref={resultSectionRef}
+        className="result-bg relative px-6 py-20 scroll-mt-20"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="text-center mb-12">
+            <span className={EYEBROW_CLASS}>04 · Results</span>
+            <h2 className={`${TITLE_CLASS} reveal-text`}>
+              NUMBERS DON'T <span className="text-yellow-500">LIE.</span>
+            </h2>
+            <p className="classes-subtitle reveal-text" data-delay="150">
+              Real students, real A/L results
+            </p>
           </div>
-        )
-      })}
-    </div>
 
-    <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-      {SUB_BANNERS.map((banner) => {
-        const src = resultImage(banner.id)
-        return (
-          <div key={banner.id} className="reveal-card">
-            <div
-              className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141211] aspect-[3/2] transition duration-300 hover:-translate-y-1 hover:border-[#ffc901]/70 hover:shadow-[0_0_40px_-12px_rgba(255,201,1,0.45)]"
-            >
-              {src ? (
-                <img src={src} alt={banner.alt} className="block h-full w-full object-cover" />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center border border-dashed border-[#ffc901]/35">
-                  <p className="text-sm text-white/60 text-center">
-                    Add {banner.id} to src/img/results
-                  </p>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {MAIN_BANNERS.map((banner) => {
+              const src = resultImage(banner.id)
+              return (
+                <div key={banner.id} className="reveal-card">
+                  <div
+                    className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141211] aspect-[16/9] transition duration-300 hover:-translate-y-1 hover:border-[#ffc901]/70 hover:shadow-[0_0_40px_-12px_rgba(255,201,1,0.45)]"
+                  >
+                    {src ? (
+                      <img src={src} alt={banner.alt} className="block h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center border border-dashed border-[#ffc901]/35">
+                        <p className="text-sm text-white/60 text-center">
+                          Add {banner.id} to src/img/results
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              )}
-            </div>
+              )
+            })}
           </div>
-        )
-      })}
-    </div>
+
+          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {SUB_BANNERS.map((banner) => {
+              const src = resultImage(banner.id)
+              return (
+                <div key={banner.id} className="reveal-card">
+                  <div
+                    className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#141211] aspect-[3/2] transition duration-300 hover:-translate-y-1 hover:border-[#ffc901]/70 hover:shadow-[0_0_40px_-12px_rgba(255,201,1,0.45)]"
+                  >
+                    {src ? (
+                      <img src={src} alt={banner.alt} className="block h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center border border-dashed border-[#ffc901]/35">
+                        <p className="text-sm text-white/60 text-center">
+                          Add {banner.id} to src/img/results
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </section>
 
+      {/* Reviews Section */}
       <section id="reviews" ref={reviewsSectionRef} className="reviews-bg relative overflow-hidden px-6 py-24">
         <header className="text-center mb-16 relative z-10">
-          <h2 className={`classes-title ${isReviewsVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
-            Student <span className="text-yellow-500">Reviews</span></h2>
+          <span className={EYEBROW_CLASS}>05 · Reviews</span>
+          <h2 className={`${TITLE_CLASS} ${isReviewsVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
+            THEY SAID IT, <span className="text-yellow-500">NOT US.</span>
+          </h2>
           <p className={`classes-subtitle mt-4 ${isReviewsVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}>
-            Hear what our students say about learning with us</p>
+            Hear what our students say about learning with us
+          </p>
         </header>
         <div className="reviews-marquee reviews-desktop-only relative z-10">
           <div className="reviews-track">
@@ -516,7 +586,6 @@ export default function Landing() {
                   <article key={i} className="review-card" tabIndex={setIndex === 1 ? -1 : undefined}>
                     <span className="review-quote" aria-hidden="true">“</span>
                     <p className="review-text">{r.text}</p>
-                    
                   </article>
                 ))}
               </div>
@@ -526,19 +595,21 @@ export default function Landing() {
         <ReviewsMobile reviews={REVIEWS} />
       </section>
 
-      
+      {/* Gallery Section */}
       <section id="gallery" className="gallery-bg min-h-screen scroll-mt-20">
-        <header className="flex flex-col items-center text-center mb-12">
-          <h2 className="classes-title animate-slide-in-right mt-14"><span className='text-yellow-500'>E-PolitiX </span>Life</h2>
-          <div className="classes-subtitle animate-slide-in-right-delay mt-4 ">
+        <header className="flex flex-col items-center text-center mb-12 px-6">
+          <span className={`${EYEBROW_CLASS} mt-14`}>06 · Gallery</span>
+          <h2 className={`${TITLE_CLASS} animate-slide-in-right`}>
+            BEYOND THE <span className="text-yellow-500">CLASSROOM.</span>
+          </h2>
+          <div className="classes-subtitle animate-slide-in-right-delay mt-4">
             <FlipText items={['Prize Giving', 'New year celebration', 'Batch end party']} />
           </div>
-         
         </header>
-        <div className="flex justify-center    max-w-6xl mx-auto mb-6">
+        <div className="flex justify-center max-w-6xl mx-auto mb-6">
           <Link
             to="/gallery"
-            className=" inline-flex r gap-3 border-b-2 border-white pb-1 text-xs font-bold uppercase tracking-[0.2em] text-white transition-colors hover:text-[#e65600] hover:border-[#e65600] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6000]"
+            className="group inline-flex gap-3 border-b-2 border-white pb-1 text-xs font-bold uppercase tracking-[0.2em] text-white transition-colors hover:text-[#e65600] hover:border-[#e65600] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#ff6000]"
             aria-label="View all gallery photos"
           >
             View All Albums
@@ -546,184 +617,48 @@ export default function Landing() {
           </Link>
         </div>
         <GalleryMobile />
-        
       </section>
 
+      {/* FAQ Section: the ref lives on this wrapper so the observer can fire */}
+      <div ref={faqSectionRef}>
+        <FaqSection isVisible={isFaqVisible} />
+      </div>
+
+      {/* Closing letter section */}
       <section
-        id="contact"
-        ref={contactSectionRef}
-        className="min-h-screen relative px-6 py-20 overflow-hidden"
-        style={{ background: 'linear-gradient(180deg, #0B0A0A 0%, #141211 50%, #0B0A0A 100%)' }}
+        className={`min-h-screen relative px-6 py-20 overflow-hidden`}
+        style={{
+          background: 'linear-gradient(180deg, #0B0A0A 0%, #141211 50%, #0B0A0A 100%)',
+        }}
       >
-        
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--gold)_0%,_transparent_70%)] opacity-10" />
-        <div className="relative z-10 max-w-6xl mx-auto w-full">
-          <header className="text-center mb-16">
-            <h2 className={`classes-title ${isContactVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
-              Get in <span className='text-yellow-500'>Touch</span>
-            </h2>
-            <p className={`classes-subtitle text-md mt-4 ${isContactVisible ? 'animate-slide-in-right-delay' : 'opacity-0'}`}>
-              Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-            </p>
-          </header>
-
-          <div className="grid lg:grid-cols-2 gap-12">
-            <div className="space-y-8">
-              <div className={`card-reveal ${isContactVisible ? 'is-visible' : ''}`} style={{ '--delay': '0ms' }}>
-                <h3 className="level-title mb-6 text-2xl">Contact Information</h3>
-                <div className="space-y-6">
-
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="level-title text-lg mb-1">Call Us</h4>
-                      <p className="text-text-muted leading-relaxed">
-                        +94 41 222 3344<br />
-                        +94 77 123 4567
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="level-title text-lg mb-1">Email Us</h4>
-                      <p className="text-text-muted leading-relaxed">
-                        info@epolitix.lk<br />
-                        admissions@epolitix.lk
-                      </p>
-                    </div>
-                  </div>
-
-                  
-                </div>
-              </div>
-
-              <div className={`card-reveal ${isContactVisible ? 'is-visible' : ''}`} style={{ '--delay': '200ms' }}>
-                <h3 className="level-title mb-6 text-lg">Follow Us</h3>
-                <div className="flex flex-wrap gap-4">
-                  <a href="https://www.facebook.com/share/18apYRAecC/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-card-bg border border-card-border flex items-center justify-center hover:border-gold hover:bg-gold/10 transition-all duration-300 hover:text-yellow-500 hover:border-yellow-500" aria-label="Facebook">
-                    <svg className="w-6 h-6 text-gold" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                    </svg>
-                  </a>
-                  <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-card-bg border border-card-border flex items-center justify-center hover:border-gold hover:bg-gold/10 transition-all duration-300 hover:text-yellow-500 hover:border-yellow-500" aria-label="WhatsApp">
-                    <svg className="w-6 h-6 text-gold" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.672m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378 3.44 3.44 0 01-1.141-1.006 12.43 12.43 0 00-.062-.678 11.4 11.4 0 00-.4-.974 10.18 10.18 0 00-.928-.928 11.38 11.38 0 00-.976-.4 12.6 12.6 0 00-.678-.062A3.44 3.44 0 012.38 12.88 9.86 9.86 0 01.999 7.846a9.874 9.874 0 014.577-5.175A9.865 9.865 0 0112 0c2.904 0 5.565 1.205 7.445 3.082a9.865 9.865 0 013.081 7.442c0 2.905-1.205 5.566-3.082 7.443a9.874 9.874 0 01-5.176 4.577 3.416 3.416 0 01-1.182-.06zM12 6.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" />
-                    </svg>
-                  </a>
-
-                  <a href="https://youtube.com/@indunilsgamage?si=FAjeXsbUp3BttpXv" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-card-bg border border-card-border flex items-center justify-center hover:border-gold hover:bg-gold/10 transition-all duration-300 hover:text-yellow-500 hover:border-yellow-500" aria-label="YouTube">
-                    <svg className="w-6 h-6 text-gold" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
+        <img src={headerMobileImg} alt="Header Mobile" className="mx-auto mb-4 block lg:hidden" style={{ maxWidth: '600px', width: '100%' }} />
+        <img src={headerImg} alt="Header" className="mx-auto -ml-1 hidden lg:block" style={{ maxWidth: '900px', width: '100%' }} />
+        <div className='relative z-10 flex flex-col md:flex-row min-h-[80vh] w-full max-w-8xl gap-5 rounded-xl shadow-sm '>
+          <div className="flex-1 md:p-8 text-left flex flex-col items-start -gap-2  p-10">
+            {/* Letter paragraphs in Noto Serif Sinhala */}
+            <div
+              className="pt-50 space-y-6 text-white text-xl md:text-2xl leading-[1.9]"
+              style={{ fontFamily: SERIF_SINHALA }}
+            >
+              <p>
+                දේශපාලන විද්‍යාව කියන්නේ කටපාඩම් කරන කරුණු ගොන්නක් නෙවෙයි. අපි ජීවත් වෙන සමාජය, අපේ ජීවිතයට බලපාන තීන්දු, ඒ තීන්දු ගන්නේ කවුද කියලා පැහැදිලිව දකින්න ඇති ශක්තිමත්ම ඇස.
+              </p>
+              <p>
+                ඉතිහාසයේ මහා වෙනස්කම් ඇති වුණේ ප්‍රශ්න කරන්න, තර්ක කරන්න, තනිවම හිතන්න දැනගත් මිනිසුන් නිසයි. ඒ මිනිසා ඔබ වෙන්න පුළුවන්.
+              </p>
+              <p>
+                වසර දෙකක ගමනේ මහන්සි හිතෙන දවස් එනවා. එත් මතක තියාගන්න, ඔබ ඉගෙනීමට යොදන සෑම පැයක්ම ඔබේ අනාගතයට කරන ආයෝජනයක්. විභාගයත් ජීවිතයත් දිනන්නේ පොඩි පොඩි පියවරවලින්.
+              </p>
+              <p>
+                ප්‍රශ්න පත්‍රයෙන් ඔබ්බට, රටක් ගැනත් අයිතිවාසිකම් සහ වගකීම් ගැනත් විශ්වාසයෙන් කතා කරන්න අපි ඔබව සූදානම් කරනවා. ඒ නිසා පෙළපොත විතරක් නෙවෙයි, ලෝකයත් කියවන්න.
+              </p>
+              <p className="font-bold text-yellow-500 border-l-4 border-[#ff6000] pl-4">
+                හොඳ පුරවැසියෙක් වීමේ පළමු පියවර, හොඳින් දැනුවත් වීමයි.
+              </p>
             </div>
-
-            <div className={`card-reveal ${isContactVisible ? 'is-visible' : ''}`} style={{ '--delay': '100ms' }}>
-              <div className="rounded-2xl p-8 bg-white/7 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 ">
-                <h3 className="level-title mb-6">Send a <span className='text-yellow-500'>Message</span></h3>
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-text mb-1 ">
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-none rounded-lg text-text placeholder-text-muted  transition-all focus:outline-none focus:ring-0 focus:bg-white/6"
-                        placeholder="Your name"
-                      />
-                    </div>
-                    {/* <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-text mb-1">
-                        Email <span className="text-gold">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-gold focus:border-white/20 transition-all"
-                        placeholder="your@email.com"
-                      />
-                    </div> */}
-
-                    <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-text mb-1">
-                      Whatsapp Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={form.phone}
-                      onChange={handlePhoneChange}
-                      className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-gold focus:border-white/20 transition-all"
-                      placeholder="+94 77 123 4567"
-                    />
-                  </div>
-                  </div>
-                  
-                  {/* <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-text mb-1">
-                      Subject <span className="text-gold">*</span>
-                    </label>
-                    <select
-                      id="subject"
-                      name="subject"
-                      required
-                      className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-text focus:outline-none focus:ring-2 focus:ring-gold focus:border-white/20 transition-all"
-                    >
-                      <option value="">Select a subject</option>
-                      <option value="admissions">Admissions Inquiry</option>
-                      <option value="courses">Course Information</option>
-                      <option value="fees">Fee Structure</option>
-                      <option value="branches">Branch Locations</option>
-                      <option value="technical">Technical Support</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div> */}
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-text mb-1">
-                      Message 
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows="5"
-                      value={form.message}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-gold focus:border-white/20 transition-all resize-none"
-                      placeholder="Tell us how we can help you..."
-                    ></textarea>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full md:w-auto px-8 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold/90 focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-bg transition-all duration-300 bg-yellow-500 hover:bg-yellow-600"
-                  >
-                    Send Message
-                  </button>
-                </form>
-              </div>
-            </div>
+          </div>
+          <div className="flex-1 p-2 md:p-8 text-center flex flex-col items-start justify-center -gap-2 ">
+            <img src={pgcovImg} alt="PGCov" className="mx-auto mb-4 block" style={{ maxWidth: '600px', width: '100%' }} />
           </div>
         </div>
       </section>

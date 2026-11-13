@@ -23,7 +23,7 @@ const ICONS = {
   '#results': <><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></>,
   '#reviews': <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>,
   '#gallery': <><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></>,
-  '#contact': <><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></>,
+  '#faq': <><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></>,
 }
 
 const Icon = ({ name }) => (
@@ -43,7 +43,7 @@ export default function NavbarLanding() {
     { href: '#results', label: ' Result' },
     { href: '#reviews', label: ' Reviews' },
     { href: '#gallery', label: ' Gallery' },
-    { href: '#contact', label: ' Contact' }
+    { href: '#faq', label: ' FAQ' }
   ]
 
   useEffect(() => {
@@ -152,24 +152,16 @@ export default function NavbarLanding() {
 
           {/* Auth Buttons */}
           <div className="hidden lg:flex items-center gap-2">
-            <span className="nav-pop inline-flex" style={{ '--delay': '1.45s' }}>
-              <Link
-                to="/login"
-                className="inline-flex h-11 items-center rounded-[14px] border border-white/10 bg-white/[0.07] px-[22px] text-[0.92rem] font-semibold text-white transition hover:-translate-y-px hover:bg-white/15"
-                aria-label="Login"
-              >
-                Login
-              </Link>
-            </span>
             <span className="nav-pop inline-flex" style={{ '--delay': '1.6s' }}>
               <Link
-                to="/register"
-                className="inline-flex h-11 items-center rounded-[14px] bg-orange-500 px-[22px] text-[0.92rem] font-semibold text-white shadow-[0_8px_18px_-8px_rgba(255,96,0,0.8)] transition hover:-translate-y-px hover:bg-orange-600"
+                to="/login"
+                className="inline-flex h-11 items-center rounded-[14px] bg-orange-500 px-[22px] text-[0.92rem] font-semibold text-slate-900 tracking-widest shadow-[0_8px_18px_-8px_rgba(255,96,0,0.8)] transition hover:-translate-y-px hover:bg-orange-600"
                 aria-label="Register"
               >
-                Register
+                LOGIN
               </Link>
             </span>
+            
           </div>
 
           {/* Mobile menu panel */}

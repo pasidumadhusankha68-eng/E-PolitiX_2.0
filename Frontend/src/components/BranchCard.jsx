@@ -1,6 +1,6 @@
 const formatValue = (val) => val || 'TBA'
 
-export default function BranchCard({ name, al2027, al2028, href = '#', loading = false }) {
+export default function BranchCard({ name, al2027,alrev2027 , al2028, href = '#', loading = false }) {
   const nameParts = name.split(' - ')
   const nameWithBreak = nameParts.length === 2
     ? `${nameParts[0]} -<br />${nameParts[1]}`
@@ -41,6 +41,17 @@ export default function BranchCard({ name, al2027, al2028, href = '#', loading =
         <p className="schedule-line">
           <span className="schedule-label">Time →</span>
           <span className="schedule-value">{formatValue(al2027?.time)}</span>
+        </p>
+      </div>
+      <div className="branch-schedule">
+        <h4 className="schedule-heading">2027 A/L (Revision)</h4>
+        <p className="schedule-line">
+          <span className="schedule-label">Date →</span>
+          <span className="schedule-value">{formatValue(alrev2027?.date)}</span>
+        </p>
+        <p className="schedule-line">
+          <span className="schedule-label">Time →</span>
+          <span className="schedule-value">{formatValue(alrev2027?.time)}</span>
         </p>
       </div>
       <div className="branch-schedule">

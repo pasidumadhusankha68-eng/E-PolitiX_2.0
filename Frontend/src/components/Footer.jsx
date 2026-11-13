@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import landingpgLogo from '../img/landingpg_logo.png'
 import signatureImg from '../img/signature.png'
 import landingPageSlang from '../img/landing_page_slang.png'
+import lumoriaImg from '../img/lumoria.svg'
 
 export default function Footer() {
   return (
@@ -12,9 +13,9 @@ export default function Footer() {
           <div>
             <img src={landingpgLogo} alt="E-PolitiX" className="w-[200px] h-auto mb-5 -ml-2" />
             <img src={signatureImg} alt="Signature" className="w-[150px] h-auto mb-2" />
-            <p className="text-white/55 mt-2 text-xs">BA(sp) University of Peradeniya </p>
-            <img src={landingPageSlang} alt="Slang" className="mt-2 -ml-2 max-w-[36ch] h-auto" />
-            <a href="tel:+94778808610" className="block mt-10 text-3xl font-semibold tracking-wide text-white hover:text-yellow-500 transition-colors">077 880 8610</a>
+            <p className="text-white/55 mt-2 text-xs">B.A. special in University of Peradeniya </p>
+            <img src={landingPageSlang} alt="Slang" className="mt-2 -ml-2 max-w-[30ch] h-auto" />
+            <a href="tel:+94778808610" className="block mt-10 text-3xl font-semibold tracking-wide text-white hover:text-yellow-500 transition-colors">071 894 2559</a>
             <div className="mt-14 flex flex-wrap gap-x-8 gap-y-4">
               <a
                 href="https://youtube.com/@indunilsgamage?si=FAjeXsbUp3BttpXv"
@@ -44,9 +45,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 text-sm font-semibold uppercase tracking-wider text-white hover:text-yellow-500 transition-colors"
               >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.672m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378 3.44 3.44 0 01-1.141-1.006 12.43 12.43 0 00-.062-.678 11.4 11.4 0 00-.4-.974 10.18 10.18 0 00-.928-.928 11.38 11.38 0 00-.976-.4 12.6 12.6 0 00-.678-.062A3.44 3.44 0 012.38 12.88 9.86 9.86 0 01.999 7.846a9.874 9.874 0 014.577-5.175A9.865 9.865 0 0112 0c2.904 0 5.565 1.205 7.445 3.082a9.865 9.865 0 013.081 7.442c0 2.905-1.205 5.566-3.082 7.443a9.874 9.874 0 01-5.176 4.577 3.416 3.416 0 01-1.182-.06zM12 6.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 2a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" />
-                </svg>
+                <i className="fa fa-whatsapp text-xl " aria-hidden="true" />
                 WHATSAPP
               </a>
             </div>
@@ -76,7 +75,7 @@ export default function Footer() {
                 links: [
                   { label: 'About', href: '/#about' },
                   { label: 'Our Programme', href: '/#programme' },
-                  { label: 'Contact', href: '/#contact' }
+                  { label: 'FAQ', href: '/#faq' }
                 ]
               }
             ].map((col) => (
@@ -113,7 +112,9 @@ export default function Footer() {
           <span>© {new Date().getFullYear()} E-PolitiX</span>
           <div>
             <span className="text-white">
-              Designed by <span>Lumoria</span></span>
+              Designed by
+            </span>
+            <img src={lumoriaImg} alt="Lumoria" className="inline-block h-5 mb-0.5 ml-2" />
           </div>
           <div>
             <span className="text-white">

@@ -153,6 +153,9 @@ html {
     opacity: 1;
     transform: none;
   }
+  .card-reveal.is-visible {
+    opacity: 1;
+  }
   @media (prefers-reduced-motion: reduce) {
     .banner-reveal,
     .nav-letter,
@@ -1710,6 +1713,36 @@ html {
 }
 .btn-gold-fill:disabled:hover {
   background-color: var(--gold);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes zoom-in-out {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animate-zoom {
+  animation: zoom-in-out 4s ease-in-out infinite;
 }
 
 @keyframes check-draw {
