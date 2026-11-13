@@ -280,14 +280,14 @@ export default function TopStudents() {
     <section className="mb-8">
       <div className="flex items-center justify-between gap-4 mb-4">
         <div>
-          <h2 className="text-lg font-bold text-slate-900">Top students</h2>
-          <p className="text-sm text-slate-500">{subtitle}</p>
+          <h2 className="text-lg font-bold text-slate-900">Top Ranks</h2>
+          <p className="text-sm text-slate-500 mb-6">{subtitle}</p>
         </div>
         <div
           role="tablist"
           className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white p-0.5 shadow-sm min-h-[44px]"
         >
-          {VIEWS.map((v) => {
+          {/* {VIEWS.map((v) => {
             const active = view === v.value
             return (
               <button
@@ -298,14 +298,14 @@ export default function TopStudents() {
                 onClick={() => setView(v.value)}
                 className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors min-h-[44px] flex items-center ${
                   active
-                    ? 'bg-[#b8860b] text-white'
+                    ? 'bg-[#d4a017] text-white'
                     : 'border border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
                 {v.label}
               </button>
             )
-          })}
+          })} */}
         </div>
       </div>
 
