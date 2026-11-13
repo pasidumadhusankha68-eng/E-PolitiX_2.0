@@ -12,9 +12,14 @@ app = FastAPI(title="E-PolitiX API")
 
 origins = [
     o.strip()
-    for o in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
+    for o in os.getenv(
+        "CORS_ORIGINS", 
+        "http://localhost:5173,http://127.0.0.1:5173,https://epolitix.lk,https://www.epolitix.lk",
+        ).split(",")
     if o.strip()
 ]
+
+print("CORS origins: ", origins)
 
 # Lets your React app (a different port) call this API
 app.add_middleware(
