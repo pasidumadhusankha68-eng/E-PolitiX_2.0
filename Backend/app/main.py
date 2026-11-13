@@ -5,17 +5,22 @@ from app.exam_progress import router as exam_progress_router
 
 from app.database import engine
 from app.routers import admin_dashboard, admin_exams, admin_online_classes, admin_payments, admin_results, admin_users, auth, online_classes, resources, student_profile
-
+import os
 
 
 app = FastAPI(title="E-PolitiX API")
 
-
+origins = [
+    o.strip()
+    for o in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",")
+    if o.strip()
+]
 
 # Lets your React app (a different port) call this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://epolitix.lk"],
+    # allow_origins=["https://epolitix.lk"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
