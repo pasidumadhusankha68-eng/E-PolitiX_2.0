@@ -171,6 +171,8 @@ def get_filters(current_user: dict = Depends(require_admin)):
         years = conn.execute(
             text("SELECT DISTINCT exam_year FROM students ORDER BY exam_year DESC")
         ).scalars().all()
+        if 2029 not in years:
+            years = [2029] + years
     return {
         "institutes": [dict(r) for r in institutes],
         "exam_years": years,
