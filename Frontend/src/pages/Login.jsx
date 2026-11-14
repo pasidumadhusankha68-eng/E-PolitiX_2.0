@@ -2,14 +2,13 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from '../components/Logo'
 import { api } from '../utils/api'
-import { validateEmail } from '../utils/validation'
 import loginBg from '../img/login_bg.png'
 
 export default function Login() {
   const navigate = useNavigate()
-  const [email, setEmail] = useState('')
+  const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
-  const [emailError, setEmailError] = useState('')
+  const [identifierError, setIdentifierError] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [serverError, setServerError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -17,12 +16,13 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setEmailError('')
+    setIdentifierError('')
     setPasswordError('')
     setServerError('')
 
-    if (!validateEmail(email)) {
-      setEmailError('Invalid email format')
+    const trimmed = identifier.trim()
+    if (!trimmed) {
+      setIdentifierError('Email or student ID is required')
       return
     }
 
@@ -33,11 +33,14 @@ export default function Login() {
       return
     }
 
+    // Student IDs are stored uppercase; emails are matched case-insensitively.
+    const loginIdentifier = trimmed.includes('@') ? trimmed.toLowerCase() : trimmed.toUpperCase()
+
     setIsSubmitting(true)
     try {
       const data = await api('/auth/login', {
         method: 'POST',
-        body: { email: email.trim().toLowerCase(), password },
+        body: { identifier: loginIdentifier, password },
       })
 
       localStorage.setItem('token', data.access_token)
@@ -72,21 +75,21 @@ export default function Login() {
 
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
-                  Email
+                <label htmlFor="identifier" className="block text-sm font-medium text-slate-700 mb-1">
+                  Email or Student ID
                 </label>
                 <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="user@example.com"
-                  autoComplete="email"
+                  id="identifier"
+                  type="text"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  placeholder="user@example.com or STU123"
+                  autoComplete="username"
                   className={`w-full px-4 py-2.5 border rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent ${
-                    emailError ? 'border-red-500' : 'border-slate-300'
+                    identifierError ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />
-                {emailError && <p className="mt-1 text-sm text-red-600">{emailError}</p>}
+                {identifierError && <p className="mt-1 text-sm text-red-600">{identifierError}</p>}
               </div>
 
               <div>

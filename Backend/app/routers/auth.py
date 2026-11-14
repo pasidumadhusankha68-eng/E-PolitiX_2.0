@@ -71,16 +71,32 @@ def register(data: RegisterRequest):
 
 @router.post("/login")
 def login(data: LoginRequest):
+    identifier = data.identifier.strip()
     with engine.connect() as conn:
-        user = conn.execute(
-            text("""
-                SELECT id, full_name, password_hash, role, is_active
-                FROM users WHERE email = :email
-            """),
-            {"email": data.email.lower()},
-        ).mappings().first()
+        if "@" in identifier:
+            user = conn.execute(
+                text("""
+                    SELECT u.id, u.full_name, u.password_hash, u.role,
+                        COALESCE(s.is_active, TRUE) AS is_active
+                    FROM users u
+                    LEFT JOIN students s ON s.user_id = u.id
+                    WHERE u.email = :email
+                """),
+                {"email": identifier.lower()},
+            ).mappings().first()
+        else:
+            user = conn.execute(
+                text("""
+                    SELECT u.id, u.full_name, u.password_hash, u.role,
+                        s.is_active AS is_active
+                    FROM users u
+                    JOIN students s ON s.user_id = u.id
+                    WHERE s.student_code = :identifier
+                """),
+                {"identifier": identifier.upper()},
+            ).mappings().first()
 
-    # Same message for "no such email" and "wrong password" on purpose
+    # Same message for "no such account" and "wrong password" on purpose
     if user is None or not verify_password(data.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     if not user["is_active"]:

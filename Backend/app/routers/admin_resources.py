@@ -165,3 +165,20 @@ def publish_resource(
             {"is_published": body.is_published, "id": id},
         )
     return {"id": id, "is_published": body.is_published}
+
+
+@router.delete("/{id}")
+def delete_resource(
+    id: int, current_user: dict = Depends(require_admin)
+):
+    with engine.begin() as conn:
+        existing = conn.execute(
+            text("SELECT 1 FROM resources WHERE id = :id"), {"id": id}
+        ).first()
+        if existing is None:
+            raise HTTPException(status_code=404, detail="Resource not found")
+        conn.execute(
+            text("DELETE FROM resources WHERE id = :id"),
+            {"id": id},
+        )
+    return {"id": id, "deleted": True}

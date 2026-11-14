@@ -1,41 +1,64 @@
 import { useCallback, useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { api } from '../../utils/api'
 import Navbar from '../../components/Navbar'
 import ResourceViewer from '../../components/ResourceViewer'
 import ResourceModal from '../../components/admin/ResourceModal'
 
-const statusColors = {
-  Published: 'bg-emerald-50 text-emerald-700 border-emerald-100',
-  Draft: 'bg-amber-50 text-amber-700 border-amber-100',
-  Archived: 'bg-slate-100 text-slate-600 border-slate-200',
+const TYPE_BADGE = {
+  note: 'bg-sky-50 text-sky-700 border-sky-200',
+  paper: 'bg-amber-50 text-amber-700 border-amber-200',
+  past_paper: 'bg-purple-50 text-purple-700 border-purple-200',
+}
+
+const TYPE_LABEL = {
+  note: 'Weekly note',
+  paper: 'Paper',
+  past_paper: 'Past paper',
+}
+
+const STATUS_BADGE = {
+  true: 'bg-emerald-50 text-emerald-700 border-emerald-100',
+  false: 'bg-slate-100 text-slate-600 border-slate-200',
 }
 
 export default function AdminResources() {
   const [search, setSearch] = useState('')
+  const [classId, setClassId] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('all')
   const [items, setItems] = useState([])
+  const [classes, setClasses] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [serverError, setServerError] = useState(null)
 
-  // Preview viewer state (admins: no watermark)
   const [viewerOpen, setViewerOpen] = useState(false)
   const [viewTitle, setViewTitle] = useState(null)
   const [viewEmbedUrl, setViewEmbedUrl] = useState(null)
 
-  // Add/edit modal state
   const [modalOpen, setModalOpen] = useState(false)
   const [editingResource, setEditingResource] = useState(null)
 
-  // Delete confirmation state
   const [deleteTarget, setDeleteTarget] = useState(null)
+
+  const fetchClasses = useCallback(async () => {
+    try {
+      const data = await api('/admin/exams/classes')
+      setClasses(Array.isArray(data) ? data : [])
+    } catch {
+      setClasses([])
+    }
+  }, [])
 
   const fetchResources = useCallback(async () => {
     setLoading(true)
     setError(null)
     setServerError(null)
     try {
-      const data = await api('/admin/resources')
+      const params = new URLSearchParams()
+      if (classId) params.set('class_id', classId)
+      if (categoryFilter !== 'all') params.set('category', categoryFilter)
+      if (search) params.set('search', search)
+      const data = await api(`/admin/resources?${params.toString()}`)
       setItems(data.items || [])
     } catch (err) {
       setError(err.message || 'Failed to load resources')
@@ -43,17 +66,25 @@ export default function AdminResources() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [search, classId, categoryFilter])
 
   useEffect(() => {
+    fetchClasses()
     fetchResources()
-  }, [fetchResources])
+  }, [fetchClasses, fetchResources])
 
   const filtered = items.filter(
     (r) =>
       (r.title || '').toLowerCase().includes(search.toLowerCase()) ||
       (r.category || '').toLowerCase().includes(search.toLowerCase())
   )
+
+  const counts = {
+    all: items.length,
+    note: items.filter((r) => r.category === 'note').length,
+    paper: items.filter((r) => r.category === 'paper').length,
+    past_paper: items.filter((r) => r.category === 'past_paper').length,
+  }
 
   const handlePreview = (r) => {
     setViewTitle(r.title)
@@ -87,7 +118,6 @@ export default function AdminResources() {
 
   const handlePublish = async (r) => {
     const next = !r.is_published
-    // Optimistic update
     setItems((prev) =>
       prev.map((item) => (item.id === r.id ? { ...item, is_published: next } : item))
     )
@@ -97,7 +127,6 @@ export default function AdminResources() {
         body: { is_published: next },
       })
     } catch (err) {
-      // Revert on failure
       setItems((prev) =>
         prev.map((item) => (item.id === r.id ? { ...item, is_published: r.is_published } : item))
       )
@@ -119,12 +148,13 @@ export default function AdminResources() {
     try {
       await api(`/admin/resources/${deleteTarget.id}`, { method: 'DELETE' })
       setItems((prev) => prev.filter((item) => item.id !== deleteTarget.id))
+      fetchResources()
     } catch (err) {
       setServerError(err.message || 'Failed to delete resource')
     }
   }
 
-  const resourceStatus = (r) => (r.is_published ? 'Published' : 'Draft')
+  const resourceStatus = (r) => r.is_published ? 'Published' : 'Hidden'
 
   if (loading) {
     return (
@@ -158,121 +188,205 @@ export default function AdminResources() {
     )
   }
 
+  const visibleFrom = (filtered.length > 0 ? 1 : 0)
+  const visibleTo = Math.min(visibleFrom + filtered.length - 1, filtered.length)
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#f3f4f6]">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Resources</h1>
-            <p className="text-slate-600 mt-1">Manage learning materials and documents.</p>
+            <p className="text-slate-600 mt-1">
+              Weekly notes, papers and past papers for paid students
+            </p>
           </div>
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-slate-900/10 flex items-center gap-2"
+            className="bg-[#c2410c] hover:bg-[#a33a0e] text-white px-5 py-2.5 rounded-2xl font-medium transition-colors shadow-lg shadow-[#c2410c]/20 flex items-center gap-2"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            Add resource
+            <span>+</span> Add resource
           </button>
         </div>
 
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2">
+                Class
+              </label>
+              <select
+                value={classId}
+                onChange={(e) => setClassId(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
+              >
+                <option value="">All classes</option>
+                {classes.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name} {c.exam_year ? ` (${c.exam_year})` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2">
+                Search
+              </label>
+              <input
+                type="text"
+                placeholder="Search by title"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-[#c2410c] focus:border-transparent outline-none transition-colors"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mt-4">
+            <button
+              type="button"
+              onClick={() => setCategoryFilter('all')}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors border ${
+                categoryFilter === 'all'
+                  ? 'bg-[#c2410c] text-white border-[#c2410c]'
+                  : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              All {counts.all}
+            </button>
+            <button
+              type="button"
+              onClick={() => setCategoryFilter('note')}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors border ${
+                categoryFilter === 'note'
+                  ? 'bg-[#c2410c] text-white border-[#c2410c]'
+                  : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              Weekly notes {counts.note}
+            </button>
+            <button
+              type="button"
+              onClick={() => setCategoryFilter('paper')}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors border ${
+                categoryFilter === 'paper'
+                  ? 'bg-[#c2410c] text-white border-[#c2410c]'
+                  : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              Papers {counts.paper}
+            </button>
+            <button
+              type="button"
+              onClick={() => setCategoryFilter('past_paper')}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors border ${
+                categoryFilter === 'past_paper'
+                  ? 'bg-[#c2410c] text-white border-[#c2410c]'
+                  : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              Past papers {counts.past_paper}
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200">
+                <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">TITLE</th>
+                <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">TYPE</th>
+                <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">DATE</th>
+                <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">STATUS</th>
+                <th className="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((resource) => (
+                <tr
+                  key={resource.id}
+                  className="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                >
+                  <td className="px-6 py-4">
+                    <div className="text-sm font-medium text-slate-900">{resource.title}</div>
+                    <div className="text-xs text-slate-500">
+                      Drive link · {resource.url ? new URL(resource.url).hostname : '-'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium border ${TYPE_BADGE[resource.category] || 'bg-slate-100 text-slate-600 border-slate-200'}`}>
+                      {TYPE_LABEL[resource.category] || resource.category}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-slate-600">
+                    {resource.resource_date || '-'}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium border ${STATUS_BADGE[resource.is_published]}`}>
+                      {resource.is_published ? 'Published' : 'Hidden'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-right text-xs">
+                    <div className="flex items-center justify-end gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handlePreview(resource)}
+                        className="text-[#c2410c] hover:underline font-medium"
+                      >
+                        Open
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEdit(resource)}
+                        className="ml-2 text-[#c2410c] hover:underline font-medium"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handlePublish(resource)}
+                        className="ml-2 text-[#c2410c] hover:underline font-medium"
+                      >
+                        {resource.is_published ? 'Hide' : 'Show'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteClick(resource)}
+                        className="ml-2 text-[#c2410c] hover:underline font-medium"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center">
+                    <p className="text-slate-500">No resources found.</p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+
+          <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between text-sm text-slate-600">
+            <p>
+              Showing {visibleFrom}-{visibleTo} of {filtered.length}
+            </p>
+            <p>
+              Only paid students see published resources (the first week of each month is free).
+            </p>
+          </div>
+        </div>
+
         {serverError && (
-          <div className="max-w-md mb-4 rounded-xl border border-red-100 bg-red-50 p-4 text-red-700 text-sm">
+          <div className="max-w-md mt-4 rounded-xl border border-red-100 bg-red-50 p-4 text-red-700 text-sm">
             {serverError}
           </div>
         )}
-
-        {/* Search */}
-        <div className="relative w-full max-w-md mb-6">
-          <svg className="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search resources..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all"
-          />
-        </div>
-
-        {/* Resources grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((resource) => (
-            <motion.div
-              key={resource.id}
-              whileHover={{ y: -4 }}
-              className="rounded-2xl border border-slate-200 bg-white shadow-sm p-5 flex flex-col"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${typeColor(resource.category)}`}>
-                  {typeIcon(resource.category)}
-                </div>
-                <span className={`text-xs font-medium border rounded-md px-2 py-0.5 ${statusColors[resourceStatus(resource)]}`}>
-                  {resourceStatus(resource)}
-                </span>
-              </div>
-              <h3 className="text-sm font-bold text-slate-900 mb-1">{resource.title}</h3>
-              <p className="text-xs text-slate-500 mb-3 flex-1">{resource.category}</p>
-              <div className="flex items-center justify-between text-xs text-slate-500 mt-auto">
-                <span>{resource.resource_date || '-'}</span>
-                <span>{resource.created_at ? new Date(resource.created_at).toLocaleDateString() : '-'}</span>
-              </div>
-              <div className="mt-4 flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => handlePreview(resource)}
-                  className="flex-1 py-2 rounded-lg bg-slate-900 text-white text-xs font-medium hover:bg-slate-800 transition-colors"
-                >
-                  Preview
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleOpenEdit(resource)}
-                  className="flex-1 py-2 rounded-lg border border-slate-200 text-xs font-medium text-sky-600 hover:bg-sky-50 hover:text-sky-700 transition-colors"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handlePublish(resource)
-                  }}
-                  className="flex-1 py-2 rounded-lg border border-slate-200 text-xs font-medium ${
-                    resource.is_published
-                      ? 'text-emerald-700 hover:bg-emerald-50 border-emerald-100'
-                      : 'text-amber-700 hover:bg-amber-50 border-amber-100'
-                  } transition-colors"
-                >
-                  {resource.is_published ? 'Hide' : 'Show'}
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleDeleteClick(resource)
-                  }}
-                  className="flex-1 py-2 rounded-lg border border-slate-200 text-xs font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors"
-                >
-                  Delete
-                </button>
-              </div>
-            </motion.div>
-          ))}
-          {filtered.length === 0 && (
-            <div className="lg:col-span-3 rounded-2xl border-2 border-dashed border-slate-200 bg-white py-16 text-center flex flex-col items-center justify-center">
-              <svg className="w-16 h-16 text-slate-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <p className="text-sm text-slate-500">No resources found.</p>
-            </div>
-          )}
-        </div>
 
         {viewerOpen && viewEmbedUrl && (
           <ResourceViewer
@@ -315,7 +429,7 @@ export default function AdminResources() {
                   <button
                     type="button"
                     onClick={handleDeleteConfirm}
-                    className="px-5 py-2.5 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 transition-colors"
+                    className="px-5 py-2.5 rounded-lg bg-[#c2410c] text-white text-sm font-medium hover:bg-[#a33a0e] transition-colors"
                   >
                     Delete
                   </button>
@@ -327,22 +441,4 @@ export default function AdminResources() {
       </main>
     </div>
   )
-}
-
-function typeColor(category) {
-  const map = {
-    note: 'bg-sky-50 text-sky-600',
-    paper: 'bg-indigo-50 text-indigo-600',
-    past_paper: 'bg-rose-50 text-rose-600',
-  }
-  return map[category] || 'bg-slate-100 text-slate-600'
-}
-
-function typeIcon(category) {
-  const map = {
-    note: '📝',
-    paper: '📄',
-    past_paper: '📑',
-  }
-  return map[category] || '📎'
 }
