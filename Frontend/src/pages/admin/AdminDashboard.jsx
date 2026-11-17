@@ -243,51 +243,137 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm min-w-0 mt-4">
+          <div className=" rounded-2xl border border-slate-200 bg-white p-6 shadow-sm min-w-0 mt-4 ">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-lg font-semibold text-slate-900">Average mark per test</h2>
               <p className="text-sm text-slate-500">By institute</p>
             </div>
-            <div className="mt-4 h-80 w-full overflow-x-auto">
+            <div className="mt-4 h-96 w-full overflow-x-auto md:flex md:items-start md:gap-4">
               {chartTests.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 text-slate-500">
                   <CheckCircle2 size={24} className="mb-2" />
                   <p className="text-sm">No exam data yet</p>
                 </div>
               ) : (
-                <div className="h-full" style={{ minWidth: Math.max(600, chartTests.length * 160) }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={chartData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                      <XAxis dataKey="test" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} />
-                      <YAxis
-                        domain={[0, 100]}
-                        ticks={[0, 25, 50, 75, 100]}
-                        tickFormatter={(v) => v + '%'}
-                        tick={{ fill: '#64748b', fontSize: 12 }}
-                        axisLine={false}
-                      />
-                      <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderRadius: '8px' }} />
-                      <Legend iconType="circle" verticalAlign="bottom" height={36} />
-                      {chartInstitutes.map((inst, i) => (
-                        <Line
-                          key={inst.id}
-                          type="monotone"
-                          dataKey={String(inst.id)}
-                          stroke={CHART_COLORS[i % CHART_COLORS.length]}
-                          strokeWidth={2.5}
-                          dot={{ r: 3 }}
-                          activeDot={{ r: 5 }}
-                          isAnimationActive={
-                            !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-                          }
+                <>
+                  <div
+                    className="h-full w-full md:w-4/5 min-w-0 overflow-x-auto flex-shrink-0"
+                    style={{
+                      minWidth: chartTests.length * 100,
+                    }}
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                        <XAxis dataKey="test" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} />
+                        <YAxis
+                          domain={[0, 100]}
+                          ticks={[0, 25, 50, 75, 100]}
+                          tickFormatter={(v) => v + '%'}
+                          tick={{ fill: '#64748b', fontSize: 12 }}
+                          axisLine={false}
                         />
-                      ))}
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
+                        <Tooltip
+                          content={({ active, ...allProps }) => {
+                            console.log('Tooltip debug:', {
+                              active,
+                              allKeys: Object.keys(allProps),
+                            });
+                            if (!active) return null;
+
+                            const items =
+                              allProps.items ??
+                              allProps.tooltipPayload ??
+                              allProps.payload ??
+                              [];
+                            if (!items?.length) return null;
+
+                            const testLabel = items[0].payload?.test ?? 'Test';
+
+                            return (
+                              <div
+                                className="bg-white border border-slate-200 rounded-lg shadow-lg p-3 min-w-[160px]"
+                                style={{
+                                  pointerEvents: 'none',
+                                  zIndex: 50,
+                                }}
+                              >
+                                <div className="mb-3 pb-2 border-b border-slate-100">
+                                  <p className="text-xs font-semibold text-slate-900 uppercase tracking-wider">
+                                    {testLabel}
+                                  </p>
+                                </div>
+                                <div className="space-y-2">
+                                  {items.map((entry, idx) => {
+                                    const instId = entry.dataKey;
+                                    const inst = chartInstitutes.find(
+                                      (i) => String(i.id) === instId
+                                    );
+                                    const avg = entry.value ?? null;
+
+                                    return (
+                                      <div key={idx} className="flex items-center gap-2">
+                                        <span
+                                          className="w-2.5 h-2.5 rounded-full"
+                                          style={{
+                                            backgroundColor:
+                                              CHART_COLORS[idx % CHART_COLORS.length],
+                                          }}
+                                        />
+                                        <span className="text-sm font-medium text-slate-700 truncate">
+                                          {inst?.name ?? 'Institute'}
+                                        </span>
+                                        <span
+                                          className={`ml-auto text-sm font-bold ${
+                                            avg === null ? 'text-slate-400' : 'text-slate-900'
+                                          }`}
+                                        >
+                                          {avg === null ? '—' : `${avg}%`}
+                                        </span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          }}
+                          contentStyle={{ backgroundColor: 'transparent', border: 'none' }}
+                        />
+                        {chartInstitutes.map((inst, i) => (
+                          <Line
+                            key={inst.id}
+                            name={inst.name}
+                            type="monotone"
+                            dataKey={String(inst.id)}
+                            stroke={CHART_COLORS[i % CHART_COLORS.length]}
+                            strokeWidth={2.5}
+                            dot={{ r: 3 }}
+                            activeDot={{ r: 5 }}
+                            isAnimationActive={
+                              !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                            }
+                          />
+                        ))}
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                  
+                </>
               )}
             </div>
+            <div className="w-full md:w-1/5 md:mt-0">
+                <h3 className="text-xs font-semibold text-slate-700 mb-3 uppercase tracking-wider">
+                  By institute
+                </h3>
+                <div className="space-y-2">
+                  {chartInstitutes.map((inst, i) => (
+                    <div key={inst.id} className="flex items-center gap-2 text-sm text-slate-600">
+                      <span className="w-3 h-3 rounded-full" style={{ backgroundColor: CHART_COLORS[i % CHART_COLORS.length] }} />
+                      <span>{inst.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
           </div>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
