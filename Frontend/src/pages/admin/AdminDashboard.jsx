@@ -257,7 +257,7 @@ export default function AdminDashboard() {
               ) : (
                 <>
                   <div
-                    className="h-full w-full md:w-4/5 min-w-0 overflow-x-auto flex-shrink-0"
+                    className="h-full w-full  min-w-0 overflow-x-auto flex-shrink-0"
                     style={{
                       minWidth: chartTests.length * 100,
                     }}
