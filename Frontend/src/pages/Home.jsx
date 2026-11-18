@@ -20,7 +20,8 @@ export default function Home() {
   // Student name from localStorage (set during login)
   // Why: Persists user session across page reloads without backend
   const user = JSON.parse(localStorage.getItem('user') || '{}')
-  const firstName = user.fullName ? user.fullName.trim().split(/\s+/)[0] : 'Student'
+  const nameParts = user.fullName ? user.fullName.trim().split(/\s+/) : ['Student']
+  const lastName = nameParts[nameParts.length - 1]
 
   // Gender fetched from backend (/student/profile) — no localStorage gender field exists
   const [gender, setGender] = useState('male')
@@ -77,7 +78,7 @@ export default function Home() {
             <div className="flex items-center gap-3 ml-6">
               <div>
                 <p className="text-2xl font-bold text-slate-900 tracking-wide [@media(max-width:500px)]:text-base">
-                  {greeting}, {firstName}!
+                  {greeting}, {lastName}!
                 </p>
                 <p className="text-slate-500 text-sm [@media(max-width:500px)]:text-xs">Ready to continue learning?</p>
               </div>
