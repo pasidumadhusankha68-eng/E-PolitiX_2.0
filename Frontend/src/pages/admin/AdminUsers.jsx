@@ -56,7 +56,14 @@ export default function AdminUsers() {
       ])
 
       setStudents(studentsRes.items || [])
-      setTotal(studentsRes.total || (studentsRes.items?.length || 0))
+      const totalFromApi =
+        studentsRes.total ??
+        studentsRes.totalCount ??
+        studentsRes.count ??
+        studentsRes.pagination?.total ??
+        0
+      const resolvedTotal = totalFromApi || (studentsRes.items?.length || 0)
+      setTotal(resolvedTotal)
       setCounts(countsRes)
       setInstitutes(filtersRes.institutes || [])
       setYears(filtersRes.exam_years || [])
@@ -67,6 +74,9 @@ export default function AdminUsers() {
       setLoading(false)
     }
   }, [page, pageSize, search, instituteId, examYear, status])
+
+  const fetchDataRef = useRef(fetchData)
+  fetchDataRef.current = fetchData
 
   const fetchAdmins = useCallback(async () => {
     try {
@@ -89,12 +99,12 @@ export default function AdminUsers() {
     if (searchTimer.current) clearTimeout(searchTimer.current)
     searchTimer.current = setTimeout(() => {
       setPage(1)
-      fetchData()
+      fetchDataRef.current()
     }, 400)
     return () => {
       if (searchTimer.current) clearTimeout(searchTimer.current)
     }
-  }, [search, fetchData])
+  }, [search])
 
   const handleFilterChange = useCallback(() => {
     setPage(1)
